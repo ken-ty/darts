@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+
 import '../models/user_profile.dart';
-import '../theme.dart';
 
 class UserCard extends StatelessWidget {
   final UserProfile user;
@@ -26,13 +26,15 @@ class UserCard extends StatelessWidget {
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             color: isSelected
-                ? Theme.of(context).colorScheme.primary.withOpacity(0.1)
+                ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.1)
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: isSelected
                   ? Theme.of(context).colorScheme.primary
-                  : Theme.of(context).colorScheme.outline.withOpacity(0.3),
+                  : Theme.of(
+                      context,
+                    ).colorScheme.outline.withValues(alpha: 0.3),
               width: isSelected ? 2 : 1,
             ),
           ),
@@ -44,7 +46,9 @@ class UserCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isSelected
                       ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context).colorScheme.secondary.withOpacity(0.2),
+                      : Theme.of(
+                          context,
+                        ).colorScheme.secondary.withValues(alpha: 0.2),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
@@ -55,9 +59,9 @@ class UserCard extends StatelessWidget {
                   size: 24,
                 ),
               ),
-              
+
               const SizedBox(width: 16),
-              
+
               // User Info
               Expanded(
                 child: Column(
@@ -74,14 +78,21 @@ class UserCard extends StatelessWidget {
                     Text(
                       '${user.finishBoard.length}個のフィニッシュ',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withValues(alpha: 0.7),
                       ),
                     ),
                     const SizedBox(height: 8),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.tertiary.withOpacity(0.2),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.tertiary.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
@@ -95,7 +106,7 @@ class UserCard extends StatelessWidget {
                   ],
                 ),
               ),
-              
+
               // Selection indicator
               if (isSelected) ...[
                 const SizedBox(width: 16),
@@ -129,7 +140,7 @@ class UserCard extends StatelessWidget {
   String _formatDate(DateTime date) {
     final now = DateTime.now();
     final difference = now.difference(date);
-    
+
     if (difference.inDays == 0) {
       return '今日';
     } else if (difference.inDays == 1) {

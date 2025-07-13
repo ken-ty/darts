@@ -41,20 +41,20 @@ class ThemeService extends ChangeNotifier {
     // DARTS LIVE専用テーマ（より鮮やかな色使い）
     return ThemeData(
       useMaterial3: true,
-      colorScheme: ColorScheme.light(
-        primary: const Color(0xFF0066CC), // ブルー
-        secondary: const Color(0xFFCC0000), // レッド
-        tertiary: const Color(0xFF00CC00), // グリーン
-        surface: const Color(0xFF000000), // ブラック
-        error: const Color(0xFFCC0000), // レッド
-        onPrimary: const Color(0xFFFFFFFF), // ホワイト
-        onSecondary: const Color(0xFFFFFFFF), // ホワイト
-        onTertiary: const Color(0xFF000000), // ブラック
-        onSurface: const Color(0xFFFFFFFF), // ホワイト
-        onError: const Color(0xFFFFFFFF), // ホワイト
-        outline: const Color(0xFFFFFFFF), // ホワイト
-        surfaceContainerHighest: const Color(0xFF1A1A1A), // ダークグレー
-        onSurfaceVariant: const Color(0xFFFFFFFF), // ホワイト
+      colorScheme: const ColorScheme.light(
+        primary: Color(0xFF0066CC), // ブルー
+        secondary: Color(0xFFCC0000), // レッド
+        tertiary: Color(0xFF00CC00), // グリーン
+        surface: Color(0xFF000000), // ブラック
+        error: Color(0xFFCC0000), // レッド
+        onPrimary: Color(0xFFFFFFFF), // ホワイト
+        onSecondary: Color(0xFFFFFFFF), // ホワイト
+        onTertiary: Color(0xFF000000), // ブラック
+        onSurface: Color(0xFFFFFFFF), // ホワイト
+        onError: Color(0xFFFFFFFF), // ホワイト
+        outline: Color(0xFFFFFFFF), // ホワイト
+        surfaceContainerHighest: Color(0xFF1A1A1A), // ダークグレー
+        onSurfaceVariant: Color(0xFFFFFFFF), // ホワイト
       ),
       brightness: Brightness.dark,
       textTheme: lightTheme.textTheme,

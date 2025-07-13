@@ -10,20 +10,20 @@ import 'package:google_fonts/google_fonts.dart';
 
 ThemeData get lightTheme => ThemeData(
   useMaterial3: true,
-  colorScheme: ColorScheme.light(
-    primary: const Color(0xFF0066CC), // ブルー
-    secondary: const Color(0xFFCC0000), // レッド
-    tertiary: const Color(0xFF00CC00), // グリーン
-    surface: const Color(0xFFFFFFFF), // ライトグレー
-    error: const Color(0xFFCC0000), // レッド
-    onPrimary: const Color(0xFFFFFFFF), // ホワイト
-    onSecondary: const Color(0xFFFFFFFF), // ホワイト
-    onTertiary: const Color(0xFF000000), // ブラック
-    onSurface: const Color(0xFF000000), // ブラック
-    onError: const Color(0xFFFFFFFF), // ホワイト
-    outline: const Color(0xFF000000), // ブラック
-    surfaceContainerHighest: const Color(0xFFE0E0E0), // ライトグレー
-    onSurfaceVariant: const Color(0xFF000000), // ブラック
+  colorScheme: const ColorScheme.light(
+    primary: Color(0xFF0066CC), // ブルー
+    secondary: Color(0xFFCC0000), // レッド
+    tertiary: Color(0xFF00CC00), // グリーン
+    surface: Color(0xFFFFFFFF), // ライトグレー
+    error: Color(0xFFCC0000), // レッド
+    onPrimary: Color(0xFFFFFFFF), // ホワイト
+    onSecondary: Color(0xFFFFFFFF), // ホワイト
+    onTertiary: Color(0xFF000000), // ブラック
+    onSurface: Color(0xFF000000), // ブラック
+    onError: Color(0xFFFFFFFF), // ホワイト
+    outline: Color(0xFF000000), // ブラック
+    surfaceContainerHighest: Color(0xFFE0E0E0), // ライトグレー
+    onSurfaceVariant: Color(0xFF000000), // ブラック
   ),
   brightness: Brightness.light,
   textTheme: TextTheme(
@@ -131,20 +131,20 @@ ThemeData get lightTheme => ThemeData(
 
 ThemeData get darkTheme => ThemeData(
   useMaterial3: true,
-  colorScheme: ColorScheme.dark(
-    primary: const Color(0xFF0066CC), // ブルー
-    secondary: const Color(0xFFCC0000), // レッド
-    tertiary: const Color(0xFF00CC00), // グリーン
-    surface: const Color(0xFF1A1A1A), // ブラック
-    error: const Color(0xFFCC0000), // レッド
-    onPrimary: const Color(0xFFFFFFFF), // ホワイト
-    onSecondary: const Color(0xFFFFFFFF), // ホワイト
-    onTertiary: const Color(0xFF000000), // ブラック
-    onSurface: const Color(0xFFFFFFFF), // ホワイト
-    onError: const Color(0xFFFFFFFF), // ホワイト
-    outline: const Color(0xFFFFFFFF), // ホワイト
-    surfaceContainerHighest: const Color(0xFF2A2A2A), // ダークグレー
-    onSurfaceVariant: const Color(0xFFFFFFFF), // ホワイト
+  colorScheme: const ColorScheme.dark(
+    primary: Color(0xFF0066CC), // ブルー
+    secondary: Color(0xFFCC0000), // レッド
+    tertiary: Color(0xFF00CC00), // グリーン
+    surface: Color(0xFF1A1A1A), // ブラック
+    error: Color(0xFFCC0000), // レッド
+    onPrimary: Color(0xFFFFFFFF), // ホワイト
+    onSecondary: Color(0xFFFFFFFF), // ホワイト
+    onTertiary: Color(0xFF000000), // ブラック
+    onSurface: Color(0xFFFFFFFF), // ホワイト
+    onError: Color(0xFFFFFFFF), // ホワイト
+    outline: Color(0xFFFFFFFF), // ホワイト
+    surfaceContainerHighest: Color(0xFF2A2A2A), // ダークグレー
+    onSurfaceVariant: Color(0xFFFFFFFF), // ホワイト
   ),
   brightness: Brightness.dark,
   textTheme: TextTheme(

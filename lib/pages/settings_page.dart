@@ -154,10 +154,10 @@ class _SettingsPageState extends State<SettingsPage>
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primary.withOpacity(0.05),
+        color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2),
         ),
       ),
       child: Row(
@@ -193,7 +193,7 @@ class _SettingsPageState extends State<SettingsPage>
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(
                       context,
-                    ).colorScheme.onSurface.withOpacity(0.7),
+                    ).colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
                 ),
               ],
@@ -217,7 +217,7 @@ class _SettingsPageState extends State<SettingsPage>
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -253,7 +253,7 @@ class _SettingsPageState extends State<SettingsPage>
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: _buildSettingTile(
@@ -271,7 +271,7 @@ class _SettingsPageState extends State<SettingsPage>
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: _buildSettingTile(
@@ -292,7 +292,7 @@ class _SettingsPageState extends State<SettingsPage>
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: _buildSettingTile(
@@ -313,7 +313,7 @@ class _SettingsPageState extends State<SettingsPage>
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -357,7 +357,7 @@ class _SettingsPageState extends State<SettingsPage>
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Icon(
@@ -376,7 +376,7 @@ class _SettingsPageState extends State<SettingsPage>
       subtitle: Text(
         subtitle,
         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
         ),
       ),
       trailing:
@@ -388,7 +388,7 @@ class _SettingsPageState extends State<SettingsPage>
   Widget _buildDivider() {
     return Divider(
       height: 1,
-      color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+      color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
       indent: 56,
     );
   }
@@ -504,7 +504,7 @@ class _SettingsPageState extends State<SettingsPage>
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('キャンセル'),
+            child: const Text('キャンセル'),
           ),
           FilledButton(
             onPressed: () {
@@ -513,7 +513,7 @@ class _SettingsPageState extends State<SettingsPage>
                 Navigator.pop(context);
               }
             },
-            child: Text('保存'),
+            child: const Text('保存'),
           ),
         ],
       ),
@@ -619,7 +619,7 @@ class _SettingsPageState extends State<SettingsPage>
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('データエクスポート機能は準備中です'),
+                  content: const Text('データエクスポート機能は準備中です'),
                   backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
               );

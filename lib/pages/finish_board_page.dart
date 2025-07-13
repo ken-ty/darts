@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../models/finish_combination.dart';
 import '../models/user_profile.dart';
-import '../services/darts_calculator.dart';
 import '../services/user_service.dart';
 import '../widgets/finish_card.dart';
 
@@ -47,7 +46,7 @@ class _FinishBoardPageState extends State<FinishBoardPage>
 
     if (_searchQuery.isNotEmpty) {
       try {
-        final searchScore = int.parse(_searchQuery);
+        int.parse(_searchQuery);
         scores = scores
             .where((score) => score.toString().contains(_searchQuery))
             .toList();
@@ -112,7 +111,7 @@ class _FinishBoardPageState extends State<FinishBoardPage>
                   hintStyle: TextStyle(
                     color: Theme.of(
                       context,
-                    ).colorScheme.onSurface.withOpacity(0.5),
+                    ).colorScheme.onSurface.withValues(alpha: 0.5),
                   ),
                   prefixIcon: Icon(
                     Icons.search,
@@ -125,7 +124,7 @@ class _FinishBoardPageState extends State<FinishBoardPage>
                     borderSide: BorderSide(
                       color: Theme.of(
                         context,
-                      ).colorScheme.outline.withOpacity(0.3),
+                      ).colorScheme.outline.withValues(alpha: 0.3),
                     ),
                   ),
                   enabledBorder: OutlineInputBorder(
@@ -133,7 +132,7 @@ class _FinishBoardPageState extends State<FinishBoardPage>
                     borderSide: BorderSide(
                       color: Theme.of(
                         context,
-                      ).colorScheme.outline.withOpacity(0.3),
+                      ).colorScheme.outline.withValues(alpha: 0.3),
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
@@ -158,7 +157,7 @@ class _FinishBoardPageState extends State<FinishBoardPage>
                       decoration: BoxDecoration(
                         color: Theme.of(
                           context,
-                        ).colorScheme.primary.withOpacity(0.1),
+                        ).colorScheme.primary.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Column(
@@ -189,7 +188,7 @@ class _FinishBoardPageState extends State<FinishBoardPage>
                       decoration: BoxDecoration(
                         color: Theme.of(
                           context,
-                        ).colorScheme.secondary.withOpacity(0.1),
+                        ).colorScheme.secondary.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Column(
@@ -289,13 +288,13 @@ class _FinishBoardPageState extends State<FinishBoardPage>
       child: Container(
         decoration: BoxDecoration(
           color: hasFinish
-              ? Theme.of(context).colorScheme.primary.withOpacity(0.1)
-              : Theme.of(context).colorScheme.outline.withOpacity(0.1),
+              ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.1)
+              : Theme.of(context).colorScheme.outline.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
             color: hasFinish
-                ? Theme.of(context).colorScheme.primary.withOpacity(0.3)
-                : Theme.of(context).colorScheme.outline.withOpacity(0.3),
+                ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.3)
+                : Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
             width: 1,
           ),
         ),
@@ -307,7 +306,9 @@ class _FinishBoardPageState extends State<FinishBoardPage>
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 color: hasFinish
                     ? Theme.of(context).colorScheme.primary
-                    : Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                    : Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.5),
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -326,7 +327,7 @@ class _FinishBoardPageState extends State<FinishBoardPage>
                           ? Theme.of(context).colorScheme.primary
                           : Theme.of(
                               context,
-                            ).colorScheme.outline.withOpacity(0.3),
+                            ).colorScheme.outline.withValues(alpha: 0.3),
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -335,7 +336,9 @@ class _FinishBoardPageState extends State<FinishBoardPage>
             ] else ...[
               Icon(
                 Icons.add,
-                color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
+                color: Theme.of(
+                  context,
+                ).colorScheme.outline.withValues(alpha: 0.5),
                 size: 16,
               ),
             ],
@@ -352,10 +355,10 @@ class _FinishBoardPageState extends State<FinishBoardPage>
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.05),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+            color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
             width: 1,
             style: BorderStyle.solid,
           ),
@@ -365,7 +368,9 @@ class _FinishBoardPageState extends State<FinishBoardPage>
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+                color: Theme.of(
+                  context,
+                ).colorScheme.outline.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
@@ -373,7 +378,7 @@ class _FinishBoardPageState extends State<FinishBoardPage>
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   color: Theme.of(
                     context,
-                  ).colorScheme.onSurface.withOpacity(0.7),
+                  ).colorScheme.onSurface.withValues(alpha: 0.7),
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -385,13 +390,15 @@ class _FinishBoardPageState extends State<FinishBoardPage>
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Theme.of(
                     context,
-                  ).colorScheme.onSurface.withOpacity(0.5),
+                  ).colorScheme.onSurface.withValues(alpha: 0.5),
                 ),
               ),
             ),
             Icon(
               Icons.add_circle_outline,
-              color: Theme.of(context).colorScheme.primary.withOpacity(0.7),
+              color: Theme.of(
+                context,
+              ).colorScheme.primary.withValues(alpha: 0.7),
             ),
           ],
         ),
@@ -417,7 +424,9 @@ class _FinishBoardPageState extends State<FinishBoardPage>
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+                color: Theme.of(
+                  context,
+                ).colorScheme.outline.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -494,73 +503,6 @@ class _FinishBoardPageState extends State<FinishBoardPage>
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(SnackBar(content: Text('$scoreのフィニッシュを削除しました')));
-  }
-
-  void _addMissingFinishes() async {
-    final defaultFinishes = DartsCalculator.getDefaultFinishes();
-    final currentFinishes = widget.user.finishBoard;
-
-    for (final entry in defaultFinishes.entries) {
-      if (!currentFinishes.containsKey(entry.key)) {
-        await UserService.updateFinishCombination(
-          widget.user.id,
-          entry.key,
-          entry.value,
-        );
-      }
-    }
-
-    setState(() {});
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(const SnackBar(content: Text('不足分のフィニッシュを追加しました')));
-  }
-
-  void _showResetDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          'リセット確認',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            color: Theme.of(context).colorScheme.onSurface,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        content: Text(
-          'フィニッシュボードをデフォルトに戻しますか？\nカスタマイズした内容は失われます。',
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(
-              'キャンセル',
-              style: TextStyle(color: Theme.of(context).colorScheme.outline),
-            ),
-          ),
-          FilledButton(
-            onPressed: () async {
-              Navigator.pop(context);
-              await UserService.resetUserFinishBoard(widget.user.id);
-              setState(() {});
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('フィニッシュボードをリセットしました')),
-              );
-            },
-            style: FilledButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.error,
-            ),
-            child: Text(
-              'リセット',
-              style: TextStyle(color: Theme.of(context).colorScheme.onError),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 
   void _showFilterDialog() {

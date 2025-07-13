@@ -134,7 +134,7 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage>
                       BoxShadow(
                         color: Theme.of(
                           context,
-                        ).colorScheme.primary.withOpacity(0.3),
+                        ).colorScheme.primary.withValues(alpha: 0.3),
                         blurRadius: 20,
                         offset: const Offset(0, 8),
                       ),
@@ -148,7 +148,7 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage>
                             ?.copyWith(
                               color: Theme.of(
                                 context,
-                              ).colorScheme.onPrimary.withOpacity(0.9),
+                              ).colorScheme.onPrimary.withValues(alpha: 0.9),
                               fontWeight: FontWeight.w500,
                             ),
                       ),
@@ -195,7 +195,7 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage>
                           hintStyle: TextStyle(
                             color: Theme.of(
                               context,
-                            ).colorScheme.onSurface.withOpacity(0.5),
+                            ).colorScheme.onSurface.withValues(alpha: 0.5),
                           ),
                           filled: true,
                           fillColor: Theme.of(context).colorScheme.surface,
@@ -204,7 +204,7 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage>
                             borderSide: BorderSide(
                               color: Theme.of(
                                 context,
-                              ).colorScheme.outline.withOpacity(0.3),
+                              ).colorScheme.outline.withValues(alpha: 0.3),
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
@@ -212,7 +212,7 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage>
                             borderSide: BorderSide(
                               color: Theme.of(
                                 context,
-                              ).colorScheme.outline.withOpacity(0.3),
+                              ).colorScheme.outline.withValues(alpha: 0.3),
                             ),
                           ),
                           focusedBorder: OutlineInputBorder(
@@ -313,12 +313,12 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage>
                     decoration: BoxDecoration(
                       color: Theme.of(
                         context,
-                      ).colorScheme.tertiary.withOpacity(0.1),
+                      ).colorScheme.tertiary.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
                         color: Theme.of(
                           context,
-                        ).colorScheme.tertiary.withOpacity(0.3),
+                        ).colorScheme.tertiary.withValues(alpha: 0.3),
                       ),
                     ),
                     child: Column(
@@ -345,7 +345,7 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage>
                               ?.copyWith(
                                 color: Theme.of(
                                   context,
-                                ).colorScheme.onSurface.withOpacity(0.7),
+                                ).colorScheme.onSurface.withValues(alpha: 0.7),
                               ),
                         ),
                       ],
@@ -366,9 +366,9 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.2),
+        color: color.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color.withOpacity(0.5), width: 1),
+        border: Border.all(color: color.withValues(alpha: 0.5), width: 1),
       ),
       child: Text(
         status,
@@ -387,10 +387,12 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage>
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+          color: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color: Theme.of(context).colorScheme.secondary.withOpacity(0.3),
+            color: Theme.of(
+              context,
+            ).colorScheme.secondary.withValues(alpha: 0.3),
           ),
         ),
         child: Text(
@@ -514,7 +516,9 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage>
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+                color: Theme.of(
+                  context,
+                ).colorScheme.outline.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),

@@ -1,8 +1,6 @@
+import 'package:darts/services/user_service.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../services/user_service.dart';
-import '../models/user_profile.dart';
-import '../theme.dart';
+
 import '../widgets/user_card.dart';
 import 'finish_board_page.dart';
 import 'score_calculator_page.dart';
@@ -15,7 +13,8 @@ class DartsHomePage extends StatefulWidget {
   State<DartsHomePage> createState() => _DartsHomePageState();
 }
 
-class _DartsHomePageState extends State<DartsHomePage> with TickerProviderStateMixin {
+class _DartsHomePageState extends State<DartsHomePage>
+    with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
@@ -30,11 +29,14 @@ class _DartsHomePageState extends State<DartsHomePage> with TickerProviderStateM
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.3),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeOutCubic));
-    
+    _slideAnimation =
+        Tween<Offset>(begin: const Offset(0, 0.3), end: Offset.zero).animate(
+          CurvedAnimation(
+            parent: _animationController,
+            curve: Curves.easeOutCubic,
+          ),
+        );
+
     _initializeApp();
   }
 
@@ -54,7 +56,7 @@ class _DartsHomePageState extends State<DartsHomePage> with TickerProviderStateM
   Widget build(BuildContext context) {
     final currentUser = UserService.getCurrentUser();
     final allUsers = UserService.getAllUsers();
-    
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
@@ -137,7 +139,9 @@ class _DartsHomePageState extends State<DartsHomePage> with TickerProviderStateM
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.primary.withOpacity(0.3),
                             blurRadius: 20,
                             offset: const Offset(0, 8),
                           ),
@@ -156,10 +160,13 @@ class _DartsHomePageState extends State<DartsHomePage> with TickerProviderStateM
                               const SizedBox(width: 12),
                               Text(
                                 'ようこそ！',
-                                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                  color: Theme.of(context).colorScheme.onPrimary,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                style: Theme.of(context).textTheme.headlineSmall
+                                    ?.copyWith(
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onPrimary,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                               ),
                             ],
                           ),
@@ -168,24 +175,30 @@ class _DartsHomePageState extends State<DartsHomePage> with TickerProviderStateM
                             currentUser != null
                                 ? '${currentUser.name}さん'
                                 : 'ユーザーを選択してください',
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              color: Theme.of(context).colorScheme.onPrimary,
-                              fontWeight: FontWeight.w600,
-                            ),
+                            style: Theme.of(context).textTheme.titleLarge
+                                ?.copyWith(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onPrimary,
+                                  fontWeight: FontWeight.w600,
+                                ),
                           ),
                           const SizedBox(height: 8),
                           Text(
                             'あなた専用のフィニッシュボードで\nダーツの上達を目指しましょう！',
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
-                            ),
+                            style: Theme.of(context).textTheme.bodyMedium
+                                ?.copyWith(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onPrimary.withOpacity(0.9),
+                                ),
                           ),
                         ],
                       ),
                     ),
-                    
+
                     const SizedBox(height: 32),
-                    
+
                     // Current User Section
                     if (currentUser != null) ...[
                       Text(
@@ -203,7 +216,7 @@ class _DartsHomePageState extends State<DartsHomePage> with TickerProviderStateM
                       ),
                       const SizedBox(height: 32),
                     ],
-                    
+
                     // Quick Actions
                     Text(
                       '機能',
@@ -213,7 +226,7 @@ class _DartsHomePageState extends State<DartsHomePage> with TickerProviderStateM
                       ),
                     ),
                     const SizedBox(height: 16),
-                    
+
                     GridView.count(
                       crossAxisCount: 2,
                       shrinkWrap: true,
@@ -233,7 +246,8 @@ class _DartsHomePageState extends State<DartsHomePage> with TickerProviderStateM
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => FinishBoardPage(user: currentUser),
+                                  builder: (context) =>
+                                      FinishBoardPage(user: currentUser),
                                 ),
                               );
                             } else {
@@ -252,7 +266,8 @@ class _DartsHomePageState extends State<DartsHomePage> with TickerProviderStateM
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => ScoreCalculatorPage(user: currentUser),
+                                  builder: (context) =>
+                                      ScoreCalculatorPage(user: currentUser),
                                 ),
                               );
                             } else {
@@ -262,9 +277,9 @@ class _DartsHomePageState extends State<DartsHomePage> with TickerProviderStateM
                         ),
                       ],
                     ),
-                    
+
                     const SizedBox(height: 32),
-                    
+
                     // All Users Section
                     if (allUsers.isNotEmpty) ...[
                       Row(
@@ -272,17 +287,21 @@ class _DartsHomePageState extends State<DartsHomePage> with TickerProviderStateM
                         children: [
                           Text(
                             'すべてのユーザー',
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              color: Theme.of(context).colorScheme.onSurface,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: Theme.of(context).textTheme.titleLarge
+                                ?.copyWith(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface,
+                                  fontWeight: FontWeight.bold,
+                                ),
                           ),
                           TextButton.icon(
                             onPressed: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const UserManagementPage(),
+                                  builder: (context) =>
+                                      const UserManagementPage(),
                                 ),
                               ).then((_) => setState(() {}));
                             },
@@ -305,7 +324,8 @@ class _DartsHomePageState extends State<DartsHomePage> with TickerProviderStateM
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: allUsers.length,
-                        separatorBuilder: (context, index) => const SizedBox(height: 12),
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(height: 12),
                         itemBuilder: (context, index) {
                           final user = allUsers[index];
                           return UserCard(
@@ -319,7 +339,7 @@ class _DartsHomePageState extends State<DartsHomePage> with TickerProviderStateM
                         },
                       ),
                     ],
-                    
+
                     const SizedBox(height: 32),
                   ],
                 ),
@@ -347,10 +367,7 @@ class _DartsHomePageState extends State<DartsHomePage> with TickerProviderStateM
         decoration: BoxDecoration(
           color: color.withOpacity(0.1),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: color.withOpacity(0.2),
-            width: 1,
-          ),
+          border: Border.all(color: color.withOpacity(0.2), width: 1),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -411,9 +428,7 @@ class _DartsHomePageState extends State<DartsHomePage> with TickerProviderStateM
             onPressed: () => Navigator.pop(context),
             child: Text(
               'キャンセル',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.outline,
-              ),
+              style: TextStyle(color: Theme.of(context).colorScheme.outline),
             ),
           ),
           FilledButton(
@@ -428,9 +443,7 @@ class _DartsHomePageState extends State<DartsHomePage> with TickerProviderStateM
             },
             child: Text(
               'ユーザー管理',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
+              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
             ),
           ),
         ],

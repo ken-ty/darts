@@ -1,14 +1,12 @@
-
-
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'theme.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
 import 'pages/home_page.dart';
+import 'theme.dart';
 
 void main() {
-  
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

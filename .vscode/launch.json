@@ -1,0 +1,18 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "darts (debug mode)",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "34081JEHN25329"
+    },
+    {
+      "name": "darts (release mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "deviceId": "34081JEHN25329"
+    },
+  ]
+}

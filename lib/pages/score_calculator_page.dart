@@ -1,27 +1,25 @@
 import 'package:flutter/material.dart';
-import '../models/user_profile.dart';
+
 import '../models/finish_combination.dart';
+import '../models/user_profile.dart';
 import '../services/darts_calculator.dart';
 import '../widgets/finish_card.dart';
-import '../theme.dart';
 
 class ScoreCalculatorPage extends StatefulWidget {
   final UserProfile user;
 
-  const ScoreCalculatorPage({
-    super.key,
-    required this.user,
-  });
+  const ScoreCalculatorPage({super.key, required this.user});
 
   @override
   State<ScoreCalculatorPage> createState() => _ScoreCalculatorPageState();
 }
 
-class _ScoreCalculatorPageState extends State<ScoreCalculatorPage> with TickerProviderStateMixin {
+class _ScoreCalculatorPageState extends State<ScoreCalculatorPage>
+    with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
-  
+
   int _currentScore = 501;
   final List<int> _scoreHistory = [501];
   final TextEditingController _inputController = TextEditingController();
@@ -36,11 +34,14 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage> with TickerPr
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.3),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeOutCubic));
-    
+    _slideAnimation =
+        Tween<Offset>(begin: const Offset(0, 0.3), end: Offset.zero).animate(
+          CurvedAnimation(
+            parent: _animationController,
+            curve: Curves.easeOutCubic,
+          ),
+        );
+
     _animationController.forward();
   }
 
@@ -53,67 +54,31 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage> with TickerPr
 
   List<FinishCombination> get _availableFinishes {
     final finishes = <FinishCombination>[];
-    
+
     // ユーザーのカスタムフィニッシュ
     final userFinish = widget.user.finishBoard[_currentScore];
     if (userFinish != null) {
       finishes.add(userFinish);
     }
-    
+
     // 提案されたフィニッシュ
     final suggestions = DartsCalculator.getSuggestedFinishes(_currentScore);
     for (final suggestion in suggestions) {
-      if (!finishes.any((f) => f.score == suggestion.score && 
-                            f.combination.join(',') == suggestion.combination.join(','))) {
+      if (!finishes.any(
+        (f) =>
+            f.score == suggestion.score &&
+            f.combination.join(',') == suggestion.combination.join(','),
+      )) {
         finishes.add(suggestion);
       }
     }
-    
+
     return finishes;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Icon(
-            Icons.arrow_back,
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
-        ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'スコア計算',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              widget.user.name,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          IconButton(
-            onPressed: _resetGame,
-            icon: Icon(
-              Icons.refresh,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-          ),
-        ],
-      ),
       body: SlideTransition(
         position: _slideAnimation,
         child: FadeTransition(
@@ -139,7 +104,9 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage> with TickerPr
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.primary.withOpacity(0.3),
                         blurRadius: 20,
                         offset: const Offset(0, 8),
                       ),
@@ -149,36 +116,37 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage> with TickerPr
                     children: [
                       Text(
                         '残りスコア',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
-                          fontWeight: FontWeight.w500,
-                        ),
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onPrimary.withOpacity(0.9),
+                              fontWeight: FontWeight.w500,
+                            ),
                       ),
                       const SizedBox(height: 8),
                       Text(
                         '$_currentScore',
-                        style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.onPrimary,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 64,
-                        ),
+                        style: Theme.of(context).textTheme.displayLarge
+                            ?.copyWith(
+                              color: Theme.of(context).colorScheme.onPrimary,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 64,
+                            ),
                       ),
                       const SizedBox(height: 16),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          _buildStatusChip(
-                            _getGameStatus(),
-                            _getStatusColor(),
-                          ),
+                          _buildStatusChip(_getGameStatus(), _getStatusColor()),
                         ],
                       ),
                     ],
                   ),
                 ),
-                
+
                 const SizedBox(height: 24),
-                
+
                 // Score Input
                 Text(
                   'スコア入力',
@@ -197,20 +165,26 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage> with TickerPr
                         decoration: InputDecoration(
                           hintText: '投げたスコアを入力',
                           hintStyle: TextStyle(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withOpacity(0.5),
                           ),
                           filled: true,
                           fillColor: Theme.of(context).colorScheme.surface,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.outline.withOpacity(0.3),
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.outline.withOpacity(0.3),
                             ),
                           ),
                           focusedBorder: OutlineInputBorder(
@@ -240,25 +214,25 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage> with TickerPr
                     ),
                   ],
                 ),
-                
+
                 const SizedBox(height: 16),
-                
+
                 // Quick Score Buttons
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
                   children: [
                     ...DartsCalculator.getCommonCheckouts().map((checkout) {
-                      final score = int.tryParse(
-                        checkout.split('(')[1].split(')')[0]
-                      ) ?? 0;
+                      final score =
+                          int.tryParse(checkout.split('(')[1].split(')')[0]) ??
+                          0;
                       return _buildQuickScoreButton(score);
                     }),
                   ],
                 ),
-                
+
                 const SizedBox(height: 16),
-                
+
                 // Undo Button
                 if (_scoreHistory.length > 1)
                   SizedBox(
@@ -277,9 +251,9 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage> with TickerPr
                       ),
                     ),
                   ),
-                
+
                 const SizedBox(height: 32),
-                
+
                 // Available Finishes
                 if (_availableFinishes.isNotEmpty) ...[
                   Text(
@@ -294,7 +268,8 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage> with TickerPr
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: _availableFinishes.length,
-                    separatorBuilder: (context, index) => const SizedBox(height: 12),
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 12),
                     itemBuilder: (context, index) {
                       final finish = _availableFinishes[index];
                       return FinishCard(
@@ -308,10 +283,14 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage> with TickerPr
                     width: double.infinity,
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.tertiary.withOpacity(0.1),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.tertiary.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                        color: Theme.of(context).colorScheme.tertiary.withOpacity(0.3),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.tertiary.withOpacity(0.3),
                       ),
                     ),
                     child: Column(
@@ -324,24 +303,28 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage> with TickerPr
                         const SizedBox(height: 8),
                         Text(
                           'フィニッシュ候補なし',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: Theme.of(context).colorScheme.tertiary,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.tertiary,
+                                fontWeight: FontWeight.bold,
+                              ),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           'このスコアのフィニッシュを\nカスタム登録してみましょう',
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-                          ),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurface.withOpacity(0.7),
+                              ),
                         ),
                       ],
                     ),
                   ),
                 ],
-                
+
                 const SizedBox(height: 32),
               ],
             ),
@@ -357,10 +340,7 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage> with TickerPr
       decoration: BoxDecoration(
         color: color.withOpacity(0.2),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: color.withOpacity(0.5),
-          width: 1,
-        ),
+        border: Border.all(color: color.withOpacity(0.5), width: 1),
       ),
       child: Text(
         status,
@@ -399,24 +379,27 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage> with TickerPr
   void _subtractScore() {
     final inputText = _inputController.text.trim();
     if (inputText.isEmpty) return;
-    
+
     final score = int.tryParse(inputText);
     if (score == null || score < 0 || score > 180) {
       _showErrorDialog('無効なスコア', '0から180の間で入力してください。');
       return;
     }
-    
+
     if (DartsCalculator.isBustScore(_currentScore, score)) {
       _showErrorDialog('バスト！', 'スコアが1になるか、0を下回りました。');
       return;
     }
-    
+
     setState(() {
-      _currentScore = DartsCalculator.calculateRemainingScore(_currentScore, score);
+      _currentScore = DartsCalculator.calculateRemainingScore(
+        _currentScore,
+        score,
+      );
       _scoreHistory.add(_currentScore);
       _inputController.clear();
     });
-    
+
     if (_currentScore == 0) {
       _showGameFinishedDialog();
     }
@@ -427,12 +410,15 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage> with TickerPr
       _showErrorDialog('バスト！', 'このスコアでは1になるか、0を下回ります。');
       return;
     }
-    
+
     setState(() {
-      _currentScore = DartsCalculator.calculateRemainingScore(_currentScore, score);
+      _currentScore = DartsCalculator.calculateRemainingScore(
+        _currentScore,
+        score,
+      );
       _scoreHistory.add(_currentScore);
     });
-    
+
     if (_currentScore == 0) {
       _showGameFinishedDialog();
     }
@@ -505,10 +491,7 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage> with TickerPr
               ),
             ),
             const SizedBox(height: 24),
-            FinishCard(
-              finish: finish,
-              isCompact: false,
-            ),
+            FinishCard(finish: finish, isCompact: false),
             const SizedBox(height: 24),
             SizedBox(
               width: double.infinity,
@@ -553,9 +536,7 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage> with TickerPr
             onPressed: () => Navigator.pop(context),
             child: Text(
               'OK',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
+              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
             ),
           ),
         ],
@@ -598,9 +579,7 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage> with TickerPr
             },
             child: Text(
               '終了',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.outline,
-              ),
+              style: TextStyle(color: Theme.of(context).colorScheme.outline),
             ),
           ),
           FilledButton(
@@ -610,9 +589,7 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage> with TickerPr
             },
             child: Text(
               '新しいゲーム',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
+              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
             ),
           ),
         ],

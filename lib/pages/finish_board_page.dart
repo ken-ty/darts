@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
-import '../models/user_profile.dart';
+
 import '../models/finish_combination.dart';
-import '../services/user_service.dart';
+import '../models/user_profile.dart';
 import '../services/darts_calculator.dart';
+import '../services/user_service.dart';
 import '../widgets/finish_card.dart';
-import '../theme.dart';
 
 class FinishBoardPage extends StatefulWidget {
   final UserProfile user;
 
-  const FinishBoardPage({
-    super.key,
-    required this.user,
-  });
+  const FinishBoardPage({super.key, required this.user});
 
   @override
   State<FinishBoardPage> createState() => _FinishBoardPageState();
 }
 
-class _FinishBoardPageState extends State<FinishBoardPage> with TickerProviderStateMixin {
+class _FinishBoardPageState extends State<FinishBoardPage>
+    with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   String _searchQuery = '';
@@ -46,118 +44,24 @@ class _FinishBoardPageState extends State<FinishBoardPage> with TickerProviderSt
 
   List<int> get _filteredScores {
     List<int> scores = List.generate(180, (index) => index + 1);
-    
+
     if (_searchQuery.isNotEmpty) {
       try {
         final searchScore = int.parse(_searchQuery);
-        scores = scores.where((score) => score.toString().contains(_searchQuery)).toList();
+        scores = scores
+            .where((score) => score.toString().contains(_searchQuery))
+            .toList();
       } catch (e) {
         scores = [];
       }
     }
-    
+
     return scores;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Icon(
-            Icons.arrow_back,
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
-        ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'フィニッシュボード',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              widget.user.name,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              setState(() {
-                _isGridView = !_isGridView;
-              });
-            },
-            icon: Icon(
-              _isGridView ? Icons.list : Icons.grid_view,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-          ),
-          PopupMenuButton<String>(
-            icon: Icon(
-              Icons.more_vert,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-            onSelected: (value) {
-              if (value == 'reset') {
-                _showResetDialog();
-              } else if (value == 'add_missing') {
-                _addMissingFinishes();
-              }
-            },
-            itemBuilder: (context) => [
-              PopupMenuItem(
-                value: 'add_missing',
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.add_circle_outline,
-                      color: Theme.of(context).colorScheme.primary,
-                      size: 20,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      '不足分を追加',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              PopupMenuItem(
-                value: 'reset',
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.refresh,
-                      color: Theme.of(context).colorScheme.error,
-                      size: 20,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      'デフォルトに戻す',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.error,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
       body: FadeTransition(
         opacity: _fadeAnimation,
         child: Column(
@@ -174,7 +78,9 @@ class _FinishBoardPageState extends State<FinishBoardPage> with TickerProviderSt
                 decoration: InputDecoration(
                   hintText: 'スコアを検索 (例: 170)',
                   hintStyle: TextStyle(
-                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withOpacity(0.5),
                   ),
                   prefixIcon: Icon(
                     Icons.search,
@@ -185,13 +91,17 @@ class _FinishBoardPageState extends State<FinishBoardPage> with TickerProviderSt
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.outline.withOpacity(0.3),
                     ),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.outline.withOpacity(0.3),
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
@@ -204,7 +114,7 @@ class _FinishBoardPageState extends State<FinishBoardPage> with TickerProviderSt
                 ),
               ),
             ),
-            
+
             // Stats Row
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -214,23 +124,27 @@ class _FinishBoardPageState extends State<FinishBoardPage> with TickerProviderSt
                     child: Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.primary.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Column(
                         children: [
                           Text(
                             '${widget.user.finishBoard.length}',
-                            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: Theme.of(context).textTheme.headlineSmall
+                                ?.copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  fontWeight: FontWeight.bold,
+                                ),
                           ),
                           Text(
                             '登録済み',
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
                           ),
                         ],
                       ),
@@ -241,23 +155,31 @@ class _FinishBoardPageState extends State<FinishBoardPage> with TickerProviderSt
                     child: Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.secondary.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Column(
                         children: [
                           Text(
                             '${180 - widget.user.finishBoard.length}',
-                            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                              color: Theme.of(context).colorScheme.secondary,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: Theme.of(context).textTheme.headlineSmall
+                                ?.copyWith(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.secondary,
+                                  fontWeight: FontWeight.bold,
+                                ),
                           ),
                           Text(
                             '未登録',
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Theme.of(context).colorScheme.secondary,
-                            ),
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.secondary,
+                                ),
                           ),
                         ],
                       ),
@@ -266,13 +188,11 @@ class _FinishBoardPageState extends State<FinishBoardPage> with TickerProviderSt
                 ],
               ),
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             // Finish Board
-            Expanded(
-              child: _isGridView ? _buildGridView() : _buildListView(),
-            ),
+            Expanded(child: _isGridView ? _buildGridView() : _buildListView()),
           ],
         ),
       ),
@@ -293,7 +213,7 @@ class _FinishBoardPageState extends State<FinishBoardPage> with TickerProviderSt
         itemBuilder: (context, index) {
           final score = _filteredScores[index];
           final finish = widget.user.finishBoard[score];
-          
+
           return _buildScoreCard(score, finish);
         },
       ),
@@ -308,7 +228,7 @@ class _FinishBoardPageState extends State<FinishBoardPage> with TickerProviderSt
       itemBuilder: (context, index) {
         final score = _filteredScores[index];
         final finish = widget.user.finishBoard[score];
-        
+
         if (finish != null) {
           return FinishCard(
             finish: finish,
@@ -324,7 +244,7 @@ class _FinishBoardPageState extends State<FinishBoardPage> with TickerProviderSt
 
   Widget _buildScoreCard(int score, FinishCombination? finish) {
     final hasFinish = finish != null;
-    
+
     return InkWell(
       onTap: () {
         if (hasFinish) {
@@ -372,7 +292,9 @@ class _FinishBoardPageState extends State<FinishBoardPage> with TickerProviderSt
                     decoration: BoxDecoration(
                       color: index < finish.dartsNeeded
                           ? Theme.of(context).colorScheme.primary
-                          : Theme.of(context).colorScheme.outline.withOpacity(0.3),
+                          : Theme.of(
+                              context,
+                            ).colorScheme.outline.withOpacity(0.3),
                       shape: BoxShape.circle,
                     ),
                   ),
@@ -417,7 +339,9 @@ class _FinishBoardPageState extends State<FinishBoardPage> with TickerProviderSt
               child: Text(
                 '$score',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withOpacity(0.7),
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -427,7 +351,9 @@ class _FinishBoardPageState extends State<FinishBoardPage> with TickerProviderSt
               child: Text(
                 'タップして追加',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withOpacity(0.5),
                 ),
               ),
             ),
@@ -464,10 +390,7 @@ class _FinishBoardPageState extends State<FinishBoardPage> with TickerProviderSt
               ),
             ),
             const SizedBox(height: 24),
-            FinishCard(
-              finish: finish,
-              isCompact: false,
-            ),
+            FinishCard(finish: finish, isCompact: false),
             const SizedBox(height: 24),
             Row(
               children: [
@@ -521,40 +444,44 @@ class _FinishBoardPageState extends State<FinishBoardPage> with TickerProviderSt
 
   void _addFinish(int score) {
     // TODO: Navigate to finish editor
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('$scoreのフィニッシュを追加')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('$scoreのフィニッシュを追加')));
   }
 
   void _editFinish(int score, FinishCombination finish) {
     // TODO: Navigate to finish editor
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('$scoreのフィニッシュを編集')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('$scoreのフィニッシュを編集')));
   }
 
   void _deleteFinish(int score) async {
     await UserService.removeFinishCombination(widget.user.id, score);
     setState(() {});
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('$scoreのフィニッシュを削除しました')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('$scoreのフィニッシュを削除しました')));
   }
 
   void _addMissingFinishes() async {
     final defaultFinishes = DartsCalculator.getDefaultFinishes();
     final currentFinishes = widget.user.finishBoard;
-    
+
     for (final entry in defaultFinishes.entries) {
       if (!currentFinishes.containsKey(entry.key)) {
-        await UserService.updateFinishCombination(widget.user.id, entry.key, entry.value);
+        await UserService.updateFinishCombination(
+          widget.user.id,
+          entry.key,
+          entry.value,
+        );
       }
     }
-    
+
     setState(() {});
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('不足分のフィニッシュを追加しました')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('不足分のフィニッシュを追加しました')));
   }
 
   void _showResetDialog() {
@@ -579,9 +506,7 @@ class _FinishBoardPageState extends State<FinishBoardPage> with TickerProviderSt
             onPressed: () => Navigator.pop(context),
             child: Text(
               'キャンセル',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.outline,
-              ),
+              style: TextStyle(color: Theme.of(context).colorScheme.outline),
             ),
           ),
           FilledButton(
@@ -598,9 +523,7 @@ class _FinishBoardPageState extends State<FinishBoardPage> with TickerProviderSt
             ),
             child: Text(
               'リセット',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onError,
-              ),
+              style: TextStyle(color: Theme.of(context).colorScheme.onError),
             ),
           ),
         ],

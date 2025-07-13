@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+
 import '../models/user_profile.dart';
 import '../services/user_service.dart';
 import '../widgets/user_card.dart';
-import '../theme.dart';
 
 class UserManagementPage extends StatefulWidget {
   const UserManagementPage({super.key});
@@ -11,11 +11,12 @@ class UserManagementPage extends StatefulWidget {
   State<UserManagementPage> createState() => _UserManagementPageState();
 }
 
-class _UserManagementPageState extends State<UserManagementPage> with TickerProviderStateMixin {
+class _UserManagementPageState extends State<UserManagementPage>
+    with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
-  
+
   final TextEditingController _nameController = TextEditingController();
 
   @override
@@ -28,11 +29,14 @@ class _UserManagementPageState extends State<UserManagementPage> with TickerProv
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.3),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeOutCubic));
-    
+    _slideAnimation =
+        Tween<Offset>(begin: const Offset(0, 0.3), end: Offset.zero).animate(
+          CurvedAnimation(
+            parent: _animationController,
+            curve: Curves.easeOutCubic,
+          ),
+        );
+
     _animationController.forward();
   }
 
@@ -47,36 +51,8 @@ class _UserManagementPageState extends State<UserManagementPage> with TickerProv
   Widget build(BuildContext context) {
     final allUsers = UserService.getAllUsers();
     final currentUser = UserService.getCurrentUser();
-    
+
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Icon(
-            Icons.arrow_back,
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
-        ),
-        title: Text(
-          'ユーザー管理',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            color: Theme.of(context).colorScheme.onSurface,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: _showAddUserDialog,
-            icon: Icon(
-              Icons.add,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-          ),
-        ],
-      ),
       body: SlideTransition(
         position: _slideAnimation,
         child: FadeTransition(
@@ -102,7 +78,9 @@ class _UserManagementPageState extends State<UserManagementPage> with TickerProv
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: Theme.of(context).colorScheme.secondary.withOpacity(0.3),
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.secondary.withOpacity(0.3),
                         blurRadius: 20,
                         offset: const Offset(0, 8),
                       ),
@@ -120,10 +98,13 @@ class _UserManagementPageState extends State<UserManagementPage> with TickerProv
                           const SizedBox(width: 12),
                           Text(
                             'ユーザー統計',
-                            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                              color: Theme.of(context).colorScheme.onSecondary,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: Theme.of(context).textTheme.headlineSmall
+                                ?.copyWith(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSecondary,
+                                  fontWeight: FontWeight.bold,
+                                ),
                           ),
                         ],
                       ),
@@ -152,9 +133,9 @@ class _UserManagementPageState extends State<UserManagementPage> with TickerProv
                     ],
                   ),
                 ),
-                
+
                 const SizedBox(height: 32),
-                
+
                 // Add User Section
                 Text(
                   '新しいユーザーを追加',
@@ -167,10 +148,14 @@ class _UserManagementPageState extends State<UserManagementPage> with TickerProv
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary.withOpacity(0.05),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.primary.withOpacity(0.05),
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.primary.withOpacity(0.2),
                     ),
                   ),
                   child: Column(
@@ -180,7 +165,9 @@ class _UserManagementPageState extends State<UserManagementPage> with TickerProv
                           Container(
                             padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.primary.withOpacity(0.2),
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.primary.withOpacity(0.2),
                               shape: BoxShape.circle,
                             ),
                             child: Icon(
@@ -193,9 +180,12 @@ class _UserManagementPageState extends State<UserManagementPage> with TickerProv
                           Expanded(
                             child: Text(
                               '新しいプレイヤーを追加して\n個別のフィニッシュボードを作成',
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: Theme.of(context).colorScheme.onSurface,
-                              ),
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurface,
+                                  ),
                             ),
                           ),
                         ],
@@ -220,9 +210,9 @@ class _UserManagementPageState extends State<UserManagementPage> with TickerProv
                     ],
                   ),
                 ),
-                
+
                 const SizedBox(height: 32),
-                
+
                 // Users List
                 if (allUsers.isNotEmpty) ...[
                   Row(
@@ -237,10 +227,11 @@ class _UserManagementPageState extends State<UserManagementPage> with TickerProv
                       ),
                       Text(
                         '${allUsers.length}人',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.primary,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontWeight: FontWeight.w600,
+                            ),
                       ),
                     ],
                   ),
@@ -249,10 +240,14 @@ class _UserManagementPageState extends State<UserManagementPage> with TickerProv
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: allUsers.length,
-                    separatorBuilder: (context, index) => const SizedBox(height: 12),
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 12),
                     itemBuilder: (context, index) {
                       final user = allUsers[index];
-                      return _buildUserListItem(user, currentUser?.id == user.id);
+                      return _buildUserListItem(
+                        user,
+                        currentUser?.id == user.id,
+                      );
                     },
                   ),
                 ] else ...[
@@ -260,36 +255,46 @@ class _UserManagementPageState extends State<UserManagementPage> with TickerProv
                     width: double.infinity,
                     padding: const EdgeInsets.all(32),
                     decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.outline.withOpacity(0.05),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.outline.withOpacity(0.05),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Column(
                       children: [
                         Icon(
                           Icons.group_off,
-                          color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.outline.withOpacity(0.5),
                           size: 48,
                         ),
                         const SizedBox(height: 16),
                         Text(
                           'ユーザーがいません',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurface.withOpacity(0.7),
+                                fontWeight: FontWeight.w600,
+                              ),
                         ),
                         const SizedBox(height: 8),
                         Text(
                           '最初のユーザーを作成してください',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
-                          ),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurface.withOpacity(0.5),
+                              ),
                         ),
                       ],
                     ),
                   ),
                 ],
-                
+
                 const SizedBox(height: 32),
               ],
             ),
@@ -339,9 +344,7 @@ class _UserManagementPageState extends State<UserManagementPage> with TickerProv
 
   Widget _buildUserListItem(UserProfile user, bool isSelected) {
     return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
       child: Stack(
         children: [
           UserCard(
@@ -441,20 +444,26 @@ class _UserManagementPageState extends State<UserManagementPage> with TickerProv
               decoration: InputDecoration(
                 hintText: 'ユーザー名を入力',
                 hintStyle: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withOpacity(0.5),
                 ),
                 filled: true,
                 fillColor: Theme.of(context).colorScheme.surface,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide(
-                    color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.outline.withOpacity(0.3),
                   ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide(
-                    color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.outline.withOpacity(0.3),
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
@@ -474,21 +483,19 @@ class _UserManagementPageState extends State<UserManagementPage> with TickerProv
             onPressed: () => Navigator.pop(context),
             child: Text(
               'キャンセル',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.outline,
-              ),
+              style: TextStyle(color: Theme.of(context).colorScheme.outline),
             ),
           ),
           FilledButton(
             onPressed: () async {
               final name = _nameController.text.trim();
               if (name.isEmpty) return;
-              
+
               Navigator.pop(context);
               final user = await UserService.createUser(name);
               await UserService.setCurrentUser(user);
               setState(() {});
-              
+
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('${user.name}を作成しました'),
@@ -498,9 +505,7 @@ class _UserManagementPageState extends State<UserManagementPage> with TickerProv
             },
             child: Text(
               '作成',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
+              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
             ),
           ),
         ],
@@ -528,20 +533,26 @@ class _UserManagementPageState extends State<UserManagementPage> with TickerProv
               decoration: InputDecoration(
                 hintText: 'ユーザー名を入力',
                 hintStyle: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withOpacity(0.5),
                 ),
                 filled: true,
                 fillColor: Theme.of(context).colorScheme.surface,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide(
-                    color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.outline.withOpacity(0.3),
                   ),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide(
-                    color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.outline.withOpacity(0.3),
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
@@ -561,21 +572,19 @@ class _UserManagementPageState extends State<UserManagementPage> with TickerProv
             onPressed: () => Navigator.pop(context),
             child: Text(
               'キャンセル',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.outline,
-              ),
+              style: TextStyle(color: Theme.of(context).colorScheme.outline),
             ),
           ),
           FilledButton(
             onPressed: () async {
               final name = _nameController.text.trim();
               if (name.isEmpty) return;
-              
+
               Navigator.pop(context);
               final updatedUser = user.copyWith(name: name);
               await UserService.updateUser(updatedUser);
               setState(() {});
-              
+
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('${updatedUser.name}を更新しました'),
@@ -585,9 +594,7 @@ class _UserManagementPageState extends State<UserManagementPage> with TickerProv
             },
             child: Text(
               '更新',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
+              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
             ),
           ),
         ],
@@ -617,9 +624,7 @@ class _UserManagementPageState extends State<UserManagementPage> with TickerProv
             onPressed: () => Navigator.pop(context),
             child: Text(
               'キャンセル',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.outline,
-              ),
+              style: TextStyle(color: Theme.of(context).colorScheme.outline),
             ),
           ),
           FilledButton(
@@ -627,7 +632,7 @@ class _UserManagementPageState extends State<UserManagementPage> with TickerProv
               Navigator.pop(context);
               await UserService.deleteUser(user.id);
               setState(() {});
-              
+
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('${user.name}を削除しました'),
@@ -640,9 +645,7 @@ class _UserManagementPageState extends State<UserManagementPage> with TickerProv
             ),
             child: Text(
               '削除',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onError,
-              ),
+              style: TextStyle(color: Theme.of(context).colorScheme.onError),
             ),
           ),
         ],

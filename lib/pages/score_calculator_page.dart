@@ -1,0 +1,622 @@
+import 'package:flutter/material.dart';
+import '../models/user_profile.dart';
+import '../models/finish_combination.dart';
+import '../services/darts_calculator.dart';
+import '../widgets/finish_card.dart';
+import '../theme.dart';
+
+class ScoreCalculatorPage extends StatefulWidget {
+  final UserProfile user;
+
+  const ScoreCalculatorPage({
+    super.key,
+    required this.user,
+  });
+
+  @override
+  State<ScoreCalculatorPage> createState() => _ScoreCalculatorPageState();
+}
+
+class _ScoreCalculatorPageState extends State<ScoreCalculatorPage> with TickerProviderStateMixin {
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
+  late Animation<Offset> _slideAnimation;
+  
+  int _currentScore = 501;
+  final List<int> _scoreHistory = [501];
+  final TextEditingController _inputController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 600),
+      vsync: this,
+    );
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+    );
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 0.3),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeOutCubic));
+    
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _inputController.dispose();
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  List<FinishCombination> get _availableFinishes {
+    final finishes = <FinishCombination>[];
+    
+    // ユーザーのカスタムフィニッシュ
+    final userFinish = widget.user.finishBoard[_currentScore];
+    if (userFinish != null) {
+      finishes.add(userFinish);
+    }
+    
+    // 提案されたフィニッシュ
+    final suggestions = DartsCalculator.getSuggestedFinishes(_currentScore);
+    for (final suggestion in suggestions) {
+      if (!finishes.any((f) => f.score == suggestion.score && 
+                            f.combination.join(',') == suggestion.combination.join(','))) {
+        finishes.add(suggestion);
+      }
+    }
+    
+    return finishes;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+        ),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'スコア計算',
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                color: Theme.of(context).colorScheme.onSurface,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Text(
+              widget.user.name,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          IconButton(
+            onPressed: _resetGame,
+            icon: Icon(
+              Icons.refresh,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
+        ],
+      ),
+      body: SlideTransition(
+        position: _slideAnimation,
+        child: FadeTransition(
+          opacity: _fadeAnimation,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Current Score Display
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(32),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Theme.of(context).colorScheme.primary,
+                        Theme.of(context).colorScheme.secondary,
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                        blurRadius: 20,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        '残りスコア',
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onPrimary.withOpacity(0.9),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        '$_currentScore',
+                        style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 64,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _buildStatusChip(
+                            _getGameStatus(),
+                            _getStatusColor(),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                
+                const SizedBox(height: 24),
+                
+                // Score Input
+                Text(
+                  'スコア入力',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: _inputController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          hintText: '投げたスコアを入力',
+                          hintStyle: TextStyle(
+                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                          ),
+                          filled: true,
+                          fillColor: Theme.of(context).colorScheme.surface,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.primary,
+                              width: 2,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    FilledButton(
+                      onPressed: _subtractScore,
+                      style: FilledButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        padding: const EdgeInsets.all(16),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: Icon(
+                        Icons.remove,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                    ),
+                  ],
+                ),
+                
+                const SizedBox(height: 16),
+                
+                // Quick Score Buttons
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    ...DartsCalculator.getCommonCheckouts().map((checkout) {
+                      final score = int.tryParse(
+                        checkout.split('(')[1].split(')')[0]
+                      ) ?? 0;
+                      return _buildQuickScoreButton(score);
+                    }),
+                  ],
+                ),
+                
+                const SizedBox(height: 16),
+                
+                // Undo Button
+                if (_scoreHistory.length > 1)
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      onPressed: _undoLastScore,
+                      icon: Icon(
+                        Icons.undo,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      label: Text(
+                        '前のスコアに戻す',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                    ),
+                  ),
+                
+                const SizedBox(height: 32),
+                
+                // Available Finishes
+                if (_availableFinishes.isNotEmpty) ...[
+                  Text(
+                    'フィニッシュ候補',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: _availableFinishes.length,
+                    separatorBuilder: (context, index) => const SizedBox(height: 12),
+                    itemBuilder: (context, index) {
+                      final finish = _availableFinishes[index];
+                      return FinishCard(
+                        finish: finish,
+                        onTap: () => _showFinishDetail(finish),
+                      );
+                    },
+                  ),
+                ] else if (_currentScore <= 180) ...[
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.tertiary.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.tertiary.withOpacity(0.3),
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        Icon(
+                          Icons.lightbulb_outline,
+                          color: Theme.of(context).colorScheme.tertiary,
+                          size: 32,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'フィニッシュ候補なし',
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.tertiary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'このスコアのフィニッシュを\nカスタム登録してみましょう',
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+                
+                const SizedBox(height: 32),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatusChip(String status, Color color) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: color.withOpacity(0.5),
+          width: 1,
+        ),
+      ),
+      child: Text(
+        status,
+        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+          color: color,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildQuickScoreButton(int score) {
+    return InkWell(
+      onTap: () => _quickSubtract(score),
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.secondary.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: Theme.of(context).colorScheme.secondary.withOpacity(0.3),
+          ),
+        ),
+        child: Text(
+          '$score',
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+            color: Theme.of(context).colorScheme.secondary,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _subtractScore() {
+    final inputText = _inputController.text.trim();
+    if (inputText.isEmpty) return;
+    
+    final score = int.tryParse(inputText);
+    if (score == null || score < 0 || score > 180) {
+      _showErrorDialog('無効なスコア', '0から180の間で入力してください。');
+      return;
+    }
+    
+    if (DartsCalculator.isBustScore(_currentScore, score)) {
+      _showErrorDialog('バスト！', 'スコアが1になるか、0を下回りました。');
+      return;
+    }
+    
+    setState(() {
+      _currentScore = DartsCalculator.calculateRemainingScore(_currentScore, score);
+      _scoreHistory.add(_currentScore);
+      _inputController.clear();
+    });
+    
+    if (_currentScore == 0) {
+      _showGameFinishedDialog();
+    }
+  }
+
+  void _quickSubtract(int score) {
+    if (DartsCalculator.isBustScore(_currentScore, score)) {
+      _showErrorDialog('バスト！', 'このスコアでは1になるか、0を下回ります。');
+      return;
+    }
+    
+    setState(() {
+      _currentScore = DartsCalculator.calculateRemainingScore(_currentScore, score);
+      _scoreHistory.add(_currentScore);
+    });
+    
+    if (_currentScore == 0) {
+      _showGameFinishedDialog();
+    }
+  }
+
+  void _undoLastScore() {
+    if (_scoreHistory.length > 1) {
+      setState(() {
+        _scoreHistory.removeLast();
+        _currentScore = _scoreHistory.last;
+      });
+    }
+  }
+
+  void _resetGame() {
+    setState(() {
+      _currentScore = 501;
+      _scoreHistory.clear();
+      _scoreHistory.add(501);
+      _inputController.clear();
+    });
+  }
+
+  String _getGameStatus() {
+    if (_currentScore == 0) {
+      return 'ゲーム終了！';
+    } else if (_currentScore <= 40 && _currentScore % 2 == 0) {
+      return 'フィニッシュ可能';
+    } else if (_currentScore <= 60) {
+      return 'フィニッシュ圏内';
+    } else if (_currentScore <= 100) {
+      return '良いポジション';
+    } else {
+      return '継続中';
+    }
+  }
+
+  Color _getStatusColor() {
+    if (_currentScore == 0) {
+      return Theme.of(context).colorScheme.tertiary;
+    } else if (_currentScore <= 40) {
+      return Colors.green;
+    } else if (_currentScore <= 100) {
+      return Theme.of(context).colorScheme.secondary;
+    } else {
+      return Theme.of(context).colorScheme.onPrimary;
+    }
+  }
+
+  void _showFinishDetail(FinishCombination finish) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(height: 24),
+            FinishCard(
+              finish: finish,
+              isCompact: false,
+            ),
+            const SizedBox(height: 24),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  _quickSubtract(finish.score);
+                },
+                child: Text(
+                  'このフィニッシュで上がる',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showErrorDialog(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          title,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            color: Theme.of(context).colorScheme.error,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        content: Text(
+          message,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+        ),
+        actions: [
+          FilledButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              'OK',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showGameFinishedDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: Row(
+          children: [
+            Icon(
+              Icons.celebration,
+              color: Theme.of(context).colorScheme.tertiary,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              'おめでとうございます！',
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                color: Theme.of(context).colorScheme.tertiary,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+        content: Text(
+          'ゲーム終了です！\n新しいゲームを始めますか？',
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.pop(context);
+            },
+            child: Text(
+              '終了',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.outline,
+              ),
+            ),
+          ),
+          FilledButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _resetGame();
+            },
+            child: Text(
+              '新しいゲーム',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

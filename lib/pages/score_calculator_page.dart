@@ -83,6 +83,7 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage>
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary),
         title: Text(
           'スコア計算',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(

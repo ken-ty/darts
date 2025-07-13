@@ -1,7 +1,6 @@
 import 'package:darts/services/user_service.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/user_card.dart';
 import 'finish_board_page.dart';
 import 'score_calculator_page.dart';
 import 'settings_page.dart';
@@ -20,8 +19,6 @@ class _DartsHomePageState extends State<DartsHomePage>
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
-
-  int _currentIndex = 0;
 
   @override
   void initState() {
@@ -58,25 +55,7 @@ class _DartsHomePageState extends State<DartsHomePage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      body: IndexedStack(
-        index: _currentIndex,
-        children: [
-          _buildHomeContent(),
-          _buildFinishBoardContent(),
-          _buildScoreCalculatorContent(),
-          _buildStatisticsContent(),
-          _buildSettingsContent(),
-        ],
-      ),
-      bottomNavigationBar: _buildBottomNavigationBar(),
-    );
-  }
-
-  Widget _buildHomeContent() {
     final currentUser = UserService.getCurrentUser();
-    final allUsers = UserService.getAllUsers();
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -156,43 +135,40 @@ class _DartsHomePageState extends State<DartsHomePage>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Welcome Section
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(24),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            Theme.of(context).colorScheme.primary,
-                            Theme.of(context).colorScheme.secondary,
-                          ],
-                        ),
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
+                    if (currentUser != null) ...[
+                      Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Theme.of(
+                                context,
+                              ).colorScheme.primary.withValues(alpha: 0.1),
+                              Theme.of(
+                                context,
+                              ).colorScheme.secondary.withValues(alpha: 0.1),
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
                             color: Theme.of(
                               context,
-                            ).colorScheme.primary.withValues(alpha: 0.3),
-                            blurRadius: 20,
-                            offset: const Offset(0, 8),
+                            ).colorScheme.primary.withValues(alpha: 0.2),
+                            width: 1,
                           ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.emoji_events,
-                                color: Theme.of(context).colorScheme.onPrimary,
-                                size: 28,
-                              ),
-                              const SizedBox(width: 12),
-                              Text(
-                                'ようこそ！',
-                                style: Theme.of(context).textTheme.headlineSmall
+                        ),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 24,
+                              backgroundColor: Theme.of(
+                                context,
+                              ).colorScheme.primary,
+                              child: Text(
+                                currentUser.name[0].toUpperCase(),
+                                style: Theme.of(context).textTheme.titleLarge
                                     ?.copyWith(
                                       color: Theme.of(
                                         context,
@@ -200,52 +176,44 @@ class _DartsHomePageState extends State<DartsHomePage>
                                       fontWeight: FontWeight.bold,
                                     ),
                               ),
-                            ],
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            currentUser != null
-                                ? '${currentUser.name}さん'
-                                : 'ユーザーを選択してください',
-                            style: Theme.of(context).textTheme.titleLarge
-                                ?.copyWith(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onPrimary,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'あなた専用のフィニッシュボードで\nダーツの上達を目指しましょう！',
-                            style: Theme.of(context).textTheme.bodyMedium
-                                ?.copyWith(
-                                  color: Theme.of(context).colorScheme.onPrimary
-                                      .withValues(alpha: 0.9),
-                                ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 32),
-
-                    // Current User Section
-                    if (currentUser != null) ...[
-                      Text(
-                        '現在のユーザー',
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
-                          fontWeight: FontWeight.bold,
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'ようこそ、${currentUser.name}さん！',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.onSurface,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    '今日もダーツを楽しみましょう',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface
+                                              .withValues(alpha: 0.7),
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      UserCard(
-                        user: currentUser,
-                        isSelected: true,
-                        onTap: () {},
-                      ),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: 24),
                     ],
 
                     // Quick Actions
@@ -274,9 +242,13 @@ class _DartsHomePageState extends State<DartsHomePage>
                           color: Theme.of(context).colorScheme.primary,
                           onTap: () {
                             if (currentUser != null) {
-                              setState(() {
-                                _currentIndex = 1;
-                              });
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      FinishBoardPage(user: currentUser),
+                                ),
+                              );
                             } else {
                               _showSelectUserDialog(context);
                             }
@@ -290,78 +262,54 @@ class _DartsHomePageState extends State<DartsHomePage>
                           color: Theme.of(context).colorScheme.secondary,
                           onTap: () {
                             if (currentUser != null) {
-                              setState(() {
-                                _currentIndex = 2;
-                              });
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      ScoreCalculatorPage(user: currentUser),
+                                ),
+                              );
                             } else {
                               _showSelectUserDialog(context);
                             }
                           },
                         ),
-                      ],
-                    ),
-
-                    const SizedBox(height: 32),
-
-                    // All Users Section
-                    if (allUsers.isNotEmpty) ...[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'すべてのユーザー',
-                            style: Theme.of(context).textTheme.titleLarge
-                                ?.copyWith(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onSurface,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                          ),
-                          TextButton.icon(
-                            onPressed: () {
+                        _buildActionCard(
+                          context,
+                          title: '統計',
+                          subtitle: 'ゲーム記録と分析',
+                          icon: Icons.analytics,
+                          color: Theme.of(context).colorScheme.tertiary,
+                          onTap: () {
+                            if (currentUser != null) {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      const UserManagementPage(),
+                                  builder: (context) => const StatisticsPage(),
                                 ),
-                              ).then((_) => setState(() {}));
-                            },
-                            icon: Icon(
-                              Icons.add,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                            label: Text(
-                              '新規作成',
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.primary,
-                                fontWeight: FontWeight.w600,
+                              );
+                            } else {
+                              _showSelectUserDialog(context);
+                            }
+                          },
+                        ),
+                        _buildActionCard(
+                          context,
+                          title: '設定',
+                          subtitle: 'アプリ設定',
+                          icon: Icons.settings,
+                          color: Theme.of(context).colorScheme.outline,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SettingsPage(),
                               ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      ListView.separated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: allUsers.length,
-                        separatorBuilder: (context, index) =>
-                            const SizedBox(height: 12),
-                        itemBuilder: (context, index) {
-                          final user = allUsers[index];
-                          return UserCard(
-                            user: user,
-                            isSelected: currentUser?.id == user.id,
-                            onTap: () async {
-                              await UserService.setCurrentUser(user);
-                              setState(() {});
-                            },
-                          );
-                        },
-                      ),
-                    ],
+                            );
+                          },
+                        ),
+                      ],
+                    ),
 
                     const SizedBox(height: 32),
                   ],
@@ -370,170 +318,6 @@ class _DartsHomePageState extends State<DartsHomePage>
             ),
           );
         },
-      ),
-    );
-  }
-
-  Widget _buildFinishBoardContent() {
-    final currentUser = UserService.getCurrentUser();
-    if (currentUser == null) {
-      return _buildNoUserContent('フィニッシュボード');
-    }
-
-    return FinishBoardPage(user: currentUser);
-  }
-
-  Widget _buildScoreCalculatorContent() {
-    final currentUser = UserService.getCurrentUser();
-    if (currentUser == null) {
-      return _buildNoUserContent('スコア計算');
-    }
-
-    return ScoreCalculatorPage(user: currentUser);
-  }
-
-  Widget _buildStatisticsContent() {
-    final currentUser = UserService.getCurrentUser();
-    if (currentUser == null) {
-      return _buildNoUserContent('統計');
-    }
-
-    return const StatisticsPage();
-  }
-
-  Widget _buildSettingsContent() {
-    return const SettingsPage();
-  }
-
-  Widget _buildNoUserContent(String title) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          title,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            color: Theme.of(context).colorScheme.onSurface,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.person_off,
-              size: 64,
-              color: Theme.of(
-                context,
-              ).colorScheme.onSurface.withValues(alpha: 0.5),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'ユーザーを選択してください',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: Theme.of(
-                  context,
-                ).colorScheme.onSurface.withValues(alpha: 0.7),
-              ),
-            ),
-            const SizedBox(height: 24),
-            FilledButton.icon(
-              onPressed: () => _showUserSelectionDialog(context),
-              icon: const Icon(Icons.person_add),
-              label: const Text('ユーザーを選択'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBottomNavigationBar() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        boxShadow: [
-          BoxShadow(
-            color: Theme.of(
-              context,
-            ).colorScheme.onSurface.withValues(alpha: 0.1),
-            blurRadius: 10,
-            offset: const Offset(0, -2),
-          ),
-        ],
-      ),
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildBottomNavItem(icon: Icons.home, label: 'ホーム', index: 0),
-              _buildBottomNavItem(
-                icon: Icons.grid_on,
-                label: 'フィニッシュ',
-                index: 1,
-              ),
-              _buildBottomNavItem(icon: Icons.calculate, label: '計算', index: 2),
-              _buildBottomNavItem(icon: Icons.analytics, label: '統計', index: 3),
-              _buildBottomNavItem(icon: Icons.settings, label: '設定', index: 4),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBottomNavItem({
-    required IconData icon,
-    required String label,
-    required int index,
-  }) {
-    final isSelected = _currentIndex == index;
-
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _currentIndex = index;
-        });
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(
-          color: isSelected
-              ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.1)
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              icon,
-              color: isSelected
-                  ? Theme.of(context).colorScheme.primary
-                  : Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withValues(alpha: 0.6),
-              size: 24,
-            ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: isSelected
-                    ? Theme.of(context).colorScheme.primary
-                    : Theme.of(
-                        context,
-                      ).colorScheme.onSurface.withValues(alpha: 0.6),
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

@@ -60,6 +60,7 @@ class _SettingsPageState extends State<SettingsPage>
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary),
         title: Text(
           '設定',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(

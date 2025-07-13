@@ -65,6 +65,7 @@ class _StatisticsPageState extends State<StatisticsPage>
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary),
         title: Text(
           '統計',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -149,6 +150,7 @@ class _StatisticsPageState extends State<StatisticsPage>
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary),
         title: Text(
           '統計',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(

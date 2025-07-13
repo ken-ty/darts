@@ -65,6 +65,7 @@ class _FinishBoardPageState extends State<FinishBoardPage>
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary),
         title: Text(
           'フィニッシュボード',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(

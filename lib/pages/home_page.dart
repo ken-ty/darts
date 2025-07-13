@@ -5,6 +5,7 @@ import '../widgets/user_card.dart';
 import 'finish_board_page.dart';
 import 'score_calculator_page.dart';
 import 'settings_page.dart';
+import 'statistics_page.dart';
 import 'user_management_page.dart';
 
 class DartsHomePage extends StatefulWidget {
@@ -65,6 +66,7 @@ class _DartsHomePageState extends State<DartsHomePage>
           _buildHomeContent(),
           _buildFinishBoardContent(),
           _buildScoreCalculatorContent(),
+          _buildStatisticsContent(),
           _buildSettingsContent(),
         ],
       ),
@@ -407,6 +409,29 @@ class _DartsHomePageState extends State<DartsHomePage>
     );
   }
 
+  Widget _buildStatisticsContent() {
+    final currentUser = UserService.getCurrentUser();
+    if (currentUser == null) {
+      return _buildNoUserContent('統計');
+    }
+
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(
+          '統計',
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      body: const StatisticsPage(),
+    );
+  }
+
   Widget _buildSettingsContent() {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -492,7 +517,8 @@ class _DartsHomePageState extends State<DartsHomePage>
                 index: 1,
               ),
               _buildBottomNavItem(icon: Icons.calculate, label: '計算', index: 2),
-              _buildBottomNavItem(icon: Icons.settings, label: '設定', index: 3),
+              _buildBottomNavItem(icon: Icons.analytics, label: '統計', index: 3),
+              _buildBottomNavItem(icon: Icons.settings, label: '設定', index: 4),
             ],
           ),
         ),

@@ -20,6 +20,8 @@ class _DartsHomePageState extends State<DartsHomePage>
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
 
+  int _currentIndex = 0;
+
   @override
   void initState() {
     super.initState();
@@ -55,6 +57,22 @@ class _DartsHomePageState extends State<DartsHomePage>
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      body: IndexedStack(
+        index: _currentIndex,
+        children: [
+          _buildHomeContent(),
+          _buildFinishBoardContent(),
+          _buildScoreCalculatorContent(),
+          _buildSettingsContent(),
+        ],
+      ),
+      bottomNavigationBar: _buildBottomNavigationBar(),
+    );
+  }
+
+  Widget _buildHomeContent() {
     final currentUser = UserService.getCurrentUser();
     final allUsers = UserService.getAllUsers();
 
@@ -63,6 +81,21 @@ class _DartsHomePageState extends State<DartsHomePage>
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        leading: IconButton(
+          onPressed: () => _showUserSelectionDialog(context),
+          icon: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(
+              Icons.person,
+              color: Theme.of(context).colorScheme.onPrimary,
+              size: 20,
+            ),
+          ),
+        ),
         title: AnimatedBuilder(
           animation: _fadeAnimation,
           builder: (context, child) {
@@ -95,34 +128,6 @@ class _DartsHomePageState extends State<DartsHomePage>
             );
           },
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const SettingsPage()),
-              ).then((_) => setState(() {}));
-            },
-            icon: Icon(
-              Icons.settings,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-          ),
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const UserManagementPage(),
-                ),
-              ).then((_) => setState(() {}));
-            },
-            icon: Icon(
-              Icons.people,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-          ),
-        ],
       ),
       body: AnimatedBuilder(
         animation: _slideAnimation,
@@ -256,13 +261,9 @@ class _DartsHomePageState extends State<DartsHomePage>
                           color: Theme.of(context).colorScheme.primary,
                           onTap: () {
                             if (currentUser != null) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      FinishBoardPage(user: currentUser),
-                                ),
-                              );
+                              setState(() {
+                                _currentIndex = 1;
+                              });
                             } else {
                               _showSelectUserDialog(context);
                             }
@@ -276,13 +277,9 @@ class _DartsHomePageState extends State<DartsHomePage>
                           color: Theme.of(context).colorScheme.secondary,
                           onTap: () {
                             if (currentUser != null) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      ScoreCalculatorPage(user: currentUser),
-                                ),
-                              );
+                              setState(() {
+                                _currentIndex = 2;
+                              });
                             } else {
                               _showSelectUserDialog(context);
                             }
@@ -364,6 +361,192 @@ class _DartsHomePageState extends State<DartsHomePage>
     );
   }
 
+  Widget _buildFinishBoardContent() {
+    final currentUser = UserService.getCurrentUser();
+    if (currentUser == null) {
+      return _buildNoUserContent('フィニッシュボード');
+    }
+
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(
+          'フィニッシュボード',
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      body: FinishBoardPage(user: currentUser),
+    );
+  }
+
+  Widget _buildScoreCalculatorContent() {
+    final currentUser = UserService.getCurrentUser();
+    if (currentUser == null) {
+      return _buildNoUserContent('スコア計算');
+    }
+
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(
+          'スコア計算',
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      body: ScoreCalculatorPage(user: currentUser),
+    );
+  }
+
+  Widget _buildSettingsContent() {
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(
+          '設定',
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      body: const SettingsPage(),
+    );
+  }
+
+  Widget _buildNoUserContent(String title) {
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(
+          title,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.person_off,
+              size: 64,
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'ユーザーを選択してください',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+              ),
+            ),
+            const SizedBox(height: 24),
+            FilledButton.icon(
+              onPressed: () => _showUserSelectionDialog(context),
+              icon: const Icon(Icons.person_add),
+              label: const Text('ユーザーを選択'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBottomNavigationBar() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        boxShadow: [
+          BoxShadow(
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, -2),
+          ),
+        ],
+      ),
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildBottomNavItem(icon: Icons.home, label: 'ホーム', index: 0),
+              _buildBottomNavItem(
+                icon: Icons.grid_on,
+                label: 'フィニッシュ',
+                index: 1,
+              ),
+              _buildBottomNavItem(icon: Icons.calculate, label: '計算', index: 2),
+              _buildBottomNavItem(icon: Icons.settings, label: '設定', index: 3),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBottomNavItem({
+    required IconData icon,
+    required String label,
+    required int index,
+  }) {
+    final isSelected = _currentIndex == index;
+
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _currentIndex = index;
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? Theme.of(context).colorScheme.primary.withOpacity(0.1)
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              color: isSelected
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              size: 24,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: isSelected
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildActionCard(
     BuildContext context, {
     required String title,
@@ -419,6 +602,90 @@ class _DartsHomePageState extends State<DartsHomePage>
     );
   }
 
+  void _showUserSelectionDialog(BuildContext context) {
+    final allUsers = UserService.getAllUsers();
+    final currentUser = UserService.getCurrentUser();
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          'ユーザーを選択',
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        content: SizedBox(
+          width: double.maxFinite,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (allUsers.isEmpty)
+                Text(
+                  'ユーザーが存在しません',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                )
+              else
+                ...allUsers.map(
+                  (user) => ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      child: Text(
+                        user.name.isNotEmpty ? user.name[0].toUpperCase() : 'U',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    title: Text(user.name),
+                    trailing: currentUser?.id == user.id
+                        ? Icon(
+                            Icons.check,
+                            color: Theme.of(context).colorScheme.primary,
+                          )
+                        : null,
+                    onTap: () async {
+                      await UserService.setCurrentUser(user);
+                      setState(() {});
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              'キャンセル',
+              style: TextStyle(color: Theme.of(context).colorScheme.outline),
+            ),
+          ),
+          FilledButton(
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const UserManagementPage(),
+                ),
+              ).then((_) => setState(() {}));
+            },
+            child: Text(
+              '新規作成',
+              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   void _showSelectUserDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -447,15 +714,10 @@ class _DartsHomePageState extends State<DartsHomePage>
           FilledButton(
             onPressed: () {
               Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const UserManagementPage(),
-                ),
-              ).then((_) => setState(() {}));
+              _showUserSelectionDialog(context);
             },
             child: Text(
-              'ユーザー管理',
+              'ユーザー選択',
               style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
             ),
           ),

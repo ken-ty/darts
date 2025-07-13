@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../widgets/user_card.dart';
 import 'finish_board_page.dart';
 import 'score_calculator_page.dart';
+import 'settings_page.dart';
 import 'user_management_page.dart';
 
 class DartsHomePage extends StatefulWidget {
@@ -99,13 +100,25 @@ class _DartsHomePageState extends State<DartsHomePage>
             onPressed: () {
               Navigator.push(
                 context,
+                MaterialPageRoute(builder: (context) => const SettingsPage()),
+              ).then((_) => setState(() {}));
+            },
+            icon: Icon(
+              Icons.settings,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
                 MaterialPageRoute(
                   builder: (context) => const UserManagementPage(),
                 ),
               ).then((_) => setState(() {}));
             },
             icon: Icon(
-              Icons.settings,
+              Icons.people,
               color: Theme.of(context).colorScheme.onSurface,
             ),
           ),

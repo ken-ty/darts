@@ -369,21 +369,7 @@ class _DartsHomePageState extends State<DartsHomePage>
       return _buildNoUserContent('フィニッシュボード');
     }
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          'フィニッシュボード',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            color: Theme.of(context).colorScheme.onSurface,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-      body: FinishBoardPage(user: currentUser),
-    );
+    return FinishBoardPage(user: currentUser);
   }
 
   Widget _buildScoreCalculatorContent() {
@@ -392,21 +378,7 @@ class _DartsHomePageState extends State<DartsHomePage>
       return _buildNoUserContent('スコア計算');
     }
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          'スコア計算',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            color: Theme.of(context).colorScheme.onSurface,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-      body: ScoreCalculatorPage(user: currentUser),
-    );
+    return ScoreCalculatorPage(user: currentUser);
   }
 
   Widget _buildStatisticsContent() {
@@ -415,39 +387,11 @@ class _DartsHomePageState extends State<DartsHomePage>
       return _buildNoUserContent('統計');
     }
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          '統計',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            color: Theme.of(context).colorScheme.onSurface,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-      body: const StatisticsPage(),
-    );
+    return const StatisticsPage();
   }
 
   Widget _buildSettingsContent() {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Text(
-          '設定',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            color: Theme.of(context).colorScheme.onSurface,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-      body: const SettingsPage(),
-    );
+    return const SettingsPage();
   }
 
   Widget _buildNoUserContent(String title) {

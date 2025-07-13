@@ -79,6 +79,34 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(
+          'スコア計算',
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: _resetGame,
+            icon: Icon(
+              Icons.refresh,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
+          IconButton(
+            onPressed: _showGameSettings,
+            icon: Icon(
+              Icons.settings,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
+        ],
+      ),
       body: SlideTransition(
         position: _slideAnimation,
         child: FadeTransition(
@@ -590,6 +618,83 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage>
             child: Text(
               '新しいゲーム',
               style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showGameSettings() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          'ゲーム設定',
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: Icon(
+                Icons.sports_esports,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              title: const Text('501'),
+              subtitle: const Text('標準的なゲーム'),
+              onTap: () {
+                setState(() {
+                  _currentScore = 501;
+                  _scoreHistory.clear();
+                  _scoreHistory.add(501);
+                });
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.sports_esports,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+              title: const Text('301'),
+              subtitle: const Text('ショートゲーム'),
+              onTap: () {
+                setState(() {
+                  _currentScore = 301;
+                  _scoreHistory.clear();
+                  _scoreHistory.add(301);
+                });
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.sports_esports,
+                color: Theme.of(context).colorScheme.tertiary,
+              ),
+              title: const Text('701'),
+              subtitle: const Text('ロングゲーム'),
+              onTap: () {
+                setState(() {
+                  _currentScore = 701;
+                  _scoreHistory.clear();
+                  _scoreHistory.add(701);
+                });
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              'キャンセル',
+              style: TextStyle(color: Theme.of(context).colorScheme.outline),
             ),
           ),
         ],

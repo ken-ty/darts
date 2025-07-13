@@ -62,6 +62,38 @@ class _FinishBoardPageState extends State<FinishBoardPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: Text(
+          'フィニッシュボード',
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              setState(() {
+                _isGridView = !_isGridView;
+              });
+            },
+            icon: Icon(
+              _isGridView ? Icons.view_list : Icons.grid_view,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
+          IconButton(
+            onPressed: _showFilterDialog,
+            icon: Icon(
+              Icons.filter_list,
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+          ),
+        ],
+      ),
       body: FadeTransition(
         opacity: _fadeAnimation,
         child: Column(
@@ -527,6 +559,71 @@ class _FinishBoardPageState extends State<FinishBoardPage>
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  void _showFilterDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          'フィルター',
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              title: const Text('すべて表示'),
+              trailing: _selectedScore == null
+                  ? Icon(
+                      Icons.check,
+                      color: Theme.of(context).colorScheme.primary,
+                    )
+                  : null,
+              onTap: () {
+                setState(() {
+                  _selectedScore = null;
+                });
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('登録済みのみ'),
+              trailing: _selectedScore == -1
+                  ? Icon(
+                      Icons.check,
+                      color: Theme.of(context).colorScheme.primary,
+                    )
+                  : null,
+              onTap: () {
+                setState(() {
+                  _selectedScore = -1;
+                });
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('未登録のみ'),
+              trailing: _selectedScore == -2
+                  ? Icon(
+                      Icons.check,
+                      color: Theme.of(context).colorScheme.primary,
+                    )
+                  : null,
+              onTap: () {
+                setState(() {
+                  _selectedScore = -2;
+                });
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

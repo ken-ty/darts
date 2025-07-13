@@ -83,18 +83,28 @@ class _DartsHomePageState extends State<DartsHomePage>
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: IconButton(
-          onPressed: () => _showUserSelectionDialog(context),
-          icon: Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(
-              Icons.person,
-              color: Theme.of(context).colorScheme.onPrimary,
-              size: 20,
+        leading: GestureDetector(
+          onTap: () => _showUserSelectionDialog(context),
+          child: Container(
+            margin: const EdgeInsets.all(8),
+            child: CircleAvatar(
+              radius: 18,
+              backgroundColor: currentUser != null
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.outline.withOpacity(0.3),
+              child: currentUser != null && currentUser.name.isNotEmpty
+                  ? Text(
+                      currentUser.name[0].toUpperCase(),
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  : Icon(
+                      Icons.person,
+                      color: Theme.of(context).colorScheme.onSurface,
+                      size: 20,
+                    ),
             ),
           ),
         ),

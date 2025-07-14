@@ -2,7 +2,7 @@ import 'finish_combination.dart';
 
 enum Language { japanese, english }
 
-enum ColorTheme { light, dark, system, dartsLive }
+enum ColorTheme { light, dark, system }
 
 class GameRecord {
   final String id;

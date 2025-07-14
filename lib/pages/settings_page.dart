@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../models/user_profile.dart';
 import '../services/app_info_service.dart';
@@ -330,18 +331,18 @@ class _SettingsPageState extends State<SettingsPage>
             title: 'プライバシーポリシー',
             subtitle: '個人情報の取り扱いについて',
             icon: Icons.privacy_tip,
-            onTap: () {
-              // TODO: プライバシーポリシーページを開く
-            },
+            onTap: () => _launchURL(
+              'https://www.notion.so/230c89f5c11380b9932ac76e974d8479?source=copy_link',
+            ),
           ),
           _buildDivider(),
           _buildSettingTile(
             title: '利用規約',
             subtitle: 'アプリの利用条件',
             icon: Icons.description,
-            onTap: () {
-              // TODO: 利用規約ページを開く
-            },
+            onTap: () => _launchURL(
+              'https://www.notion.so/230c89f5c11380b593e6e4757c7fefd9?source=copy_link',
+            ),
           ),
         ],
       ),
@@ -403,8 +404,6 @@ class _SettingsPageState extends State<SettingsPage>
         return 'ダーク';
       case ColorTheme.system:
         return 'システム設定';
-      case ColorTheme.dartsLive:
-        return 'DARTS LIVE';
     }
   }
 
@@ -681,5 +680,10 @@ class _SettingsPageState extends State<SettingsPage>
         ],
       ),
     );
+  }
+
+  Future<void> _launchURL(String url) async {
+    final Uri uri = Uri.parse(url);
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 }

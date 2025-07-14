@@ -660,7 +660,7 @@ class _SettingsPageState extends State<SettingsPage>
             const SizedBox(height: 8),
             Text(
               '• アウトショット: 1-180の上がり方を確認\n'
-              '• スコア計算: 残りスコアを計算\n'
+              '• プラクティス: スコア計算と練習\n'
               '• 統計: 練習記録とゲーム記録を確認\n'
               '• 設定: アプリの設定を変更',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(

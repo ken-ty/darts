@@ -5,16 +5,16 @@ import '../models/user_profile.dart';
 import '../services/darts_calculator.dart';
 import '../widgets/finish_card.dart';
 
-class ScoreCalculatorPage extends StatefulWidget {
+class PracticePage extends StatefulWidget {
   final UserProfile user;
 
-  const ScoreCalculatorPage({super.key, required this.user});
+  const PracticePage({super.key, required this.user});
 
   @override
-  State<ScoreCalculatorPage> createState() => _ScoreCalculatorPageState();
+  State<PracticePage> createState() => _PracticePageState();
 }
 
-class _ScoreCalculatorPageState extends State<ScoreCalculatorPage>
+class _PracticePageState extends State<PracticePage>
     with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
@@ -85,7 +85,7 @@ class _ScoreCalculatorPageState extends State<ScoreCalculatorPage>
         elevation: 0,
         iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary),
         title: Text(
-          'スコア計算',
+          'プラクティス',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.bold,

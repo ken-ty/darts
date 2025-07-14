@@ -1,3 +1,4 @@
 # outshotx
 
-outshotx is a darts score management app.
+OutShotX は ハードダーツ用のアウトショット管理アプリです。
+あなたのダーツ練習をサポートします。

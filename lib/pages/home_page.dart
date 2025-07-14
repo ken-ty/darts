@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:outshotx/services/user_service.dart';
 
 import 'outshot_page.dart';
-import 'score_calculator_page.dart';
+import 'practice_page.dart';
 import 'settings_page.dart';
 import 'statistics_page.dart';
 import 'user_management_page.dart';
@@ -241,8 +241,8 @@ class _DartsHomePageState extends State<DartsHomePage>
                         ),
                         _buildActionCard(
                           context,
-                          title: 'スコア計算',
-                          subtitle: '残りスコア計算',
+                          title: 'プラクティス',
+                          subtitle: 'スコア計算と練習',
                           icon: Icons.calculate,
                           color: Theme.of(context).colorScheme.secondary,
                           onTap: () {
@@ -251,7 +251,7 @@ class _DartsHomePageState extends State<DartsHomePage>
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      ScoreCalculatorPage(user: currentUser),
+                                      PracticePage(user: currentUser),
                                 ),
                               );
                             } else {

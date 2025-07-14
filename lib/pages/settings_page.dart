@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../constants/app_constants.dart';
 import '../models/user_profile.dart';
 import '../services/app_info_service.dart';
 import '../services/theme_service.dart';
@@ -331,18 +332,14 @@ class _SettingsPageState extends State<SettingsPage>
             title: 'プライバシーポリシー',
             subtitle: '個人情報の取り扱いについて',
             icon: Icons.privacy_tip,
-            onTap: () => _launchURL(
-              'https://www.notion.so/230c89f5c11380b9932ac76e974d8479?source=copy_link',
-            ),
+            onTap: () => _launchURL(AppConstants.privacyPolicyUrl),
           ),
           _buildDivider(),
           _buildSettingTile(
             title: '利用規約',
             subtitle: 'アプリの利用条件',
             icon: Icons.description,
-            onTap: () => _launchURL(
-              'https://www.notion.so/230c89f5c11380b593e6e4757c7fefd9?source=copy_link',
-            ),
+            onTap: () => _launchURL(AppConstants.termsOfServiceUrl),
           ),
         ],
       ),

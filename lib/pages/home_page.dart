@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:outshotx/services/user_service.dart';
 
-import 'outshot_page.dart';
+import 'outshot_list_page.dart';
 import 'practice_page.dart';
 import 'settings_page.dart';
 import 'statistics_page.dart';
@@ -214,17 +214,12 @@ class _DartsHomePageState extends State<DartsHomePage>
                           icon: Icons.grid_on,
                           color: Theme.of(context).colorScheme.primary,
                           onTap: () {
-                            if (currentUser != null) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      OutshotPage(user: currentUser),
-                                ),
-                              );
-                            } else {
-                              _showSelectUserDialog(context);
-                            }
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const OutshotListPage(),
+                              ),
+                            );
                           },
                         ),
                         _buildActionCard(

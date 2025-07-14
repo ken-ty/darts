@@ -114,7 +114,7 @@ class _DartsHomePageState extends State<DartsHomePage>
                       margin: const EdgeInsets.only(bottom: 24),
                       child: Image.asset(
                         'assets/outshotx.png',
-                        height: 260,
+                        height: 220,
                         fit: BoxFit.fitWidth,
                       ),
                     ),
@@ -204,7 +204,6 @@ class _DartsHomePageState extends State<DartsHomePage>
                       crossAxisCount: 2,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      childAspectRatio: 1.2,
                       crossAxisSpacing: 16,
                       mainAxisSpacing: 16,
                       children: [
@@ -246,10 +245,11 @@ class _DartsHomePageState extends State<DartsHomePage>
 
                         _buildActionCard(
                           context,
-                          title: 'プラクティス(開発中)',
+                          title: 'プラクティス',
                           subtitle: 'スコア計算と練習',
                           icon: Icons.calculate,
                           color: Theme.of(context).colorScheme.secondary,
+                          isDev: true,
                           onTap: () {
                             if (currentUser != null) {
                               Navigator.push(
@@ -266,10 +266,11 @@ class _DartsHomePageState extends State<DartsHomePage>
                         ),
                         _buildActionCard(
                           context,
-                          title: '統計(開発中)',
+                          title: '統計',
                           subtitle: 'ゲーム記録と分析',
                           icon: Icons.analytics,
                           color: Theme.of(context).colorScheme.tertiary,
+                          isDev: true,
                           onTap: () {
                             if (currentUser != null) {
                               Navigator.push(
@@ -304,53 +305,93 @@ class _DartsHomePageState extends State<DartsHomePage>
     required IconData icon,
     required Color color,
     required VoidCallback onTap,
+    bool isDev = false,
   }) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(16),
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: color.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: color.withValues(alpha: 0.2), width: 1),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(12),
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(16),
+            child: Container(
+              padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.circular(12),
+                color: color.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: color.withValues(alpha: 0.2),
+                  width: 1,
+                ),
               ),
-              child: Icon(
-                icon,
-                color: Theme.of(context).colorScheme.onPrimary,
-                size: 24,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: color,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Icon(
+                      icon,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      size: 24,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    subtitle,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.7),
+                    ),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 16),
-            Text(
-              title,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              subtitle,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Theme.of(
-                  context,
-                ).colorScheme.onSurface.withValues(alpha: 0.7),
-              ),
-            ),
-          ],
+          ),
         ),
-      ),
+        if (isDev)
+          Positioned.fill(
+            child: IgnorePointer(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.black.withValues(alpha: 0.3),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Center(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.orange,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      '開発中',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+      ],
     );
   }
 

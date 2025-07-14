@@ -465,7 +465,7 @@ class _DartsHomePageState extends State<DartsHomePage>
               ).then((_) => setState(() {}));
             },
             child: Text(
-              '新規作成',
+              'ユーザーを管理',
               style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
             ),
           ),

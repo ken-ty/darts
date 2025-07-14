@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/user_profile.dart';
+import '../services/app_info_service.dart';
 import '../services/theme_service.dart';
 import '../services/user_service.dart';
 
@@ -321,8 +322,8 @@ class _SettingsPageState extends State<SettingsPage>
         children: [
           _buildSettingTile(
             title: 'バージョン',
-            subtitle: '1.0.0',
-            icon: Icons.info,
+            subtitle: AppInfoService.getFullVersion(),
+            icon: Icons.tag,
           ),
           _buildDivider(),
           _buildSettingTile(

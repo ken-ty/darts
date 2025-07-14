@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'pages/home_page.dart';
+import 'services/app_info_service.dart';
 import 'services/theme_service.dart';
 import 'services/user_service.dart';
 
@@ -34,6 +35,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _initializeApp() async {
+    await AppInfoService.initialize();
     await UserService.initialize();
     final currentUser = UserService.getCurrentUser();
     if (currentUser != null) {

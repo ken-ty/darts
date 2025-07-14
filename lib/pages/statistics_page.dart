@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
+import '../constants/feature_flags.dart';
 import '../models/user_profile.dart';
 import '../services/user_service.dart';
 
@@ -58,6 +61,11 @@ class _StatisticsPageState extends State<StatisticsPage>
   Widget build(BuildContext context) {
     if (currentUser == null) {
       return _buildNoUserContent();
+    }
+
+    // 統計機能が無効な場合は開発中表示
+    if (!FeatureFlags.enableStatistics) {
+      return _buildUnderDevelopmentContent();
     }
 
     return Scaffold(
@@ -190,6 +198,135 @@ class _StatisticsPageState extends State<StatisticsPage>
               textAlign: TextAlign.center,
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildUnderDevelopmentContent() {
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary),
+        title: Text(
+          '統計',
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      body: Stack(
+        children: [
+          // 背景の統計コンテンツ（ぼかし効果付き）
+          Opacity(
+            opacity: 0.8,
+            child: ImageFiltered(
+              imageFilter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+              child: _buildStatisticsContent(),
+            ),
+          ),
+          // 開発中メッセージ
+          Center(
+            child: Container(
+              margin: const EdgeInsets.all(32),
+              padding: const EdgeInsets.all(32),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.onSurface.withValues(alpha: 0.1),
+                    blurRadius: 20,
+                    offset: const Offset(0, 10),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.primary.withValues(alpha: 0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.construction,
+                      size: 48,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    '開発中です',
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurface,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    '統計機能は現在開発中です。\n詳細な統計情報やグラフを\nお楽しみにお待ちください！',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.7),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 32),
+                  FilledButton.icon(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(Icons.arrow_back),
+                    label: const Text('戻る'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatisticsContent() {
+    return SlideTransition(
+      position: _slideAnimation,
+      child: FadeTransition(
+        opacity: _fadeAnimation,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // 概要統計
+              _buildOverviewSection(),
+              const SizedBox(height: 24),
+
+              // フィニッシュ統計
+              _buildFinishStatisticsSection(),
+              const SizedBox(height: 24),
+
+              // 練習記録
+              _buildPracticeHistorySection(),
+              const SizedBox(height: 24),
+
+              // ゲーム記録
+              _buildGameHistorySection(),
+              const SizedBox(height: 24),
+
+              // チャート
+              _buildChartsSection(),
+              const SizedBox(height: 24),
+            ],
+          ),
         ),
       ),
     );

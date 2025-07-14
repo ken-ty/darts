@@ -1,4 +1,6 @@
 /// 機能フラグを管理するクラス
+///
+/// 開発中や不具合がある機能を無効化するためのフラグ
 class FeatureFlags {
   // プライベートコンストラクタでインスタンス化を防ぐ
   FeatureFlags._();
@@ -12,7 +14,7 @@ class FeatureFlags {
   static const bool enableHelp = true; // ヘルプを有効化
 
   // 機能の機能フラグ
-  static const bool enableStatistics = true; // 統計機能を有効化
+  static const bool enableStatistics = false; // 統計機能を無効化（開発中）
   static const bool enablePracticeHistory = true; // 練習履歴を有効化
   static const bool enableGameHistory = true; // ゲーム履歴を有効化
   static const bool enableCharts = true; // チャート機能を有効化

@@ -3,12 +3,14 @@ class FinishCombination {
   final int dartsNeeded;
   final List<String> combination;
   final String description;
+  final bool isFinishRoute;
 
   const FinishCombination({
     required this.score,
     required this.dartsNeeded,
     required this.combination,
     required this.description,
+    this.isFinishRoute = true,
   });
 
   Map<String, dynamic> toJson() {
@@ -17,6 +19,7 @@ class FinishCombination {
       'dartsNeeded': dartsNeeded,
       'combination': combination,
       'description': description,
+      'isFinishRoute': isFinishRoute,
     };
   }
 
@@ -26,6 +29,7 @@ class FinishCombination {
       dartsNeeded: json['dartsNeeded'],
       combination: List<String>.from(json['combination']),
       description: json['description'],
+      isFinishRoute: json['isFinishRoute'] ?? true,
     );
   }
 
@@ -34,12 +38,14 @@ class FinishCombination {
     int? dartsNeeded,
     List<String>? combination,
     String? description,
+    bool? isFinishRoute,
   }) {
     return FinishCombination(
       score: score ?? this.score,
       dartsNeeded: dartsNeeded ?? this.dartsNeeded,
       combination: combination ?? this.combination,
       description: description ?? this.description,
+      isFinishRoute: isFinishRoute ?? this.isFinishRoute,
     );
   }
 

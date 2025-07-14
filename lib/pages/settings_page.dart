@@ -340,14 +340,12 @@ class _SettingsPageState extends State<SettingsPage>
           _buildDivider(),
           _buildSettingTile(
             title: 'プライバシーポリシー',
-            subtitle: '個人情報の取り扱いについて',
             icon: Icons.privacy_tip,
             onTap: () => _launchURL(AppConstants.privacyPolicyUrl),
           ),
           _buildDivider(),
           _buildSettingTile(
             title: '利用規約',
-            subtitle: 'アプリの利用条件',
             icon: Icons.description,
             onTap: () => _launchURL(AppConstants.termsOfServiceUrl),
           ),
@@ -358,7 +356,7 @@ class _SettingsPageState extends State<SettingsPage>
 
   Widget _buildSettingTile({
     required String title,
-    required String subtitle,
+    String? subtitle,
     required IconData icon,
     Widget? trailing,
     VoidCallback? onTap,
@@ -383,12 +381,16 @@ class _SettingsPageState extends State<SettingsPage>
           fontWeight: FontWeight.w600,
         ),
       ),
-      subtitle: Text(
-        subtitle,
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-        ),
-      ),
+      subtitle: subtitle != null
+          ? Text(
+              subtitle,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.7),
+              ),
+            )
+          : null,
       trailing:
           trailing ?? (onTap != null ? const Icon(Icons.chevron_right) : null),
       onTap: onTap,

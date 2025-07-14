@@ -210,7 +210,7 @@ class _DartsHomePageState extends State<DartsHomePage>
                         _buildActionCard(
                           context,
                           title: 'アウトショット',
-                          subtitle: '1-180の上がり方',
+                          subtitle: 'ガイドを作成',
                           icon: Icons.grid_on,
                           color: Theme.of(context).colorScheme.primary,
                           onTap: () {

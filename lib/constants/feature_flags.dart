@@ -23,4 +23,6 @@ class FeatureFlags {
   // 開発用フラグ
   static const bool enableDebugMode = false; // デバッグモードを無効化
   static const bool enableAnalytics = false; // アナリティクスを無効化
+  // ユーザーID表示制御
+  static const bool enableUserIdDisplay = false; // ユーザーID表示を有効化
 }

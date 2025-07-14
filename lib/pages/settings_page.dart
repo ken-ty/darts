@@ -213,14 +213,15 @@ class _SettingsPageState extends State<SettingsPage>
                   ),
                 ),
                 const SizedBox(height: 4),
-                Text(
-                  'ID: ${currentUser!.id}',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withValues(alpha: 0.7),
+                if (FeatureFlags.enableUserIdDisplay)
+                  Text(
+                    'ID: ${currentUser!.id}',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.7),
+                    ),
                   ),
-                ),
               ],
             ),
           ),

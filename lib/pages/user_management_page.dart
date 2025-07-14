@@ -53,6 +53,19 @@ class _UserManagementPageState extends State<UserManagementPage>
     final currentUser = UserService.getCurrentUser();
 
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary),
+        title: Text(
+          'ユーザー管理',
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
       body: SlideTransition(
         position: _slideAnimation,
         child: FadeTransition(

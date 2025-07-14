@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:outshotx/services/user_service.dart';
 
-import 'finish_board_page.dart';
+import 'outshot_page.dart';
 import 'score_calculator_page.dart';
 import 'settings_page.dart';
 import 'statistics_page.dart';
@@ -221,7 +221,7 @@ class _DartsHomePageState extends State<DartsHomePage>
                       children: [
                         _buildActionCard(
                           context,
-                          title: 'フィニッシュボード',
+                          title: 'アウトショット',
                           subtitle: '1-180の上がり方',
                           icon: Icons.grid_on,
                           color: Theme.of(context).colorScheme.primary,
@@ -231,7 +231,7 @@ class _DartsHomePageState extends State<DartsHomePage>
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      FinishBoardPage(user: currentUser),
+                                      OutshotPage(user: currentUser),
                                 ),
                               );
                             } else {

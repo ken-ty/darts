@@ -179,7 +179,7 @@ class _UserManagementPageState extends State<UserManagementPage>
                           const SizedBox(width: 16),
                           Expanded(
                             child: Text(
-                              '新しいプレイヤーを追加して\n個別のフィニッシュボードを作成',
+                              '新しいプレイヤーを追加して\n個別のアウトショットを作成',
                               style: Theme.of(context).textTheme.bodyMedium
                                   ?.copyWith(
                                     color: Theme.of(

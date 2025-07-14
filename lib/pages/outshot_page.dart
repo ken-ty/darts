@@ -5,16 +5,16 @@ import '../models/user_profile.dart';
 import '../services/user_service.dart';
 import '../widgets/finish_card.dart';
 
-class FinishBoardPage extends StatefulWidget {
+class OutshotPage extends StatefulWidget {
   final UserProfile user;
 
-  const FinishBoardPage({super.key, required this.user});
+  const OutshotPage({super.key, required this.user});
 
   @override
-  State<FinishBoardPage> createState() => _FinishBoardPageState();
+  State<OutshotPage> createState() => _OutshotPageState();
 }
 
-class _FinishBoardPageState extends State<FinishBoardPage>
+class _OutshotPageState extends State<OutshotPage>
     with TickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
@@ -67,7 +67,7 @@ class _FinishBoardPageState extends State<FinishBoardPage>
         elevation: 0,
         iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary),
         title: Text(
-          'フィニッシュボード',
+          'アウトショット',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.bold,

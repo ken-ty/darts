@@ -281,7 +281,7 @@ class _StatisticsPageState extends State<StatisticsPage>
                   ),
                   const SizedBox(width: 12),
                   Text(
-                    'フィニッシュボード',
+                    'アウトショット',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: Theme.of(context).colorScheme.onSurface,
                       fontWeight: FontWeight.bold,

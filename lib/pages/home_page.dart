@@ -114,7 +114,7 @@ class _DartsHomePageState extends State<DartsHomePage>
                       margin: const EdgeInsets.only(bottom: 24),
                       child: Image.asset(
                         'assets/outshotx.png',
-                        height: 300,
+                        height: 260,
                         fit: BoxFit.fitWidth,
                       ),
                     ),
@@ -200,17 +200,6 @@ class _DartsHomePageState extends State<DartsHomePage>
                       ),
                       const SizedBox(height: 24),
                     ],
-
-                    // Quick Actions
-                    Text(
-                      '機能',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-
                     GridView.count(
                       crossAxisCount: 2,
                       shrinkWrap: true,
@@ -241,7 +230,23 @@ class _DartsHomePageState extends State<DartsHomePage>
                         ),
                         _buildActionCard(
                           context,
-                          title: 'プラクティス',
+                          title: '設定',
+                          subtitle: 'アプリ設定',
+                          icon: Icons.settings,
+                          color: Theme.of(context).colorScheme.outline,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SettingsPage(),
+                              ),
+                            );
+                          },
+                        ),
+
+                        _buildActionCard(
+                          context,
+                          title: 'プラクティス(開発中)',
                           subtitle: 'スコア計算と練習',
                           icon: Icons.calculate,
                           color: Theme.of(context).colorScheme.secondary,
@@ -261,7 +266,7 @@ class _DartsHomePageState extends State<DartsHomePage>
                         ),
                         _buildActionCard(
                           context,
-                          title: '統計',
+                          title: '統計(開発中)',
                           subtitle: 'ゲーム記録と分析',
                           icon: Icons.analytics,
                           color: Theme.of(context).colorScheme.tertiary,
@@ -276,21 +281,6 @@ class _DartsHomePageState extends State<DartsHomePage>
                             } else {
                               _showSelectUserDialog(context);
                             }
-                          },
-                        ),
-                        _buildActionCard(
-                          context,
-                          title: '設定',
-                          subtitle: 'アプリ設定',
-                          icon: Icons.settings,
-                          color: Theme.of(context).colorScheme.outline,
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const SettingsPage(),
-                              ),
-                            );
                           },
                         ),
                       ],

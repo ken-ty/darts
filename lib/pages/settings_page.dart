@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../constants/app_constants.dart';
+import '../constants/feature_flags.dart';
 import '../models/user_profile.dart';
 import '../services/app_info_service.dart';
 import '../services/theme_service.dart';
@@ -72,20 +73,24 @@ class _SettingsPageState extends State<SettingsPage>
           ),
         ),
         actions: [
-          IconButton(
-            onPressed: _exportData,
-            icon: Icon(
-              Icons.download,
-              color: Theme.of(context).colorScheme.onSurface,
+          if (FeatureFlags.enableDataExport) ...[
+            IconButton(
+              onPressed: _exportData,
+              icon: Icon(
+                Icons.download,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
             ),
-          ),
-          IconButton(
-            onPressed: _showHelp,
-            icon: Icon(
-              Icons.help_outline,
-              color: Theme.of(context).colorScheme.onSurface,
+          ],
+          if (FeatureFlags.enableHelp) ...[
+            IconButton(
+              onPressed: _showHelp,
+              icon: Icon(
+                Icons.help_outline,
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
             ),
-          ),
+          ],
         ],
       ),
       body: SlideTransition(
@@ -106,30 +111,46 @@ class _SettingsPageState extends State<SettingsPage>
                 ],
 
                 // Appearance Section
-                _buildSectionHeader('外観'),
-                const SizedBox(height: 16),
-                _buildAppearanceSettings(),
-                const SizedBox(height: 32),
+                if (FeatureFlags.enableThemeSettings) ...[
+                  _buildSectionHeader('外観'),
+                  const SizedBox(height: 16),
+                  _buildAppearanceSettings(),
+                  const SizedBox(height: 32),
+                ],
 
                 // Language Section
-                _buildSectionHeader('言語'),
-                const SizedBox(height: 16),
-                _buildLanguageSettings(),
-                const SizedBox(height: 32),
+                if (FeatureFlags.enableLanguageSettings) ...[
+                  _buildSectionHeader('言語'),
+                  const SizedBox(height: 16),
+                  _buildLanguageSettings(),
+                  const SizedBox(height: 32),
+                ],
 
                 // Notifications Section
-                _buildSectionHeader('通知'),
-                const SizedBox(height: 16),
-                _buildNotificationSettings(),
-                const SizedBox(height: 32),
+                if (FeatureFlags.enableNotificationSettings) ...[
+                  _buildSectionHeader('通知'),
+                  const SizedBox(height: 16),
+                  _buildNotificationSettings(),
+                  const SizedBox(height: 32),
+                ],
 
                 // Sound Section
-                _buildSectionHeader('サウンド'),
-                const SizedBox(height: 16),
-                _buildSoundSettings(),
-                const SizedBox(height: 32),
+                if (FeatureFlags.enableSoundSettings) ...[
+                  _buildSectionHeader('サウンド'),
+                  const SizedBox(height: 16),
+                  _buildSoundSettings(),
+                  const SizedBox(height: 32),
+                ],
 
-                // About Section
+                // Data Export Section
+                if (FeatureFlags.enableDataExport) ...[
+                  _buildSectionHeader('データエクスポート'),
+                  const SizedBox(height: 16),
+                  // _buildDataExportSettings() など、必要なら追加
+                  const SizedBox(height: 32),
+                ],
+
+                // About Section（常時表示）
                 _buildSectionHeader('アプリについて'),
                 const SizedBox(height: 16),
                 _buildAboutSection(),
@@ -233,18 +254,6 @@ class _SettingsPageState extends State<SettingsPage>
             ),
             icon: Icons.palette,
             onTap: _showColorThemeDialog,
-          ),
-          _buildDivider(),
-          _buildSettingTile(
-            title: 'ダークモード',
-            subtitle: 'システム設定に従う',
-            icon: Icons.dark_mode,
-            trailing: Switch(
-              value: currentUser?.colorTheme == ColorTheme.dark,
-              onChanged: (value) => _updateColorTheme(
-                value ? ColorTheme.dark : ColorTheme.system,
-              ),
-            ),
           ),
         ],
       ),

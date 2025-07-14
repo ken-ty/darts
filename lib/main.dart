@@ -48,7 +48,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'ダーツフィニッシュボード',
+      title: 'outshotX',
       theme: _themeService.getThemeData(context),
       home: const DartsHomePage(),
       debugShowCheckedModeBanner: false,

@@ -62,6 +62,12 @@ class _DartsHomePageState extends State<DartsHomePage>
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        title: Image.asset(
+          'assets/outshotxlogo.png',
+          height: 32,
+          fit: BoxFit.contain,
+        ),
+        centerTitle: true,
         leading: GestureDetector(
           onTap: () => _showUserSelectionDialog(context),
           child: Container(
@@ -89,38 +95,6 @@ class _DartsHomePageState extends State<DartsHomePage>
             ),
           ),
         ),
-        title: AnimatedBuilder(
-          animation: _fadeAnimation,
-          builder: (context, child) {
-            return Opacity(
-              opacity: _fadeAnimation.value,
-              child: Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Icon(
-                      Icons.gps_fixed,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      size: 24,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Text(
-                    'ダーツフィニッシュ',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
       ),
       body: AnimatedBuilder(
         animation: _slideAnimation,
@@ -134,6 +108,17 @@ class _DartsHomePageState extends State<DartsHomePage>
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Logo Section
+                    Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.only(bottom: 24),
+                      child: Image.asset(
+                        'assets/outshotx.png',
+                        height: 300,
+                        fit: BoxFit.fitWidth,
+                      ),
+                    ),
+
                     // Welcome Section
                     if (currentUser != null) ...[
                       Container(

@@ -11,7 +11,6 @@ class FeatureFlags {
   static const bool enableLanguageSettings = true; // 言語設定を有効化
   static const bool enableThemeSettings = true; // テーマ設定を有効化
   static const bool enableDataExport = false; // データエクスポートを無効化
-  static const bool enableHelp = true; // ヘルプを有効化
 
   // 機能の機能フラグ
   static const bool enableStatistics = false; // 統計機能を無効化（開発中）

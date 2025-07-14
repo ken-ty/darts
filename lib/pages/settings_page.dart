@@ -82,15 +82,6 @@ class _SettingsPageState extends State<SettingsPage>
               ),
             ),
           ],
-          if (FeatureFlags.enableHelp) ...[
-            IconButton(
-              onPressed: _showHelp,
-              icon: Icon(
-                Icons.help_outline,
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
-            ),
-          ],
         ],
       ),
       body: SlideTransition(
@@ -636,53 +627,6 @@ class _SettingsPageState extends State<SettingsPage>
             },
             child: Text(
               'エクスポート',
-              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showHelp() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          'ヘルプ',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            color: Theme.of(context).colorScheme.onSurface,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'アプリの使い方',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              '• アウトショット: 1-180の上がり方を確認\n'
-              '• プラクティス: スコア計算と練習\n'
-              '• 統計: 練習記録とゲーム記録を確認\n'
-              '• 設定: アプリの設定を変更',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          FilledButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(
-              'OK',
               style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
             ),
           ),

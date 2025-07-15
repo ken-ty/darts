@@ -14,3 +14,10 @@ flutter pub get && flutter pub run flutter_launcher_icons:main
 （dart run flutter_launcher_icons でもOK）
 
 ---
+
+## リリース
+
+以下のファイルを配置してください.
+
+- `key.properties` を `android/` に配置
+- `kenty-release-key.jks` を `android/app/` に配置

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:outshotx/constants/feature_flags.dart';
 
 import '../models/outshot.dart';
 import '../models/outshot_set.dart';
@@ -14,7 +15,6 @@ class OutshotDetailPage extends StatefulWidget {
 
 class _OutshotDetailPageState extends State<OutshotDetailPage> {
   String _searchQuery = '';
-  String _filterType = 'all'; // 'all', 'finish', 'non-finish'
 
   List<OutShot> get _filteredCombinations {
     var combinations = widget.outshotSet.combinations;
@@ -28,46 +28,13 @@ class _OutshotDetailPageState extends State<OutshotDetailPage> {
       }).toList();
     }
 
-    // タイプフィルタリング
-    switch (_filterType) {
-      case 'finish':
-        combinations = combinations
-            .where((combo) => combo.isFinishRoute)
-            .toList();
-        break;
-      case 'non-finish':
-        combinations = combinations
-            .where((combo) => !combo.isFinishRoute)
-            .toList();
-        break;
-      default:
-        // 'all' の場合は何もしない
-        break;
-    }
-
     return combinations;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.outshotSet.name),
-        actions: [
-          PopupMenuButton<String>(
-            onSelected: (value) {
-              setState(() {
-                _filterType = value;
-              });
-            },
-            itemBuilder: (context) => [
-              const PopupMenuItem(value: 'all', child: Text('全て表示')),
-              const PopupMenuItem(value: 'finish', child: Text('フィニッシュルートのみ')),
-              const PopupMenuItem(value: 'non-finish', child: Text('調整ルートのみ')),
-            ],
-          ),
-        ],
-      ),
+      appBar: AppBar(title: Text(widget.outshotSet.name)),
       body: Column(
         children: [
           // 検索バー
@@ -87,47 +54,52 @@ class _OutshotDetailPageState extends State<OutshotDetailPage> {
             ),
           ),
 
-          // 統計情報
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
-              vertical: 8.0,
+          if (FeatureFlags.enableOutShotDetailSummary) ...[
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 8.0,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: _buildStatCard(
+                      '総数',
+                      _filteredCombinations.length.toString(),
+                      Icons.list,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: _buildStatCard(
+                      '最大スコア',
+                      _filteredCombinations.isNotEmpty
+                          ? _filteredCombinations
+                                .map((c) => c.score)
+                                .reduce((a, b) => a > b ? a : b)
+                                .toString()
+                          : '0',
+                      Icons.trending_up,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: _buildStatCard(
+                      '最小スコア',
+                      _filteredCombinations.isNotEmpty
+                          ? _filteredCombinations
+                                .map((c) => c.score)
+                                .reduce((a, b) => a < b ? a : b)
+                                .toString()
+                          : '0',
+                      Icons.trending_down,
+                    ),
+                  ),
+                ],
+              ),
             ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: _buildStatCard(
-                    '総数',
-                    _filteredCombinations.length.toString(),
-                    Icons.list,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: _buildStatCard(
-                    'フィニッシュ',
-                    _filteredCombinations
-                        .where((c) => c.isFinishRoute)
-                        .length
-                        .toString(),
-                    Icons.check_circle,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: _buildStatCard(
-                    '調整',
-                    _filteredCombinations
-                        .where((c) => !c.isFinishRoute)
-                        .length
-                        .toString(),
-                    Icons.tune,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const Divider(height: 1),
+            const Divider(height: 1),
+          ],
           // アウトショット一覧
           Expanded(
             child: ListView.builder(
@@ -167,7 +139,7 @@ class _OutshotDetailPageState extends State<OutshotDetailPage> {
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: combo.isFinishRoute ? Colors.green : Colors.orange,
+          backgroundColor: Colors.blue,
           child: Text(
             combo.score.toString(),
             style: const TextStyle(
@@ -176,30 +148,13 @@ class _OutshotDetailPageState extends State<OutshotDetailPage> {
             ),
           ),
         ),
-        title: Text(
-          '${combo.score}点',
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        title: Wrap(
+          spacing: 8,
+          runSpacing: 4,
           children: [
-            Text(combo.description),
-            if (combo.combination.isNotEmpty)
-              Text(
-                combo.combination.join(' → '),
-                style: const TextStyle(fontFamily: 'monospace', fontSize: 12),
-              ),
-          ],
-        ),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (combo.isFinishRoute)
-              const Icon(Icons.check_circle, color: Colors.green)
-            else
-              const Icon(Icons.tune, color: Colors.orange),
-            const SizedBox(width: 8),
-            Text('${combo.dartsNeeded}本'),
+            if (combo.combination.isNotEmpty) ...[
+              for (var target in combo.combination) Chip(label: Text(target)),
+            ],
           ],
         ),
         onTap: () => _showOutshotDetailDialog(combo),
@@ -218,11 +173,9 @@ class _OutshotDetailPageState extends State<OutshotDetailPage> {
           children: [
             Text('説明: ${combo.description}'),
             const SizedBox(height: 8),
-            Text('ダーツ数: ${combo.dartsNeeded}本'),
+            Text('ダーツ数: ${combo.combination.length}本'),
             const SizedBox(height: 8),
             Text('ルート: ${combo.combination.join(' → ')}'),
-            const SizedBox(height: 8),
-            Text('タイプ: ${combo.isFinishRoute ? 'フィニッシュ' : '調整'}'),
           ],
         ),
         actions: [

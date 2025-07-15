@@ -64,7 +64,7 @@ class _DartsHomePageState extends State<DartsHomePage>
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Image.asset(
-          'assets/outshotxlogo.png',
+          'assets/outshotXLogo.png',
           height: 32,
           fit: BoxFit.contain,
         ),
@@ -119,7 +119,7 @@ class _DartsHomePageState extends State<DartsHomePage>
                       width: double.infinity,
                       margin: const EdgeInsets.only(bottom: 24),
                       child: Image.asset(
-                        'assets/outshotx.png',
+                        'assets/outshotX.png',
                         height: 220,
                         fit: BoxFit.fitWidth,
                       ),

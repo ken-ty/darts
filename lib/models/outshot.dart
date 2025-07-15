@@ -1,33 +1,11 @@
-/// フィニッシュ組み合わせのデータモデル
-///
-/// ```example
-/// | Score | DartsNeeded | Combination | Description | IsFinishRoute |
-/// | ----- | ----------- | ----------- | ----------- | ------------- |
-/// | 100   | 3           | [100, 100, 100] | "100, 100, 100" | true |
-/// ```
-class FinishCombination {
-  /// 残りの点数
-  ///
-  /// 152 など。
+class OutShot {
   final int score;
-
-  /// 必要なダーツ数
-  ///
-  ///  3 など。
   final int dartsNeeded;
-
-  /// 組み合わせ
-  ///
-  /// ["T20", "T20", "D16"] など。
   final List<String> combination;
-
-  /// メモ
   final String description;
-
-  /// フィニッシュ組み合わせかどうか
   final bool isFinishRoute;
 
-  const FinishCombination({
+  const OutShot({
     required this.score,
     required this.dartsNeeded,
     required this.combination,
@@ -45,8 +23,8 @@ class FinishCombination {
     };
   }
 
-  factory FinishCombination.fromJson(Map<String, dynamic> json) {
-    return FinishCombination(
+  factory OutShot.fromJson(Map<String, dynamic> json) {
+    return OutShot(
       score: json['score'],
       dartsNeeded: json['dartsNeeded'],
       combination: List<String>.from(json['combination']),
@@ -55,14 +33,14 @@ class FinishCombination {
     );
   }
 
-  FinishCombination copyWith({
+  OutShot copyWith({
     int? score,
     int? dartsNeeded,
     List<String>? combination,
     String? description,
     bool? isFinishRoute,
   }) {
-    return FinishCombination(
+    return OutShot(
       score: score ?? this.score,
       dartsNeeded: dartsNeeded ?? this.dartsNeeded,
       combination: combination ?? this.combination,
@@ -73,17 +51,18 @@ class FinishCombination {
 
   @override
   String toString() {
-    return 'FinishCombination(score: $score, dartsNeeded: $dartsNeeded, combination: $combination, description: $description)';
+    return 'OutShot(score: $score, dartsNeeded: $dartsNeeded, combination: $combination, description: $description)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is FinishCombination &&
+    return other is OutShot &&
         other.score == score &&
         other.dartsNeeded == dartsNeeded &&
         _listEquals(other.combination, combination) &&
-        other.description == description;
+        other.description == description &&
+        other.isFinishRoute == isFinishRoute;
   }
 
   @override
@@ -91,7 +70,8 @@ class FinishCombination {
     return score.hashCode ^
         dartsNeeded.hashCode ^
         combination.hashCode ^
-        description.hashCode;
+        description.hashCode ^
+        isFinishRoute.hashCode;
   }
 
   bool _listEquals(List<String> a, List<String> b) {

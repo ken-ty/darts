@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../models/finish_combination.dart';
+import '../models/outshot.dart';
 import '../models/outshot_set.dart';
 
 class OutshotDetailPage extends StatefulWidget {
@@ -16,7 +16,7 @@ class _OutshotDetailPageState extends State<OutshotDetailPage> {
   String _searchQuery = '';
   String _filterType = 'all'; // 'all', 'finish', 'non-finish'
 
-  List<FinishCombination> get _filteredCombinations {
+  List<OutShot> get _filteredCombinations {
     var combinations = widget.outshotSet.combinations;
 
     // 検索フィルタリング
@@ -54,12 +54,6 @@ class _OutshotDetailPageState extends State<OutshotDetailPage> {
       appBar: AppBar(
         title: Text(widget.outshotSet.name),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {
-              // TODO: 検索機能の実装
-            },
-          ),
           PopupMenuButton<String>(
             onSelected: (value) {
               setState(() {
@@ -92,6 +86,7 @@ class _OutshotDetailPageState extends State<OutshotDetailPage> {
               },
             ),
           ),
+
           // 統計情報
           Container(
             padding: const EdgeInsets.symmetric(
@@ -167,7 +162,7 @@ class _OutshotDetailPageState extends State<OutshotDetailPage> {
     );
   }
 
-  Widget _buildOutshotCard(FinishCombination combo) {
+  Widget _buildOutshotCard(OutShot combo) {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
       child: ListTile(
@@ -207,12 +202,35 @@ class _OutshotDetailPageState extends State<OutshotDetailPage> {
             Text('${combo.dartsNeeded}本'),
           ],
         ),
-        onTap: () {
-          // TODO: 詳細表示や編集機能
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text('${combo.score}点の詳細を表示')));
-        },
+        onTap: () => _showOutshotDetailDialog(combo),
+      ),
+    );
+  }
+
+  void _showOutshotDetailDialog(OutShot combo) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('${combo.score}点の詳細'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('説明: ${combo.description}'),
+            const SizedBox(height: 8),
+            Text('ダーツ数: ${combo.dartsNeeded}本'),
+            const SizedBox(height: 8),
+            Text('ルート: ${combo.combination.join(' → ')}'),
+            const SizedBox(height: 8),
+            Text('タイプ: ${combo.isFinishRoute ? 'フィニッシュ' : '調整'}'),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('閉じる'),
+          ),
+        ],
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:outshotx/services/user_service.dart';
 
+import '../constants/feature_flags.dart';
 import 'outshot_list_page.dart';
 import 'practice_page.dart';
 import 'settings_page.dart';
@@ -68,33 +69,38 @@ class _DartsHomePageState extends State<DartsHomePage>
           fit: BoxFit.contain,
         ),
         centerTitle: true,
-        leading: GestureDetector(
-          onTap: () => _showUserSelectionDialog(context),
-          child: Container(
-            margin: const EdgeInsets.all(8),
-            child: CircleAvatar(
-              radius: 18,
-              backgroundColor: currentUser != null
-                  ? Theme.of(context).colorScheme.primary
-                  : Theme.of(
-                      context,
-                    ).colorScheme.outline.withValues(alpha: 0.3),
-              child: currentUser != null && currentUser.name.isNotEmpty
-                  ? Text(
-                      currentUser.name[0].toUpperCase(),
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )
-                  : Icon(
-                      Icons.person,
-                      color: Theme.of(context).colorScheme.onSurface,
-                      size: 20,
-                    ),
-            ),
-          ),
-        ),
+        leading: FeatureFlags.enableUserManagement
+            ? GestureDetector(
+                onTap: () => _showUserSelectionDialog(context),
+                child: Container(
+                  margin: const EdgeInsets.all(8),
+                  child: CircleAvatar(
+                    radius: 18,
+                    backgroundColor: currentUser != null
+                        ? Theme.of(context).colorScheme.primary
+                        : Theme.of(
+                            context,
+                          ).colorScheme.outline.withValues(alpha: 0.3),
+                    child: currentUser != null && currentUser.name.isNotEmpty
+                        ? Text(
+                            currentUser.name[0].toUpperCase(),
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onPrimary,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                          )
+                        : Icon(
+                            Icons.person,
+                            color: Theme.of(context).colorScheme.onSurface,
+                            size: 20,
+                          ),
+                  ),
+                ),
+              )
+            : null,
       ),
       body: AnimatedBuilder(
         animation: _slideAnimation,

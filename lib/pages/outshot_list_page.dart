@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:outshotx/constants/feature_flags.dart';
 import 'package:outshotx/models/outshot/outshot_label.dart';
 import 'package:outshotx/services/label_service.dart';
 import 'package:outshotx/services/outshot_table_service.dart';
@@ -270,25 +271,27 @@ class _OutshotListPageState extends State<OutshotListPage> {
       ),
       body: Column(
         children: [
-          // 検索バー
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            child: TextField(
-              decoration: const InputDecoration(
-                hintText: 'テーブル名で検索',
-                prefixIcon: Icon(Icons.search),
-                isDense: true,
-                border: OutlineInputBorder(),
-                contentPadding: EdgeInsets.symmetric(
-                  vertical: 0,
-                  horizontal: 8,
+          if (FeatureFlags.enableOutshotTableSearch) ...[
+            // 検索バー
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              child: TextField(
+                decoration: const InputDecoration(
+                  hintText: 'テーブル名で検索',
+                  prefixIcon: Icon(Icons.search),
+                  isDense: true,
+                  border: OutlineInputBorder(),
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 0,
+                    horizontal: 8,
+                  ),
                 ),
+                onChanged: (value) {
+                  // TODO: 検索フィルタリング
+                },
               ),
-              onChanged: (value) {
-                // TODO: 検索フィルタリング
-              },
             ),
-          ),
+          ],
           const Divider(height: 1),
           Expanded(
             child: _tables.isEmpty

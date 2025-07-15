@@ -1,9 +1,10 @@
-class OutShot {
+/// [Outshot] に含まれる1つのエントリー
+class OutshotEntry {
   final int score;
   final List<String> combination;
   final String description;
 
-  const OutShot({
+  const OutshotEntry({
     required this.score,
     required this.combination,
     required this.description,
@@ -17,20 +18,20 @@ class OutShot {
     };
   }
 
-  factory OutShot.fromJson(Map<String, dynamic> json) {
-    return OutShot(
+  factory OutshotEntry.fromJson(Map<String, dynamic> json) {
+    return OutshotEntry(
       score: json['score'],
       combination: List<String>.from(json['combination']),
       description: json['description'],
     );
   }
 
-  OutShot copyWith({
+  OutshotEntry copyWith({
     int? score,
     List<String>? combination,
     String? description,
   }) {
-    return OutShot(
+    return OutshotEntry(
       score: score ?? this.score,
       combination: combination ?? this.combination,
       description: description ?? this.description,
@@ -39,13 +40,13 @@ class OutShot {
 
   @override
   String toString() {
-    return 'OutShot(score: $score, combination: $combination, description: $description)';
+    return 'Outshot(score: $score, combination: $combination, description: $description)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is OutShot &&
+    return other is OutshotEntry &&
         other.score == score &&
         _listEquals(other.combination, combination) &&
         other.description == description;

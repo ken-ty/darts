@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/outshot_label.dart';
+import '../models/outshot/outshot_label.dart';
 
 class LabelService {
   static const String _labelsKey = 'outshot_labels';

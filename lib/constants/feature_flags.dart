@@ -18,7 +18,7 @@ class FeatureFlags {
   static const bool enablePracticeHistory = true; // 練習履歴を有効化
   static const bool enableGameHistory = true; // ゲーム履歴を有効化
   static const bool enableCharts = true; // チャート機能を有効化
-  static const bool enableOutShotDetailSummary = false;
+  static const bool enableOutshotDetailSummary = false;
 
   // 開発用フラグ
   static const bool enableDebugMode = false; // デバッグモードを無効化

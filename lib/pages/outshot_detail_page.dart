@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:outshotx/constants/feature_flags.dart';
 
-import '../models/outshot.dart';
-import '../models/outshot_set.dart';
+import '../models/outshot/outshot_entry.dart';
+import '../models/outshot/outshot_table.dart';
 
 class OutshotDetailPage extends StatefulWidget {
-  final OutshotSet outshotSet;
+  final OutshotTable outshotSet;
 
   const OutshotDetailPage({super.key, required this.outshotSet});
 
@@ -16,7 +16,7 @@ class OutshotDetailPage extends StatefulWidget {
 class _OutshotDetailPageState extends State<OutshotDetailPage> {
   String _searchQuery = '';
 
-  List<OutShot> get _filteredCombinations {
+  List<OutshotEntry> get _filteredCombinations {
     var combinations = widget.outshotSet.combinations;
 
     // 検索フィルタリング
@@ -54,7 +54,7 @@ class _OutshotDetailPageState extends State<OutshotDetailPage> {
             ),
           ),
 
-          if (FeatureFlags.enableOutShotDetailSummary) ...[
+          if (FeatureFlags.enableOutshotDetailSummary) ...[
             Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: 16.0,
@@ -134,7 +134,7 @@ class _OutshotDetailPageState extends State<OutshotDetailPage> {
     );
   }
 
-  Widget _buildOutshotCard(OutShot combo) {
+  Widget _buildOutshotCard(OutshotEntry combo) {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
       child: ListTile(
@@ -162,7 +162,7 @@ class _OutshotDetailPageState extends State<OutshotDetailPage> {
     );
   }
 
-  void _showOutshotDetailDialog(OutShot combo) {
+  void _showOutshotDetailDialog(OutshotEntry combo) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(

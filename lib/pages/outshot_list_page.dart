@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:outshotx/models/outshot_label.dart';
+import 'package:outshotx/models/outshot/outshot_label.dart';
 import 'package:outshotx/services/label_service.dart';
 
 import '../constants/double_out_routes.dart';
-import '../models/outshot.dart';
-import '../models/outshot_set.dart';
+import '../models/outshot/outshot_entry.dart';
+import '../models/outshot/outshot_table.dart';
 import 'outshot_detail_page.dart';
 
 class OutshotListPage extends StatefulWidget {
@@ -40,10 +40,10 @@ class _OutshotListPageState extends State<OutshotListPage> {
   }
 
   // ダブルアウトのアウトショットを生成
-  List<OutShot> generateDoubleOutCombinations() {
+  List<OutshotEntry> generateDoubleOutCombinations() {
     return DoubleOutRoutes.routes.entries
         .map(
-          (entry) => OutShot(
+          (entry) => OutshotEntry(
             score: entry.key,
             combination: entry.value,
             description: 'ダブルアウトルート',
@@ -53,8 +53,8 @@ class _OutshotListPageState extends State<OutshotListPage> {
   }
 
   // 仮データ
-  List<OutshotSet> get dummySets => [
-    OutshotSet(
+  List<OutshotTable> get dummySets => [
+    OutshotTable(
       id: '1',
       name: 'サンプルセット',
       labelIds: ['double_out', 'hard'],

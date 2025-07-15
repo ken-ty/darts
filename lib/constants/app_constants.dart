@@ -14,7 +14,7 @@ class AppConstants {
   static const String appDescription = 'ダーツアウトショットアプリ';
 
   // デフォルト値
-  static const int defaultScore = 501;
+  static const int defaultScore = 301;
   static const int maxScore = 180;
 
   // アニメーション時間

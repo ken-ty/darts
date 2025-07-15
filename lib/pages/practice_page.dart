@@ -23,8 +23,8 @@ class _PracticePageState extends State<PracticePage>
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
 
-  int _currentScore = 501;
-  final List<int> _scoreHistory = [501];
+  int _currentScore = 301;
+  final List<int> _scoreHistory = [301];
   final TextEditingController _inputController = TextEditingController();
 
   @override
@@ -474,9 +474,9 @@ class _PracticePageState extends State<PracticePage>
 
   void _resetGame() {
     setState(() {
-      _currentScore = 501;
+      _currentScore = 301;
       _scoreHistory.clear();
-      _scoreHistory.add(501);
+      _scoreHistory.add(301);
       _inputController.clear();
     });
   }
@@ -657,13 +657,13 @@ class _PracticePageState extends State<PracticePage>
                 Icons.sports_esports,
                 color: Theme.of(context).colorScheme.primary,
               ),
-              title: const Text('501'),
+              title: const Text('301'),
               subtitle: const Text('標準的なゲーム'),
               onTap: () {
                 setState(() {
-                  _currentScore = 501;
+                  _currentScore = 301;
                   _scoreHistory.clear();
-                  _scoreHistory.add(501);
+                  _scoreHistory.add(301);
                 });
                 Navigator.pop(context);
               },

@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:outshotx/l10n/app_localizations.dart';
 
 import '../constants/feature_flags.dart';
 import '../models/finish_combination.dart';
@@ -93,7 +94,7 @@ class _PracticePageState extends State<PracticePage>
         elevation: 0,
         iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary),
         title: Text(
-          'プラクティス',
+          AppLocalizations.of(context)?.practice ?? '',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.bold,
@@ -152,7 +153,7 @@ class _PracticePageState extends State<PracticePage>
                   child: Column(
                     children: [
                       Text(
-                        '残りスコア',
+                        AppLocalizations.of(context)?.remainingScore ?? '',
                         style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(
                               color: Theme.of(
@@ -186,7 +187,7 @@ class _PracticePageState extends State<PracticePage>
 
                 // Score Input
                 Text(
-                  'スコア入力',
+                  AppLocalizations.of(context)?.scoreInput ?? '',
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: Theme.of(context).colorScheme.onSurface,
                     fontWeight: FontWeight.bold,
@@ -200,7 +201,8 @@ class _PracticePageState extends State<PracticePage>
                         controller: _inputController,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
-                          hintText: '投げたスコアを入力',
+                          hintText:
+                              AppLocalizations.of(context)?.enterScore ?? '',
                           hintStyle: TextStyle(
                             color: Theme.of(
                               context,
@@ -281,7 +283,7 @@ class _PracticePageState extends State<PracticePage>
                         color: Theme.of(context).colorScheme.primary,
                       ),
                       label: Text(
-                        '前のスコアに戻す',
+                        AppLocalizations.of(context)?.undoLastScore ?? '',
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.primary,
                         ),
@@ -294,7 +296,7 @@ class _PracticePageState extends State<PracticePage>
                 // Available Finishes
                 if (_availableFinishes.isNotEmpty) ...[
                   Text(
-                    'フィニッシュ候補',
+                    AppLocalizations.of(context)?.finishCandidates ?? '',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       color: Theme.of(context).colorScheme.onSurface,
                       fontWeight: FontWeight.bold,
@@ -339,7 +341,8 @@ class _PracticePageState extends State<PracticePage>
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'フィニッシュ候補なし',
+                          AppLocalizations.of(context)?.noFinishCandidates ??
+                              '',
                           style: Theme.of(context).textTheme.titleMedium
                               ?.copyWith(
                                 color: Theme.of(context).colorScheme.tertiary,
@@ -348,7 +351,10 @@ class _PracticePageState extends State<PracticePage>
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'このスコアのフィニッシュを\nカスタム登録してみましょう',
+                          AppLocalizations.of(
+                                context,
+                              )?.noFinishCandidatesDescription ??
+                              '',
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
@@ -421,12 +427,18 @@ class _PracticePageState extends State<PracticePage>
 
     final score = int.tryParse(inputText);
     if (score == null || score < 0 || score > 180) {
-      _showErrorDialog('無効なスコア', '0から180の間で入力してください。');
+      _showErrorDialog(
+        AppLocalizations.of(context)?.invalidScore ?? '',
+        AppLocalizations.of(context)?.invalidScoreMessage ?? '',
+      );
       return;
     }
 
     if (DartsCalculator.isBustScore(_currentScore, score)) {
-      _showErrorDialog('バスト！', 'スコアが1になるか、0を下回りました。');
+      _showErrorDialog(
+        AppLocalizations.of(context)?.bust ?? '',
+        AppLocalizations.of(context)?.bustMessage ?? '',
+      );
       return;
     }
 
@@ -446,7 +458,10 @@ class _PracticePageState extends State<PracticePage>
 
   void _quickSubtract(int score) {
     if (DartsCalculator.isBustScore(_currentScore, score)) {
-      _showErrorDialog('バスト！', 'このスコアでは1になるか、0を下回ります。');
+      _showErrorDialog(
+        AppLocalizations.of(context)?.bust ?? '',
+        AppLocalizations.of(context)?.bustQuickMessage ?? '',
+      );
       return;
     }
 
@@ -483,15 +498,15 @@ class _PracticePageState extends State<PracticePage>
 
   String _getGameStatus() {
     if (_currentScore == 0) {
-      return 'ゲーム終了！';
+      return AppLocalizations.of(context)?.gameFinished ?? '';
     } else if (_currentScore <= 40 && _currentScore % 2 == 0) {
-      return 'フィニッシュ可能';
+      return AppLocalizations.of(context)?.finishPossible ?? '';
     } else if (_currentScore <= 60) {
-      return 'フィニッシュ圏内';
+      return AppLocalizations.of(context)?.finishRange ?? '';
     } else if (_currentScore <= 100) {
-      return '良いポジション';
+      return AppLocalizations.of(context)?.goodPosition ?? '';
     } else {
-      return '継続中';
+      return AppLocalizations.of(context)?.inProgress ?? '';
     }
   }
 
@@ -542,7 +557,7 @@ class _PracticePageState extends State<PracticePage>
                   _quickSubtract(finish.score);
                 },
                 child: Text(
-                  'このフィニッシュで上がる',
+                  AppLocalizations.of(context)?.finishWithThis ?? '',
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.onPrimary,
                   ),
@@ -576,7 +591,7 @@ class _PracticePageState extends State<PracticePage>
           FilledButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
-              'OK',
+              AppLocalizations.of(context)?.ok ?? '',
               style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
             ),
           ),
@@ -598,7 +613,7 @@ class _PracticePageState extends State<PracticePage>
             ),
             const SizedBox(width: 8),
             Text(
-              'おめでとうございます！',
+              AppLocalizations.of(context)?.congratulations ?? '',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: Theme.of(context).colorScheme.tertiary,
                 fontWeight: FontWeight.bold,
@@ -607,7 +622,7 @@ class _PracticePageState extends State<PracticePage>
           ],
         ),
         content: Text(
-          'ゲーム終了です！\n新しいゲームを始めますか？',
+          AppLocalizations.of(context)?.gameFinishedMessage ?? '',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: Theme.of(context).colorScheme.onSurface,
           ),
@@ -619,7 +634,7 @@ class _PracticePageState extends State<PracticePage>
               Navigator.pop(context);
             },
             child: Text(
-              '終了',
+              AppLocalizations.of(context)?.end ?? '',
               style: TextStyle(color: Theme.of(context).colorScheme.outline),
             ),
           ),
@@ -629,7 +644,7 @@ class _PracticePageState extends State<PracticePage>
               _resetGame();
             },
             child: Text(
-              '新しいゲーム',
+              AppLocalizations.of(context)?.newGame ?? '',
               style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
             ),
           ),
@@ -643,7 +658,7 @@ class _PracticePageState extends State<PracticePage>
       context: context,
       builder: (context) => AlertDialog(
         title: Text(
-          'ゲーム設定',
+          AppLocalizations.of(context)?.gameSettings ?? '',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.bold,
@@ -658,7 +673,7 @@ class _PracticePageState extends State<PracticePage>
                 color: Theme.of(context).colorScheme.primary,
               ),
               title: const Text('301'),
-              subtitle: const Text('標準的なゲーム'),
+              subtitle: Text(AppLocalizations.of(context)?.standardGame ?? ''),
               onTap: () {
                 setState(() {
                   _currentScore = 301;
@@ -674,7 +689,7 @@ class _PracticePageState extends State<PracticePage>
                 color: Theme.of(context).colorScheme.secondary,
               ),
               title: const Text('301'),
-              subtitle: const Text('ショートゲーム'),
+              subtitle: Text(AppLocalizations.of(context)?.shortGame ?? ''),
               onTap: () {
                 setState(() {
                   _currentScore = 301;
@@ -690,7 +705,7 @@ class _PracticePageState extends State<PracticePage>
                 color: Theme.of(context).colorScheme.tertiary,
               ),
               title: const Text('701'),
-              subtitle: const Text('ロングゲーム'),
+              subtitle: Text(AppLocalizations.of(context)?.longGame ?? ''),
               onTap: () {
                 setState(() {
                   _currentScore = 701;
@@ -706,7 +721,7 @@ class _PracticePageState extends State<PracticePage>
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
-              'キャンセル',
+              AppLocalizations.of(context)?.cancel ?? '',
               style: TextStyle(color: Theme.of(context).colorScheme.outline),
             ),
           ),
@@ -723,7 +738,7 @@ class _PracticePageState extends State<PracticePage>
         elevation: 0,
         iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary),
         title: Text(
-          'プラクティス',
+          AppLocalizations.of(context)?.practice ?? '',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.bold,
@@ -777,7 +792,7 @@ class _PracticePageState extends State<PracticePage>
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    '開発中です',
+                    AppLocalizations.of(context)?.underDevelopment ?? '',
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       color: Theme.of(context).colorScheme.onSurface,
                       fontWeight: FontWeight.bold,
@@ -785,7 +800,8 @@ class _PracticePageState extends State<PracticePage>
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'プラクティス機能は現在開発中です。\nスコア計算と練習機能を\nお楽しみにお待ちください！',
+                    AppLocalizations.of(context)?.practiceUnderDevelopment ??
+                        '',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: Theme.of(
                         context,
@@ -797,7 +813,7 @@ class _PracticePageState extends State<PracticePage>
                   FilledButton.icon(
                     onPressed: () => Navigator.pop(context),
                     icon: const Icon(Icons.arrow_back),
-                    label: const Text('戻る'),
+                    label: Text(AppLocalizations.of(context)?.back ?? ''),
                   ),
                 ],
               ),
@@ -845,7 +861,7 @@ class _PracticePageState extends State<PracticePage>
                 child: Column(
                   children: [
                     Text(
-                      '残りスコア',
+                      AppLocalizations.of(context)?.remainingScore ?? '',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: Theme.of(
                           context,

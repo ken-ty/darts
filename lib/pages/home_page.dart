@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:outshotx/services/user_service.dart';
 
 import '../constants/feature_flags.dart';
+import '../l10n/app_localizations.dart';
 import 'outshot_list_page.dart';
 import 'practice_page.dart';
 import 'settings_page.dart';
@@ -174,7 +175,9 @@ class _DartsHomePageState extends State<DartsHomePage>
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'ようこそ、${currentUser.name}さん！',
+                                    AppLocalizations.of(
+                                      context,
+                                    )!.welcomeMessage(currentUser.name),
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleMedium
@@ -187,7 +190,9 @@ class _DartsHomePageState extends State<DartsHomePage>
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    '今日もダーツを楽しみましょう',
+                                    AppLocalizations.of(
+                                      context,
+                                    )!.enjoyDartsToday,
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyMedium
@@ -215,8 +220,9 @@ class _DartsHomePageState extends State<DartsHomePage>
                       children: [
                         _buildActionCard(
                           context,
-                          title: 'アウトショット',
-                          subtitle: 'ガイドを作成',
+                          title: AppLocalizations.of(context)?.outshot ?? '',
+                          subtitle:
+                              AppLocalizations.of(context)?.outshotGuide ?? '',
                           icon: Icons.grid_on,
                           color: Theme.of(context).colorScheme.primary,
                           onTap: () {
@@ -230,8 +236,9 @@ class _DartsHomePageState extends State<DartsHomePage>
                         ),
                         _buildActionCard(
                           context,
-                          title: '設定',
-                          subtitle: 'アプリ設定',
+                          title: AppLocalizations.of(context)?.settings ?? '',
+                          subtitle:
+                              AppLocalizations.of(context)?.appSettings ?? '',
                           icon: Icons.settings,
                           color: Theme.of(context).colorScheme.outline,
                           onTap: () {
@@ -246,8 +253,10 @@ class _DartsHomePageState extends State<DartsHomePage>
 
                         _buildActionCard(
                           context,
-                          title: 'プラクティス',
-                          subtitle: 'スコア計算と練習',
+                          title: AppLocalizations.of(context)?.practice ?? '',
+                          subtitle:
+                              AppLocalizations.of(context)?.scoreCalculation ??
+                              '',
                           icon: Icons.calculate,
                           color: Theme.of(context).colorScheme.secondary,
                           isDev: true,
@@ -267,8 +276,9 @@ class _DartsHomePageState extends State<DartsHomePage>
                         ),
                         _buildActionCard(
                           context,
-                          title: '統計',
-                          subtitle: 'ゲーム記録と分析',
+                          title: AppLocalizations.of(context)?.statistics ?? '',
+                          subtitle:
+                              AppLocalizations.of(context)?.gameRecords ?? '',
                           icon: Icons.analytics,
                           color: Theme.of(context).colorScheme.tertiary,
                           isDev: true,
@@ -381,7 +391,7 @@ class _DartsHomePageState extends State<DartsHomePage>
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
-                      '開発中',
+                      AppLocalizations.of(context)?.underDevelopment ?? '',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -404,7 +414,7 @@ class _DartsHomePageState extends State<DartsHomePage>
       context: context,
       builder: (context) => AlertDialog(
         title: Text(
-          'ユーザーを選択',
+          AppLocalizations.of(context)?.selectUser ?? '',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.bold,
@@ -417,7 +427,7 @@ class _DartsHomePageState extends State<DartsHomePage>
             children: [
               if (allUsers.isEmpty)
                 Text(
-                  'ユーザーが存在しません',
+                  AppLocalizations.of(context)?.noUsersFound ?? '',
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
@@ -456,7 +466,7 @@ class _DartsHomePageState extends State<DartsHomePage>
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
-              'キャンセル',
+              AppLocalizations.of(context)?.cancel ?? '',
               style: TextStyle(color: Theme.of(context).colorScheme.outline),
             ),
           ),
@@ -471,7 +481,7 @@ class _DartsHomePageState extends State<DartsHomePage>
               ).then((_) => setState(() {}));
             },
             child: Text(
-              'ユーザーを管理',
+              AppLocalizations.of(context)!.manageUsers,
               style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
             ),
           ),
@@ -485,14 +495,14 @@ class _DartsHomePageState extends State<DartsHomePage>
       context: context,
       builder: (context) => AlertDialog(
         title: Text(
-          'ユーザーを選択',
+          AppLocalizations.of(context)!.selectUser,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.bold,
           ),
         ),
         content: Text(
-          'この機能を使用するには、まずユーザーを選択してください。',
+          AppLocalizations.of(context)!.pleaseSelectUserToUseThisFeature,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: Theme.of(context).colorScheme.onSurface,
           ),
@@ -501,7 +511,7 @@ class _DartsHomePageState extends State<DartsHomePage>
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
-              'キャンセル',
+              AppLocalizations.of(context)?.cancel ?? '',
               style: TextStyle(color: Theme.of(context).colorScheme.outline),
             ),
           ),
@@ -511,7 +521,7 @@ class _DartsHomePageState extends State<DartsHomePage>
               _showUserSelectionDialog(context);
             },
             child: Text(
-              'ユーザー選択',
+              AppLocalizations.of(context)!.selectUser,
               style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
             ),
           ),

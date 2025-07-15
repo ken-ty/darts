@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:outshotx/constants/feature_flags.dart';
+import 'package:outshotx/l10n/app_localizations.dart';
 import 'package:outshotx/models/outshot/outshot_label.dart';
 import 'package:outshotx/services/label_service.dart';
 import 'package:outshotx/services/outshot_table_service.dart';
@@ -53,7 +54,7 @@ class _OutshotListPageState extends State<OutshotListPage> {
           (entry) => OutshotEntry(
             score: entry.key,
             combination: entry.value,
-            description: 'ダブルアウトルート',
+            description: AppLocalizations.of(context)?.doubleOutRoute ?? '',
           ),
         )
         .toList();
@@ -68,19 +69,19 @@ class _OutshotListPageState extends State<OutshotListPage> {
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
-          title: const Text('新しいアウトショットテーブル'),
+          title: Text(AppLocalizations.of(context)?.newOutshotTable ?? ''),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: nameController,
-                decoration: const InputDecoration(
-                  labelText: 'テーブル名',
-                  hintText: '例: マイアウトショット',
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)?.tableName ?? '',
+                  hintText: AppLocalizations.of(context)?.tableNameHint ?? '',
                 ),
               ),
               const SizedBox(height: 16),
-              const Text('ラベルを選択:'),
+              Text(AppLocalizations.of(context)?.selectLabels ?? ''),
               const SizedBox(height: 8),
               Wrap(
                 spacing: 8,
@@ -106,7 +107,7 @@ class _OutshotListPageState extends State<OutshotListPage> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('キャンセル'),
+              child: Text(AppLocalizations.of(context)?.cancel ?? ''),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -125,12 +126,16 @@ class _OutshotListPageState extends State<OutshotListPage> {
                   if (mounted) {
                     Navigator.of(context).pop();
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('テーブルを作成しました')),
+                      SnackBar(
+                        content: Text(
+                          AppLocalizations.of(context)?.tableCreated ?? '',
+                        ),
+                      ),
                     );
                   }
                 }
               },
-              child: const Text('作成'),
+              child: Text(AppLocalizations.of(context)?.create ?? ''),
             ),
           ],
         ),
@@ -147,19 +152,19 @@ class _OutshotListPageState extends State<OutshotListPage> {
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
-          title: const Text('テーブルを編集'),
+          title: Text(AppLocalizations.of(context)?.editTable ?? ''),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: nameController,
-                decoration: const InputDecoration(
-                  labelText: 'テーブル名',
-                  hintText: '例: マイアウトショット',
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)?.tableName ?? '',
+                  hintText: AppLocalizations.of(context)?.tableNameHint ?? '',
                 ),
               ),
               const SizedBox(height: 16),
-              const Text('ラベルを選択:'),
+              Text(AppLocalizations.of(context)?.selectLabels ?? ''),
               const SizedBox(height: 8),
               Wrap(
                 spacing: 8,
@@ -185,7 +190,7 @@ class _OutshotListPageState extends State<OutshotListPage> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('キャンセル'),
+              child: Text(AppLocalizations.of(context)?.cancel ?? ''),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -204,12 +209,16 @@ class _OutshotListPageState extends State<OutshotListPage> {
                   if (mounted) {
                     Navigator.of(context).pop();
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('テーブルを更新しました')),
+                      SnackBar(
+                        content: Text(
+                          AppLocalizations.of(context)?.tableUpdated ?? '',
+                        ),
+                      ),
                     );
                   }
                 }
               },
-              child: const Text('更新'),
+              child: Text(AppLocalizations.of(context)?.update ?? ''),
             ),
           ],
         ),
@@ -222,12 +231,15 @@ class _OutshotListPageState extends State<OutshotListPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('テーブルを削除'),
-        content: Text('「${table.name}」を削除しますか？\nこの操作は取り消せません。'),
+        title: Text(AppLocalizations.of(context)?.deleteTable ?? ''),
+        content: Text(
+          AppLocalizations.of(context)?.deleteTableConfirm(table.name) ?? '',
+        ),
+
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('キャンセル'),
+            child: Text(AppLocalizations.of(context)?.cancel ?? ''),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -236,16 +248,20 @@ class _OutshotListPageState extends State<OutshotListPage> {
 
               if (mounted) {
                 Navigator.of(context).pop();
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(const SnackBar(content: Text('テーブルを削除しました')));
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      AppLocalizations.of(context)?.tableDeleted ?? '',
+                    ),
+                  ),
+                );
               }
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
               foregroundColor: Colors.white,
             ),
-            child: const Text('削除'),
+            child: Text(AppLocalizations.of(context)?.delete ?? ''),
           ),
         ],
       ),
@@ -260,11 +276,11 @@ class _OutshotListPageState extends State<OutshotListPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('アウトショット一覧'),
+        title: Text(AppLocalizations.of(context)?.outshotList ?? ''),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
-            tooltip: '新規作成',
+            tooltip: AppLocalizations.of(context)?.createNew ?? '',
             onPressed: _showCreateTableDialog,
           ),
         ],
@@ -276,12 +292,12 @@ class _OutshotListPageState extends State<OutshotListPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               child: TextField(
-                decoration: const InputDecoration(
-                  hintText: 'テーブル名で検索',
-                  prefixIcon: Icon(Icons.search),
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context)?.searchTableName ?? '',
+                  prefixIcon: const Icon(Icons.search),
                   isDense: true,
-                  border: OutlineInputBorder(),
-                  contentPadding: EdgeInsets.symmetric(
+                  border: const OutlineInputBorder(),
+                  contentPadding: const EdgeInsets.symmetric(
                     vertical: 0,
                     horizontal: 8,
                   ),
@@ -295,20 +311,29 @@ class _OutshotListPageState extends State<OutshotListPage> {
           const Divider(height: 1),
           Expanded(
             child: _tables.isEmpty
-                ? const Center(
+                ? Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.list, size: 64, color: Colors.grey),
-                        SizedBox(height: 16),
+                        const Icon(Icons.list, size: 64, color: Colors.grey),
+                        const SizedBox(height: 16),
                         Text(
-                          'アウトショットテーブルがありません',
-                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                          AppLocalizations.of(context)?.noOutshotTables ?? '',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: Colors.grey,
+                          ),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text(
-                          '「+」ボタンから新しいテーブルを作成してください',
-                          style: TextStyle(fontSize: 14, color: Colors.grey),
+                          AppLocalizations.of(
+                                context,
+                              )?.noOutshotTablesDescription ??
+                              '',
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey,
+                          ),
                         ),
                       ],
                     ),
@@ -389,7 +414,13 @@ class _OutshotListPageState extends State<OutshotListPage> {
                                   ),
                                 ),
                               Text(
-                                '作成日: ${table.createdAt.toLocal().toString().split(" ")[0]}',
+                                AppLocalizations.of(context)?.createdDate(
+                                      table.createdAt
+                                          .toLocal()
+                                          .toString()
+                                          .split(" ")[0],
+                                    ) ??
+                                    '',
                                 style: const TextStyle(
                                   fontSize: 12,
                                   color: Colors.grey,
@@ -415,7 +446,9 @@ class _OutshotListPageState extends State<OutshotListPage> {
                                 children: [
                                   ListTile(
                                     leading: const Icon(Icons.edit),
-                                    title: const Text('編集'),
+                                    title: Text(
+                                      AppLocalizations.of(context)?.edit ?? '',
+                                    ),
                                     onTap: () {
                                       Navigator.pop(context);
                                       _showEditTableDialog(table);
@@ -423,7 +456,10 @@ class _OutshotListPageState extends State<OutshotListPage> {
                                   ),
                                   ListTile(
                                     leading: const Icon(Icons.copy),
-                                    title: const Text('複製'),
+                                    title: Text(
+                                      AppLocalizations.of(context)?.duplicate ??
+                                          '',
+                                    ),
                                     onTap: () {
                                       Navigator.pop(context);
                                       // TODO: 複製機能
@@ -434,9 +470,10 @@ class _OutshotListPageState extends State<OutshotListPage> {
                                       Icons.delete,
                                       color: Colors.red,
                                     ),
-                                    title: const Text(
-                                      '削除',
-                                      style: TextStyle(color: Colors.red),
+                                    title: Text(
+                                      AppLocalizations.of(context)?.delete ??
+                                          '',
+                                      style: const TextStyle(color: Colors.red),
                                     ),
                                     onTap: () {
                                       Navigator.pop(context);

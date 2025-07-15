@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:outshotx/l10n/app_localizations.dart';
+import 'package:outshotx/services/language_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../constants/app_constants.dart';
@@ -66,7 +68,7 @@ class _SettingsPageState extends State<SettingsPage>
         elevation: 0,
         iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary),
         title: Text(
-          '設定',
+          AppLocalizations.of(context)?.settings ?? '',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.bold,
@@ -95,7 +97,9 @@ class _SettingsPageState extends State<SettingsPage>
               children: [
                 // User Profile Section
                 if (currentUser != null) ...[
-                  _buildSectionHeader('ユーザープロファイル'),
+                  _buildSectionHeader(
+                    AppLocalizations.of(context)?.userProfile ?? '',
+                  ),
                   const SizedBox(height: 16),
                   _buildUserProfileCard(),
                   const SizedBox(height: 32),
@@ -103,7 +107,9 @@ class _SettingsPageState extends State<SettingsPage>
 
                 // Appearance Section
                 if (FeatureFlags.enableThemeSettings) ...[
-                  _buildSectionHeader('外観'),
+                  _buildSectionHeader(
+                    AppLocalizations.of(context)?.appearance ?? '',
+                  ),
                   const SizedBox(height: 16),
                   _buildAppearanceSettings(),
                   const SizedBox(height: 32),
@@ -111,7 +117,9 @@ class _SettingsPageState extends State<SettingsPage>
 
                 // Language Section
                 if (FeatureFlags.enableLanguageSettings) ...[
-                  _buildSectionHeader('言語'),
+                  _buildSectionHeader(
+                    AppLocalizations.of(context)?.language ?? '',
+                  ),
                   const SizedBox(height: 16),
                   _buildLanguageSettings(),
                   const SizedBox(height: 32),
@@ -119,7 +127,9 @@ class _SettingsPageState extends State<SettingsPage>
 
                 // Notifications Section
                 if (FeatureFlags.enableNotificationSettings) ...[
-                  _buildSectionHeader('通知'),
+                  _buildSectionHeader(
+                    AppLocalizations.of(context)?.notifications ?? '',
+                  ),
                   const SizedBox(height: 16),
                   _buildNotificationSettings(),
                   const SizedBox(height: 32),
@@ -127,7 +137,9 @@ class _SettingsPageState extends State<SettingsPage>
 
                 // Sound Section
                 if (FeatureFlags.enableSoundSettings) ...[
-                  _buildSectionHeader('サウンド'),
+                  _buildSectionHeader(
+                    AppLocalizations.of(context)?.sound ?? '',
+                  ),
                   const SizedBox(height: 16),
                   _buildSoundSettings(),
                   const SizedBox(height: 32),
@@ -135,14 +147,18 @@ class _SettingsPageState extends State<SettingsPage>
 
                 // Data Export Section
                 if (FeatureFlags.enableDataExport) ...[
-                  _buildSectionHeader('データエクスポート'),
+                  _buildSectionHeader(
+                    AppLocalizations.of(context)?.dataExport ?? '',
+                  ),
                   const SizedBox(height: 16),
                   // _buildDataExportSettings() など、必要なら追加
                   const SizedBox(height: 32),
                 ],
 
                 // About Section（常時表示）
-                _buildSectionHeader('アプリについて'),
+                _buildSectionHeader(
+                  AppLocalizations.of(context)?.aboutApp ?? '',
+                ),
                 const SizedBox(height: 16),
                 _buildAboutSection(),
                 const SizedBox(height: 32),
@@ -240,7 +256,7 @@ class _SettingsPageState extends State<SettingsPage>
       child: Column(
         children: [
           _buildSettingTile(
-            title: 'カラーテーマ',
+            title: AppLocalizations.of(context)?.colorTheme ?? '',
             subtitle: _getColorThemeName(
               currentUser?.colorTheme ?? ColorTheme.system,
             ),
@@ -253,20 +269,28 @@ class _SettingsPageState extends State<SettingsPage>
   }
 
   Widget _buildLanguageSettings() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
-        ),
-      ),
-      child: _buildSettingTile(
-        title: '言語',
-        subtitle: _getLanguageName(currentUser?.language ?? Language.japanese),
-        icon: Icons.language,
-        onTap: _showLanguageDialog,
-      ),
+    return FutureBuilder<String>(
+      future: LanguageService.instance.getCurrentLanguageCode(),
+      builder: (context, snapshot) {
+        final currentLanguage = snapshot.data ?? 'system';
+        return Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: Theme.of(
+                context,
+              ).colorScheme.outline.withValues(alpha: 0.2),
+            ),
+          ),
+          child: _buildSettingTile(
+            title: AppLocalizations.of(context)!.language,
+            subtitle: LanguageService.instance.getLanguageName(currentLanguage),
+            icon: Icons.language,
+            onTap: _showLanguageDialog,
+          ),
+        );
+      },
     );
   }
 
@@ -280,8 +304,8 @@ class _SettingsPageState extends State<SettingsPage>
         ),
       ),
       child: _buildSettingTile(
-        title: '通知',
-        subtitle: 'フィニッシュ達成時の通知',
+        title: AppLocalizations.of(context)?.notifications ?? '',
+        subtitle: AppLocalizations.of(context)?.finishNotification ?? '',
         icon: Icons.notifications,
         trailing: Switch(
           value: currentUser?.notificationsEnabled ?? true,
@@ -301,8 +325,8 @@ class _SettingsPageState extends State<SettingsPage>
         ),
       ),
       child: _buildSettingTile(
-        title: 'サウンド',
-        subtitle: '効果音の再生',
+        title: AppLocalizations.of(context)?.sound ?? '',
+        subtitle: AppLocalizations.of(context)?.soundEffects ?? '',
         icon: Icons.volume_up,
         trailing: Switch(
           value: currentUser?.soundEnabled ?? true,
@@ -324,19 +348,19 @@ class _SettingsPageState extends State<SettingsPage>
       child: Column(
         children: [
           _buildSettingTile(
-            title: 'バージョン',
+            title: AppLocalizations.of(context)?.version ?? '',
             subtitle: AppInfoService.getFullVersion(),
             icon: Icons.tag,
           ),
           _buildDivider(),
           _buildSettingTile(
-            title: 'プライバシーポリシー',
+            title: AppLocalizations.of(context)?.privacyPolicy ?? '',
             icon: Icons.privacy_tip,
             onTap: () => _launchURL(AppConstants.privacyPolicyUrl),
           ),
           _buildDivider(),
           _buildSettingTile(
-            title: '利用規約',
+            title: AppLocalizations.of(context)?.termsOfService ?? '',
             icon: Icons.description,
             onTap: () => _launchURL(AppConstants.termsOfServiceUrl),
           ),
@@ -399,11 +423,11 @@ class _SettingsPageState extends State<SettingsPage>
   String _getColorThemeName(ColorTheme theme) {
     switch (theme) {
       case ColorTheme.light:
-        return 'ライト';
+        return AppLocalizations.of(context)!.light;
       case ColorTheme.dark:
-        return 'ダーク';
+        return AppLocalizations.of(context)!.dark;
       case ColorTheme.system:
-        return 'システム設定';
+        return AppLocalizations.of(context)!.system;
     }
   }
 
@@ -421,7 +445,7 @@ class _SettingsPageState extends State<SettingsPage>
       context: context,
       builder: (context) => AlertDialog(
         title: Text(
-          'カラーテーマを選択',
+          AppLocalizations.of(context)?.selectColorTheme ?? '',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.bold,
@@ -454,7 +478,7 @@ class _SettingsPageState extends State<SettingsPage>
       context: context,
       builder: (context) => AlertDialog(
         title: Text(
-          '言語を選択',
+          AppLocalizations.of(context)?.selectLanguage ?? '',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.bold,
@@ -462,18 +486,28 @@ class _SettingsPageState extends State<SettingsPage>
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
-          children: Language.values.map((language) {
-            return ListTile(
-              title: Text(_getLanguageName(language)),
-              trailing: currentUser?.language == language
-                  ? Icon(
-                      Icons.check,
-                      color: Theme.of(context).colorScheme.primary,
-                    )
-                  : null,
-              onTap: () {
-                _updateLanguage(language);
-                Navigator.pop(context);
+          children: LanguageService.instance.getSupportedLanguageCodes().map((
+            languageCode,
+          ) {
+            return FutureBuilder<String>(
+              future: LanguageService.instance.getCurrentLanguageCode(),
+              builder: (context, snapshot) {
+                final currentLanguage = snapshot.data ?? 'system';
+                return ListTile(
+                  title: Text(
+                    LanguageService.instance.getLanguageName(languageCode),
+                  ),
+                  trailing: currentLanguage == languageCode
+                      ? Icon(
+                          Icons.check,
+                          color: Theme.of(context).colorScheme.primary,
+                        )
+                      : null,
+                  onTap: () async {
+                    await LanguageService.instance.setLanguage(languageCode);
+                    Navigator.pop(context);
+                  },
+                );
               },
             );
           }).toList(),
@@ -489,7 +523,7 @@ class _SettingsPageState extends State<SettingsPage>
       context: context,
       builder: (context) => AlertDialog(
         title: Text(
-          'プロフィールを編集',
+          AppLocalizations.of(context)?.editProfile ?? '',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.bold,
@@ -498,14 +532,14 @@ class _SettingsPageState extends State<SettingsPage>
         content: TextField(
           controller: nameController,
           decoration: InputDecoration(
-            labelText: '名前',
+            labelText: AppLocalizations.of(context)?.name ?? '',
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('キャンセル'),
+            child: Text(AppLocalizations.of(context)?.cancel ?? ''),
           ),
           FilledButton(
             onPressed: () {
@@ -514,7 +548,7 @@ class _SettingsPageState extends State<SettingsPage>
                 Navigator.pop(context);
               }
             },
-            child: const Text('保存'),
+            child: Text(AppLocalizations.of(context)?.save ?? ''),
           ),
         ],
       ),
@@ -594,14 +628,14 @@ class _SettingsPageState extends State<SettingsPage>
       context: context,
       builder: (context) => AlertDialog(
         title: Text(
-          'データエクスポート',
+          AppLocalizations.of(context)?.dataExport ?? '',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.bold,
           ),
         ),
         content: Text(
-          'ユーザーデータと統計情報をエクスポートしますか？',
+          AppLocalizations.of(context)?.exportDataConfirmation ?? '',
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: Theme.of(context).colorScheme.onSurface,
           ),
@@ -610,7 +644,7 @@ class _SettingsPageState extends State<SettingsPage>
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text(
-              'キャンセル',
+              AppLocalizations.of(context)?.cancel ?? '',
               style: TextStyle(color: Theme.of(context).colorScheme.outline),
             ),
           ),
@@ -626,7 +660,7 @@ class _SettingsPageState extends State<SettingsPage>
               );
             },
             child: Text(
-              'エクスポート',
+              AppLocalizations.of(context)?.export ?? '',
               style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
             ),
           ),

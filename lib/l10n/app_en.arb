@@ -1,0 +1,267 @@
+{
+  "@@locale": "en",
+  "appTitle": "outshotX",
+  "welcomeMessage": "Welcome, {userName}!",
+  "@welcomeMessage": {
+    "description": "Welcome message on home",
+    "placeholders": {
+      "userName": {
+        "type": "String"
+      }
+    }
+  },
+  "enjoyDartsToday": "Let's enjoy darts today!",
+  "outshot": "Outshot",
+  "outshotGuide": "Create Guide",
+  "settings": "Settings",
+  "appSettings": "App Settings",
+  "practice": "Practice",
+  "scoreCalculation": "Score Calculation & Practice",
+  "statistics": "Statistics",
+  "gameRecords": "Game Records & Analysis",
+  "userProfile": "User Profile",
+  "appearance": "Appearance",
+  "language": "Language",
+  "notifications": "Notifications",
+  "sound": "Sound",
+  "dataExport": "Data Export",
+  "aboutApp": "About App",
+  "colorTheme": "Color Theme",
+  "cancel": "Cancel",
+  "save": "Save",
+  "edit": "Edit",
+  "back": "Back",
+  "remainingScore": "Remaining Score",
+  "scoreInput": "Score Input",
+  "enterScore": "Enter your score",
+  "undoLastScore": "Undo Last Score",
+  "gameSettings": "Game Settings",
+  "resetGame": "Reset Game",
+  "selectUser": "Please select a user",
+  "selectUserDescription": "Select a user to display statistics data",
+  "underDevelopment": "Under Development",
+  "week": "1 Week",
+  "month": "1 Month",
+  "all": "All",
+  "overview": "Overview",
+  "finishStatistics": "Finish Statistics",
+  "practiceHistory": "Practice History",
+  "gameHistory": "Game History",
+  "charts": "Charts",
+  "today": "Today",
+  "yesterday": "Yesterday",
+  "daysAgo": "{days} days ago",
+  "@daysAgo": {
+    "description": "Display how many days ago",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "finishCount": "{count} finishes",
+  "@finishCount": {
+    "description": "Display number of finishes",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataExportInProgress": "Data export feature is in preparation",
+  "userId": "ID: {id}",
+  "@userId": {
+    "description": "Display user ID",
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "systemLanguage": "System",
+  "noUsersFound": "No users found",
+  "manageUsers": "Manage Users",
+  "pleaseSelectUserToUseThisFeature": "Please select a user first to use this feature.",
+  "selectLanguage": "Select Language",
+  "languageChanged": "Language settings changed",
+  "userProfile": "User Profile",
+  "appearance": "Appearance",
+  "notifications": "Notifications",
+  "sound": "Sound",
+  "dataExport": "Data Export",
+  "aboutApp": "About App",
+  "selectColorTheme": "Select Color Theme",
+  "editProfile": "Edit Profile",
+  "name": "Name",
+  "export": "Export",
+  "exportDataConfirmation": "Export user data and statistics?",
+  "light": "Light",
+  "dark": "Dark",
+  "system": "System",
+  "finishNotification": "Finish achievement notifications",
+  "soundEffects": "Sound effects playback",
+  "version": "Version",
+  "privacyPolicy": "Privacy Policy",
+  "termsOfService": "Terms of Service",
+  "overview": "Overview",
+  "totalGames": "Total Games",
+  "practiceSessions": "Practice Sessions",
+  "dartsThrown": "Darts Thrown",
+  "finishCount": "Finish Count",
+  "recentPractice": "Recent Practice",
+  "recentGames": "Recent Games",
+  "viewAll": "View All",
+  "noPracticeRecords": "No practice records",
+  "noGameRecords": "No game records",
+  "outshot": "Outshot",
+  "score": "Score",
+  "darts": "darts",
+  "today": "Today",
+  "yesterday": "Yesterday",
+  "daysAgo": "{days} days ago",
+  "@daysAgo": {
+    "description": "Display how many days ago",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursMinutes": "{hours}h {minutes}m",
+  "@hoursMinutes": {
+    "description": "Display hours and minutes",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "minutesOnly": "{minutes}m",
+  "@minutesOnly": {
+    "description": "Display minutes only",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "monthDay": "{month}/{day}",
+  "@monthDay": {
+    "description": "Display month/day",
+    "placeholders": {
+      "month": {
+        "type": "int"
+      },
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "underDevelopment": "Under Development",
+  "statisticsUnderDevelopment": "Statistics feature is currently under development.\nDetailed statistics and graphs\ncoming soon!",
+  "charts": "Charts",
+  "finishCountLabel": "Finish Count",
+  "outshotLabel": "Outshot",
+  "range1To60": "1-60",
+  "range61To120": "61-120",
+  "range121To180": "121-180",
+  "overall": "Overall",
+  "recentPracticeTitle": "Recent Practice",
+  "recentGamesTitle": "Recent Games",
+  "dartsAndDuration": "{darts} darts • {duration}",
+  "@dartsAndDuration": {
+    "description": "Display darts count and duration",
+    "placeholders": {
+      "darts": {
+        "type": "int"
+      },
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "scoreAndDarts": "Score: {score} • {darts} darts",
+  "@scoreAndDarts": {
+    "description": "Display score and darts count",
+    "placeholders": {
+      "score": {
+        "type": "int"
+      },
+      "darts": {
+        "type": "int"
+      }
+    }
+  },
+  "practice": "Practice",
+  "remainingScore": "Remaining Score",
+  "scoreInput": "Score Input",
+  "enterScore": "Enter your score",
+  "undoLastScore": "Undo Last Score",
+  "finishCandidates": "Finish Candidates",
+  "noFinishCandidates": "No Finish Candidates",
+  "noFinishCandidatesDescription": "Try registering a custom finish\nfor this score",
+  "gameFinished": "Game Finished!",
+  "finishPossible": "Finish Possible",
+  "finishRange": "In Finish Range",
+  "goodPosition": "Good Position",
+  "inProgress": "In Progress",
+  "invalidScore": "Invalid Score",
+  "invalidScoreMessage": "Please enter a score between 0 and 180.",
+  "bust": "Bust!",
+  "bustMessage": "Score becomes 1 or goes below 0.",
+  "bustQuickMessage": "This score would become 1 or go below 0.",
+  "ok": "OK",
+  "congratulations": "Congratulations!",
+  "gameFinishedMessage": "Game finished!\nStart a new game?",
+  "end": "End",
+  "newGame": "New Game",
+  "gameSettings": "Game Settings",
+  "standardGame": "Standard Game",
+  "shortGame": "Short Game",
+  "longGame": "Long Game",
+  "cancel": "Cancel",
+  "finishWithThis": "Finish with this",
+  "practiceUnderDevelopment": "Practice feature is currently under development.\nScore calculation and practice features\ncoming soon!",
+  "outshotList": "Outshot List",
+  "createNew": "Create New",
+  "newOutshotTable": "New Outshot Table",
+  "tableName": "Table Name",
+  "tableNameHint": "e.g. My Outshot",
+  "selectLabels": "Select Labels:",
+  "cancel": "Cancel",
+  "create": "Create",
+  "editTable": "Edit Table",
+  "update": "Update",
+  "deleteTable": "Delete Table",
+  "deleteTableConfirm": "Delete \"{tableName}\"?\nThis action cannot be undone.",
+  "@deleteTableConfirm": {
+    "description": "Table deletion confirmation message",
+    "placeholders": {
+      "tableName": {
+        "type": "String"
+      }
+    }
+  },
+  "delete": "Delete",
+  "searchTableName": "Search by table name",
+  "noOutshotTables": "No outshot tables",
+  "noOutshotTablesDescription": "Create a new table using the \"+\" button",
+  "tableCreated": "Table created",
+  "tableUpdated": "Table updated",
+  "tableDeleted": "Table deleted",
+  "createdDate": "Created: {date}",
+  "@createdDate": {
+    "description": "Display creation date",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "edit": "Edit",
+  "duplicate": "Duplicate",
+  "doubleOutRoute": "Double Out Route"
+} 

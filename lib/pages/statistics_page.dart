@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:outshotx/l10n/app_localizations.dart';
 
 import '../constants/feature_flags.dart';
 import '../models/user_profile.dart';
@@ -75,7 +76,7 @@ class _StatisticsPageState extends State<StatisticsPage>
         elevation: 0,
         iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary),
         title: Text(
-          '統計',
+          AppLocalizations.of(context)?.statistics ?? '',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.bold,
@@ -89,9 +90,18 @@ class _StatisticsPageState extends State<StatisticsPage>
               });
             },
             itemBuilder: (context) => [
-              const PopupMenuItem(value: 'week', child: Text('1週間')),
-              const PopupMenuItem(value: 'month', child: Text('1ヶ月')),
-              const PopupMenuItem(value: 'all', child: Text('全体')),
+              PopupMenuItem(
+                value: 'week',
+                child: Text(AppLocalizations.of(context)?.week ?? ''),
+              ),
+              PopupMenuItem(
+                value: 'month',
+                child: Text(AppLocalizations.of(context)?.month ?? ''),
+              ),
+              PopupMenuItem(
+                value: 'all',
+                child: Text(AppLocalizations.of(context)?.all ?? ''),
+              ),
             ],
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -160,7 +170,7 @@ class _StatisticsPageState extends State<StatisticsPage>
         elevation: 0,
         iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary),
         title: Text(
-          '統計',
+          AppLocalizations.of(context)?.statistics ?? '',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.bold,
@@ -180,7 +190,7 @@ class _StatisticsPageState extends State<StatisticsPage>
             ),
             const SizedBox(height: 16),
             Text(
-              'ユーザーを選択してください',
+              AppLocalizations.of(context)?.selectUser ?? '',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 color: Theme.of(
                   context,
@@ -189,7 +199,7 @@ class _StatisticsPageState extends State<StatisticsPage>
             ),
             const SizedBox(height: 8),
             Text(
-              '統計データを表示するにはユーザーを選択してください',
+              AppLocalizations.of(context)?.selectUserDescription ?? '',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: Theme.of(
                   context,
@@ -211,87 +221,99 @@ class _StatisticsPageState extends State<StatisticsPage>
         elevation: 0,
         iconTheme: IconThemeData(color: Theme.of(context).colorScheme.primary),
         title: Text(
-          '統計',
+          AppLocalizations.of(context)?.statistics ?? '',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.bold,
           ),
         ),
       ),
-      body: Stack(
-        children: [
-          // 背景の統計コンテンツ（ぼかし効果付き）
-          Opacity(
-            opacity: 0.8,
-            child: ImageFiltered(
-              imageFilter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-              child: _buildStatisticsContent(),
-            ),
-          ),
-          // 開発中メッセージ
-          Center(
-            child: Container(
-              margin: const EdgeInsets.all(32),
-              padding: const EdgeInsets.all(32),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withValues(alpha: 0.1),
-                    blurRadius: 20,
-                    offset: const Offset(0, 10),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.primary.withValues(alpha: 0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.construction,
-                      size: 48,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  Text(
-                    '開発中です',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    '統計機能は現在開発中です。\n詳細な統計情報やグラフを\nお楽しみにお待ちください！',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onSurface.withValues(alpha: 0.7),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 32),
-                  FilledButton.icon(
-                    onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.arrow_back),
-                    label: const Text('戻る'),
-                  ),
-                ],
+      body: SingleChildScrollView(
+        child: Stack(
+          children: [
+            // 背景の統計コンテンツ（ぼかし効果付き）
+            Opacity(
+              opacity: 0.8,
+              child: ImageFiltered(
+                imageFilter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+                child: _buildStatisticsContent(),
               ),
             ),
-          ),
-        ],
+            // 開発中メッセージ
+            Center(
+              child: Container(
+                margin: const EdgeInsets.all(32),
+                padding: const EdgeInsets.all(24),
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width - 64,
+                  maxHeight: MediaQuery.of(context).size.height * 0.8,
+                ),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.1),
+                      blurRadius: 20,
+                      offset: const Offset(0, 10),
+                    ),
+                  ],
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.1),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.construction,
+                          size: 48,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        AppLocalizations.of(context)?.underDevelopment ?? '',
+                        style: Theme.of(context).textTheme.headlineSmall
+                            ?.copyWith(
+                              color: Theme.of(context).colorScheme.onSurface,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                      const SizedBox(height: 12),
+                      Text(
+                        AppLocalizations.of(
+                              context,
+                            )?.statisticsUnderDevelopment ??
+                            '',
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(alpha: 0.7),
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 24),
+                      FilledButton.icon(
+                        onPressed: () => Navigator.pop(context),
+                        icon: const Icon(Icons.arrow_back),
+                        label: Text(AppLocalizations.of(context)?.back ?? '戻る'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -337,7 +359,7 @@ class _StatisticsPageState extends State<StatisticsPage>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '概要',
+          AppLocalizations.of(context)?.overview ?? '',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.bold,
@@ -348,30 +370,31 @@ class _StatisticsPageState extends State<StatisticsPage>
           crossAxisCount: 2,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          childAspectRatio: 1.5,
+          childAspectRatio: 1.2,
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,
           children: [
             _buildStatCard(
-              title: '総ゲーム数',
+              title: AppLocalizations.of(context)?.totalGames ?? '',
               value: '${currentUser!.totalGamesPlayed}',
               icon: Icons.sports_esports,
               color: Theme.of(context).colorScheme.primary,
             ),
             _buildStatCard(
-              title: '練習セッション',
+              title: AppLocalizations.of(context)?.practiceSessions ?? '',
               value: '${currentUser!.totalPracticeSessions}',
               icon: Icons.fitness_center,
               color: Theme.of(context).colorScheme.secondary,
             ),
             _buildStatCard(
-              title: '投げたダーツ',
+              title: AppLocalizations.of(context)?.dartsThrown ?? '',
               value: '${currentUser!.totalDartsThrown}',
               icon: Icons.gps_fixed,
               color: Theme.of(context).colorScheme.tertiary,
             ),
             _buildStatCard(
-              title: 'フィニッシュ数',
+              title:
+                  AppLocalizations.of(context)?.finishCountLabel ?? 'フィニッシュ数',
               value: '${currentUser!.finishCombinationsCount}',
               icon: Icons.emoji_events,
               color: Theme.of(context).colorScheme.error,
@@ -387,7 +410,7 @@ class _StatisticsPageState extends State<StatisticsPage>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'フィニッシュ統計',
+          AppLocalizations.of(context)?.finishStatistics ?? 'フィニッシュ統計',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.bold,
@@ -418,7 +441,7 @@ class _StatisticsPageState extends State<StatisticsPage>
                   ),
                   const SizedBox(width: 12),
                   Text(
-                    'アウトショット',
+                    AppLocalizations.of(context)?.outshot ?? 'アウトショット',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: Theme.of(context).colorScheme.onSurface,
                       fontWeight: FontWeight.bold,
@@ -459,7 +482,7 @@ class _StatisticsPageState extends State<StatisticsPage>
                   const SizedBox(width: 16),
                   Expanded(
                     child: _buildProgressIndicator(
-                      label: '全体',
+                      label: AppLocalizations.of(context)?.all ?? '',
                       progress: currentUser!.finishCombinationsCount / 180,
                       color: Theme.of(context).colorScheme.error,
                     ),
@@ -483,7 +506,7 @@ class _StatisticsPageState extends State<StatisticsPage>
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              '最近の練習',
+              AppLocalizations.of(context)?.recentPractice ?? '最近の練習',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: Theme.of(context).colorScheme.onSurface,
                 fontWeight: FontWeight.bold,
@@ -494,7 +517,7 @@ class _StatisticsPageState extends State<StatisticsPage>
                 // TODO: 練習記録詳細ページを開く
               },
               child: Text(
-                'すべて見る',
+                AppLocalizations.of(context)?.viewAll ?? 'すべて見る',
                 style: TextStyle(color: Theme.of(context).colorScheme.primary),
               ),
             ),
@@ -502,7 +525,10 @@ class _StatisticsPageState extends State<StatisticsPage>
         ),
         const SizedBox(height: 16),
         if (recentSessions.isEmpty)
-          _buildEmptyState('練習記録がありません', Icons.fitness_center)
+          _buildEmptyState(
+            AppLocalizations.of(context)?.noPracticeRecords ?? '練習記録がありません',
+            Icons.fitness_center,
+          )
         else
           ListView.separated(
             shrinkWrap: true,
@@ -528,7 +554,7 @@ class _StatisticsPageState extends State<StatisticsPage>
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              '最近のゲーム',
+              AppLocalizations.of(context)?.recentGames ?? '最近のゲーム',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: Theme.of(context).colorScheme.onSurface,
                 fontWeight: FontWeight.bold,
@@ -539,7 +565,7 @@ class _StatisticsPageState extends State<StatisticsPage>
                 // TODO: ゲーム記録詳細ページを開く
               },
               child: Text(
-                'すべて見る',
+                AppLocalizations.of(context)?.viewAll ?? 'すべて見る',
                 style: TextStyle(color: Theme.of(context).colorScheme.primary),
               ),
             ),
@@ -547,7 +573,10 @@ class _StatisticsPageState extends State<StatisticsPage>
         ),
         const SizedBox(height: 16),
         if (recentGames.isEmpty)
-          _buildEmptyState('ゲーム記録がありません', Icons.sports_esports)
+          _buildEmptyState(
+            AppLocalizations.of(context)?.noGameRecords ?? 'ゲーム記録がありません',
+            Icons.sports_esports,
+          )
         else
           ListView.separated(
             shrinkWrap: true,
@@ -568,7 +597,7 @@ class _StatisticsPageState extends State<StatisticsPage>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'チャート',
+          AppLocalizations.of(context)?.charts ?? 'チャート',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             color: Theme.of(context).colorScheme.onSurface,
             fontWeight: FontWeight.bold,
@@ -621,7 +650,7 @@ class _StatisticsPageState extends State<StatisticsPage>
     required Color color,
   }) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
@@ -629,25 +658,34 @@ class _StatisticsPageState extends State<StatisticsPage>
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: color, size: 32),
-          const SizedBox(height: 8),
-          Text(
-            value,
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              color: Theme.of(context).colorScheme.onSurface,
-              fontWeight: FontWeight.bold,
+          Icon(icon, color: color, size: 28),
+          const SizedBox(height: 6),
+          Flexible(
+            child: Text(
+              value,
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                color: Theme.of(context).colorScheme.onSurface,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           const SizedBox(height: 4),
-          Text(
-            title,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Theme.of(
-                context,
-              ).colorScheme.onSurface.withValues(alpha: 0.7),
+          Flexible(
+            child: Text(
+              title,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(
+                  context,
+                ).colorScheme.onSurface.withValues(alpha: 0.7),
+              ),
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
             ),
-            textAlign: TextAlign.center,
           ),
         ],
       ),
@@ -854,13 +892,13 @@ class _StatisticsPageState extends State<StatisticsPage>
   String _getPeriodText(String period) {
     switch (period) {
       case 'week':
-        return '1週間';
+        return AppLocalizations.of(context)?.week ?? '1週間';
       case 'month':
-        return '1ヶ月';
+        return AppLocalizations.of(context)?.month ?? '1ヶ月';
       case 'all':
-        return '全体';
+        return AppLocalizations.of(context)?.all ?? '全体';
       default:
-        return '全体';
+        return AppLocalizations.of(context)?.all ?? '全体';
     }
   }
 

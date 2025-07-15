@@ -1,0 +1,267 @@
+{
+  "@@locale": "ja",
+  "appTitle": "outshotX",
+  "welcomeMessage": "ようこそ、{userName}さん！",
+  "@welcomeMessage": {
+    "description": "ホームの歓迎メッセージ",
+    "placeholders": {
+      "userName": {
+        "type": "String"
+      }
+    }
+  },
+  "enjoyDartsToday": "今日もダーツを楽しみましょう",
+  "outshot": "アウトショット",
+  "outshotGuide": "ガイドを作成",
+  "settings": "設定",
+  "appSettings": "アプリ設定",
+  "practice": "プラクティス",
+  "scoreCalculation": "スコア計算と練習",
+  "statistics": "統計",
+  "gameRecords": "ゲーム記録と分析",
+  "userProfile": "ユーザープロファイル",
+  "appearance": "外観",
+  "language": "言語",
+  "notifications": "通知",
+  "sound": "サウンド",
+  "dataExport": "データエクスポート",
+  "aboutApp": "アプリについて",
+  "colorTheme": "カラーテーマ",
+  "cancel": "キャンセル",
+  "save": "保存",
+  "edit": "編集",
+  "back": "戻る",
+  "remainingScore": "残りスコア",
+  "scoreInput": "スコア入力",
+  "enterScore": "投げたスコアを入力",
+  "undoLastScore": "前のスコアに戻す",
+  "gameSettings": "ゲーム設定",
+  "resetGame": "ゲームリセット",
+  "selectUser": "ユーザーを選択してください",
+  "selectUserDescription": "統計データを表示するにはユーザーを選択してください",
+  "underDevelopment": "開発中です",
+  "week": "1週間",
+  "month": "1ヶ月",
+  "all": "全体",
+  "overview": "概要",
+  "finishStatistics": "フィニッシュ統計",
+  "practiceHistory": "練習記録",
+  "gameHistory": "ゲーム記録",
+  "charts": "チャート",
+  "today": "今日",
+  "yesterday": "昨日",
+  "daysAgo": "{days}日前",
+  "@daysAgo": {
+    "description": "何日前かを表示",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "finishCount": "{count}個のフィニッシュ",
+  "@finishCount": {
+    "description": "フィニッシュの数を表示",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dataExportInProgress": "データエクスポート機能は準備中です",
+  "userId": "ID: {id}",
+  "@userId": {
+    "description": "ユーザーIDを表示",
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "systemLanguage": "システム設定",
+  "noUsersFound": "ユーザーが存在しません",
+  "manageUsers": "ユーザーを管理",
+  "pleaseSelectUserToUseThisFeature": "この機能を使用するには、まずユーザーを選択してください。",
+  "selectLanguage": "言語を選択",
+  "languageChanged": "言語設定を変更しました",
+  "userProfile": "ユーザープロファイル",
+  "appearance": "外観",
+  "notifications": "通知",
+  "sound": "サウンド",
+  "dataExport": "データエクスポート",
+  "aboutApp": "アプリについて",
+  "selectColorTheme": "カラーテーマを選択",
+  "editProfile": "プロフィールを編集",
+  "name": "名前",
+  "export": "エクスポート",
+  "exportDataConfirmation": "ユーザーデータと統計情報をエクスポートしますか？",
+  "light": "ライト",
+  "dark": "ダーク",
+  "system": "システム設定",
+  "finishNotification": "フィニッシュ達成時の通知",
+  "soundEffects": "効果音の再生",
+  "version": "バージョン",
+  "privacyPolicy": "プライバシーポリシー",
+  "termsOfService": "利用規約",
+  "overview": "概要",
+  "totalGames": "総ゲーム数",
+  "practiceSessions": "練習セッション",
+  "dartsThrown": "投げたダーツ",
+  "finishCount": "フィニッシュ数",
+  "recentPractice": "最近の練習",
+  "recentGames": "最近のゲーム",
+  "viewAll": "すべて見る",
+  "noPracticeRecords": "練習記録がありません",
+  "noGameRecords": "ゲーム記録がありません",
+  "outshot": "アウトショット",
+  "score": "スコア",
+  "darts": "ダーツ",
+  "today": "今日",
+  "yesterday": "昨日",
+  "daysAgo": "{days}日前",
+  "@daysAgo": {
+    "description": "何日前かを表示",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursMinutes": "{hours}時間{minutes}分",
+  "@hoursMinutes": {
+    "description": "時間と分を表示",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "minutesOnly": "{minutes}分",
+  "@minutesOnly": {
+    "description": "分のみを表示",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "monthDay": "{month}/{day}",
+  "@monthDay": {
+    "description": "月/日を表示",
+    "placeholders": {
+      "month": {
+        "type": "int"
+      },
+      "day": {
+        "type": "int"
+      }
+    }
+  },
+  "underDevelopment": "開発中です",
+  "statisticsUnderDevelopment": "統計機能は現在開発中です。\n詳細な統計情報やグラフを\nお楽しみにお待ちください！",
+  "charts": "チャート",
+  "finishCountLabel": "フィニッシュ数",
+  "outshotLabel": "アウトショット",
+  "range1To60": "1-60",
+  "range61To120": "61-120",
+  "range121To180": "121-180",
+  "overall": "全体",
+  "recentPracticeTitle": "最近の練習",
+  "recentGamesTitle": "最近のゲーム",
+  "dartsAndDuration": "{darts} ダーツ • {duration}",
+  "@dartsAndDuration": {
+    "description": "ダーツ数と時間を表示",
+    "placeholders": {
+      "darts": {
+        "type": "int"
+      },
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "scoreAndDarts": "スコア: {score} • {darts} ダーツ",
+  "@scoreAndDarts": {
+    "description": "スコアとダーツ数を表示",
+    "placeholders": {
+      "score": {
+        "type": "int"
+      },
+      "darts": {
+        "type": "int"
+      }
+    }
+  },
+  "practice": "プラクティス",
+  "remainingScore": "残りスコア",
+  "scoreInput": "スコア入力",
+  "enterScore": "投げたスコアを入力",
+  "undoLastScore": "前のスコアに戻す",
+  "finishCandidates": "フィニッシュ候補",
+  "noFinishCandidates": "フィニッシュ候補なし",
+  "noFinishCandidatesDescription": "このスコアのフィニッシュを\nカスタム登録してみましょう",
+  "gameFinished": "ゲーム終了！",
+  "finishPossible": "フィニッシュ可能",
+  "finishRange": "フィニッシュ圏内",
+  "goodPosition": "良いポジション",
+  "inProgress": "継続中",
+  "invalidScore": "無効なスコア",
+  "invalidScoreMessage": "0から180の間で入力してください。",
+  "bust": "バスト！",
+  "bustMessage": "スコアが1になるか、0を下回りました。",
+  "bustQuickMessage": "このスコアでは1になるか、0を下回ります。",
+  "ok": "OK",
+  "congratulations": "おめでとうございます！",
+  "gameFinishedMessage": "ゲーム終了です！\n新しいゲームを始めますか？",
+  "end": "終了",
+  "newGame": "新しいゲーム",
+  "gameSettings": "ゲーム設定",
+  "standardGame": "標準的なゲーム",
+  "shortGame": "ショートゲーム",
+  "longGame": "ロングゲーム",
+  "cancel": "キャンセル",
+  "finishWithThis": "このフィニッシュで上がる",
+  "practiceUnderDevelopment": "プラクティス機能は現在開発中です。\nスコア計算と練習機能を\nお楽しみにお待ちください！",
+  "outshotList": "アウトショット一覧",
+  "createNew": "新規作成",
+  "newOutshotTable": "新しいアウトショットテーブル",
+  "tableName": "テーブル名",
+  "tableNameHint": "例: マイアウトショット",
+  "selectLabels": "ラベルを選択:",
+  "cancel": "キャンセル",
+  "create": "作成",
+  "editTable": "テーブルを編集",
+  "update": "更新",
+  "deleteTable": "テーブルを削除",
+  "deleteTableConfirm": "「{tableName}」を削除しますか？\nこの操作は取り消せません。",
+  "@deleteTableConfirm": {
+    "description": "テーブル削除確認メッセージ",
+    "placeholders": {
+      "tableName": {
+        "type": "String"
+      }
+    }
+  },
+  "delete": "削除",
+  "searchTableName": "テーブル名で検索",
+  "noOutshotTables": "アウトショットテーブルがありません",
+  "noOutshotTablesDescription": "「+」ボタンから新しいテーブルを作成してください",
+  "tableCreated": "テーブルを作成しました",
+  "tableUpdated": "テーブルを更新しました",
+  "tableDeleted": "テーブルを削除しました",
+  "createdDate": "作成日: {date}",
+  "@createdDate": {
+    "description": "作成日を表示",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "edit": "編集",
+  "duplicate": "複製",
+  "doubleOutRoute": "ダブルアウトルート"
+} 

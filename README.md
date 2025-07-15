@@ -3,7 +3,18 @@
 OutshotX は ハードダーツ用のアウトショット管理アプリです。
 あなたのダーツ練習をサポートします。
 
-## アプリアイコン（launcher icon）の更新
+## 開発
+
+### ローカライズ
+
+ローカライズは、`lib/l10n/app_localizations.dart` で行っています。 
+
+```sh
+flutter gen-l10n
+```
+
+
+### アプリアイコン（launcher icon）の更新
 
 アイコン画像（assets/appIcon.png）を変更したら、下記コマンド1行で全プラットフォームのアイコンを再生成できます。
 

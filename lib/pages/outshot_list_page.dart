@@ -137,6 +137,120 @@ class _OutshotListPageState extends State<OutshotListPage> {
     );
   }
 
+  // テーブル編集ダイアログを表示
+  void _showEditTableDialog(OutshotTable table) {
+    final nameController = TextEditingController(text: table.name);
+    final selectedLabels = <String>{...table.labelIds};
+
+    showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          title: const Text('テーブルを編集'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: nameController,
+                decoration: const InputDecoration(
+                  labelText: 'テーブル名',
+                  hintText: '例: マイアウトショット',
+                ),
+              ),
+              const SizedBox(height: 16),
+              const Text('ラベルを選択:'),
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 8,
+                children: _allLabels.map((label) {
+                  final isSelected = selectedLabels.contains(label.id);
+                  return FilterChip(
+                    label: Text(label.name),
+                    selected: isSelected,
+                    onSelected: (selected) {
+                      setDialogState(() {
+                        if (selected) {
+                          selectedLabels.add(label.id);
+                        } else {
+                          selectedLabels.remove(label.id);
+                        }
+                      });
+                    },
+                  );
+                }).toList(),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('キャンセル'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                if (nameController.text.trim().isNotEmpty) {
+                  final updatedTable = OutshotTable(
+                    id: table.id,
+                    name: nameController.text.trim(),
+                    labelIds: selectedLabels.toList(),
+                    combinations: table.combinations,
+                    createdAt: table.createdAt,
+                  );
+
+                  await _tableService.updateTable(updatedTable);
+                  await _loadData(); // データを再読み込み
+
+                  if (mounted) {
+                    Navigator.of(context).pop();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('テーブルを更新しました')),
+                    );
+                  }
+                }
+              },
+              child: const Text('更新'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // テーブル削除確認ダイアログを表示
+  void _showDeleteConfirmDialog(OutshotTable table) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('テーブルを削除'),
+        content: Text('「${table.name}」を削除しますか？\nこの操作は取り消せません。'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('キャンセル'),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              await _tableService.deleteTable(table.id);
+              await _loadData(); // データを再読み込み
+
+              if (mounted) {
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(const SnackBar(content: Text('テーブルを削除しました')));
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('削除'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
@@ -144,58 +258,35 @@ class _OutshotListPageState extends State<OutshotListPage> {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('アウトショット一覧')),
+      appBar: AppBar(
+        title: const Text('アウトショット一覧'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            tooltip: '新規作成',
+            onPressed: _showCreateTableDialog,
+          ),
+        ],
+      ),
       body: Column(
         children: [
+          // 検索バー
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            child: Row(
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.add),
-                  tooltip: '新規作成',
-                  onPressed: _showCreateTableDialog,
+            child: TextField(
+              decoration: const InputDecoration(
+                hintText: 'テーブル名で検索',
+                prefixIcon: Icon(Icons.search),
+                isDense: true,
+                border: OutlineInputBorder(),
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 0,
+                  horizontal: 8,
                 ),
-                IconButton(
-                  icon: const Icon(Icons.sort),
-                  tooltip: '並び替え',
-                  onPressed: () {
-                    // TODO: 並び替え処理
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.edit),
-                  tooltip: '編集',
-                  onPressed: () {
-                    // TODO: 編集モード
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.delete),
-                  tooltip: '削除',
-                  onPressed: () {
-                    // TODO: 削除モード
-                  },
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: TextField(
-                    decoration: const InputDecoration(
-                      hintText: '検索',
-                      prefixIcon: Icon(Icons.search),
-                      isDense: true,
-                      border: OutlineInputBorder(),
-                      contentPadding: EdgeInsets.symmetric(
-                        vertical: 0,
-                        horizontal: 8,
-                      ),
-                    ),
-                    onChanged: (value) {
-                      // TODO: 検索フィルタリング
-                    },
-                  ),
-                ),
-              ],
+              ),
+              onChanged: (value) {
+                // TODO: 検索フィルタリング
+              },
             ),
           ),
           const Divider(height: 1),
@@ -224,80 +315,136 @@ class _OutshotListPageState extends State<OutshotListPage> {
                     separatorBuilder: (_, __) => const Divider(height: 1),
                     itemBuilder: (context, index) {
                       final table = _tables[index];
-                      return ListTile(
-                        title: Text(table.name),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // ラベル
-                            if (table.labelIds.isNotEmpty)
-                              Container(
-                                margin: const EdgeInsets.only(bottom: 4),
-                                child: Wrap(
-                                  spacing: 4,
-                                  runSpacing: 2,
-                                  alignment: WrapAlignment.start,
-                                  children: table.labelIds.map((labelId) {
-                                    // 既にロード済みのラベルから検索
-                                    final label = _allLabels.firstWhere(
-                                      (label) => label.id == labelId,
-                                      orElse: () => OutshotLabel(
-                                        id: labelId,
-                                        name: labelId,
-                                        color: '#CCCCCC',
-                                        isPredefined: false,
-                                        createdAt: DateTime.now(),
-                                      ),
-                                    );
+                      return Dismissible(
+                        key: Key(table.id),
+                        direction: DismissDirection.endToStart,
+                        background: Container(
+                          alignment: Alignment.centerRight,
+                          padding: const EdgeInsets.only(right: 20),
+                          color: Colors.red,
+                          child: const Icon(Icons.delete, color: Colors.white),
+                        ),
+                        confirmDismiss: (direction) async {
+                          _showDeleteConfirmDialog(table);
+                          return false; // 手動でダイアログを表示するため
+                        },
+                        child: ListTile(
+                          title: Text(table.name),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // ラベル
+                              if (table.labelIds.isNotEmpty)
+                                Container(
+                                  margin: const EdgeInsets.only(bottom: 4),
+                                  child: Wrap(
+                                    spacing: 4,
+                                    runSpacing: 2,
+                                    alignment: WrapAlignment.start,
+                                    children: table.labelIds.map((labelId) {
+                                      // 既にロード済みのラベルから検索
+                                      final label = _allLabels.firstWhere(
+                                        (label) => label.id == labelId,
+                                        orElse: () => OutshotLabel(
+                                          id: labelId,
+                                          name: labelId,
+                                          color: '#CCCCCC',
+                                          isPredefined: false,
+                                          createdAt: DateTime.now(),
+                                        ),
+                                      );
 
-                                    return Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 8,
-                                        vertical: 2,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: Colors.blue.withValues(
-                                          alpha: 0.1,
+                                      return Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                          vertical: 2,
                                         ),
-                                        borderRadius: BorderRadius.circular(12),
-                                        border: Border.all(
+                                        decoration: BoxDecoration(
                                           color: Colors.blue.withValues(
-                                            alpha: 0.3,
+                                            alpha: 0.1,
                                           ),
-                                          width: 1,
+                                          borderRadius: BorderRadius.circular(
+                                            12,
+                                          ),
+                                          border: Border.all(
+                                            color: Colors.blue.withValues(
+                                              alpha: 0.3,
+                                            ),
+                                            width: 1,
+                                          ),
                                         ),
-                                      ),
-                                      child: Text(
-                                        label.name,
-                                        style: TextStyle(
-                                          fontSize: 10,
-                                          color: Colors.blue.shade700,
-                                          fontWeight: FontWeight.w500,
+                                        child: Text(
+                                          label.name,
+                                          style: TextStyle(
+                                            fontSize: 10,
+                                            color: Colors.blue.shade700,
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                  }).toList(),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                              Text(
+                                '作成日: ${table.createdAt.toLocal().toString().split(" ")[0]}',
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
                                 ),
                               ),
-                            Text(
-                              '作成日: ${table.createdAt.toLocal().toString().split(" ")[0]}',
-                              style: const TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey,
+                            ],
+                          ),
+                          trailing: const Icon(Icons.chevron_right),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) =>
+                                    OutshotDetailPage(outshotSet: table),
                               ),
-                            ),
-                          ],
+                            );
+                          },
+                          onLongPress: () {
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (context) => Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  ListTile(
+                                    leading: const Icon(Icons.edit),
+                                    title: const Text('編集'),
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      _showEditTableDialog(table);
+                                    },
+                                  ),
+                                  ListTile(
+                                    leading: const Icon(Icons.copy),
+                                    title: const Text('複製'),
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      // TODO: 複製機能
+                                    },
+                                  ),
+                                  ListTile(
+                                    leading: const Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
+                                    ),
+                                    title: const Text(
+                                      '削除',
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      _showDeleteConfirmDialog(table);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                         ),
-                        trailing: const Icon(Icons.chevron_right),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) =>
-                                  OutshotDetailPage(outshotSet: table),
-                            ),
-                          );
-                        },
                       );
                     },
                   ),

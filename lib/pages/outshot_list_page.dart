@@ -75,6 +75,9 @@ class _OutshotListPageState extends State<OutshotListPage> {
             children: [
               TextField(
                 controller: nameController,
+                onChanged: (value) {
+                  setDialogState(() {}); // テキスト変更時にダイアログを再構築
+                },
                 decoration: InputDecoration(
                   labelText: AppLocalizations.of(context)?.tableName ?? '',
                   hintText: AppLocalizations.of(context)?.tableNameHint ?? '',
@@ -110,31 +113,31 @@ class _OutshotListPageState extends State<OutshotListPage> {
               child: Text(AppLocalizations.of(context)?.cancel ?? ''),
             ),
             ElevatedButton(
-              onPressed: () async {
-                if (nameController.text.trim().isNotEmpty) {
-                  final newTable = OutshotTable(
-                    id: _tableService.generateTableId(),
-                    name: nameController.text.trim(),
-                    labelIds: selectedLabels.toList(),
-                    combinations: generateDoubleOutCombinations(),
-                    createdAt: DateTime.now(),
-                  );
+              onPressed: nameController.text.trim().isNotEmpty
+                  ? () async {
+                      final newTable = OutshotTable(
+                        id: _tableService.generateTableId(),
+                        name: nameController.text.trim(),
+                        labelIds: selectedLabels.toList(),
+                        combinations: generateDoubleOutCombinations(),
+                        createdAt: DateTime.now(),
+                      );
 
-                  await _tableService.addTable(newTable);
-                  await _loadData(); // データを再読み込み
+                      await _tableService.addTable(newTable);
+                      await _loadData(); // データを再読み込み
 
-                  if (mounted) {
-                    Navigator.of(context).pop();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          AppLocalizations.of(context)?.tableCreated ?? '',
-                        ),
-                      ),
-                    );
-                  }
-                }
-              },
+                      if (mounted) {
+                        Navigator.of(context).pop();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              AppLocalizations.of(context)?.tableCreated ?? '',
+                            ),
+                          ),
+                        );
+                      }
+                    }
+                  : null,
               child: Text(AppLocalizations.of(context)?.create ?? ''),
             ),
           ],
@@ -158,6 +161,9 @@ class _OutshotListPageState extends State<OutshotListPage> {
             children: [
               TextField(
                 controller: nameController,
+                onChanged: (value) {
+                  setDialogState(() {}); // テキスト変更時にダイアログを再構築
+                },
                 decoration: InputDecoration(
                   labelText: AppLocalizations.of(context)?.tableName ?? '',
                   hintText: AppLocalizations.of(context)?.tableNameHint ?? '',
@@ -193,31 +199,31 @@ class _OutshotListPageState extends State<OutshotListPage> {
               child: Text(AppLocalizations.of(context)?.cancel ?? ''),
             ),
             ElevatedButton(
-              onPressed: () async {
-                if (nameController.text.trim().isNotEmpty) {
-                  final updatedTable = OutshotTable(
-                    id: table.id,
-                    name: nameController.text.trim(),
-                    labelIds: selectedLabels.toList(),
-                    combinations: table.combinations,
-                    createdAt: table.createdAt,
-                  );
+              onPressed: nameController.text.trim().isNotEmpty
+                  ? () async {
+                      final updatedTable = OutshotTable(
+                        id: table.id,
+                        name: nameController.text.trim(),
+                        labelIds: selectedLabels.toList(),
+                        combinations: table.combinations,
+                        createdAt: table.createdAt,
+                      );
 
-                  await _tableService.updateTable(updatedTable);
-                  await _loadData(); // データを再読み込み
+                      await _tableService.updateTable(updatedTable);
+                      await _loadData(); // データを再読み込み
 
-                  if (mounted) {
-                    Navigator.of(context).pop();
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          AppLocalizations.of(context)?.tableUpdated ?? '',
-                        ),
-                      ),
-                    );
-                  }
-                }
-              },
+                      if (mounted) {
+                        Navigator.of(context).pop();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              AppLocalizations.of(context)?.tableUpdated ?? '',
+                            ),
+                          ),
+                        );
+                      }
+                    }
+                  : null,
               child: Text(AppLocalizations.of(context)?.update ?? ''),
             ),
           ],

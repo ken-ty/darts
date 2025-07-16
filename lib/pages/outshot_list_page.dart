@@ -349,148 +349,145 @@ class _OutshotListPageState extends State<OutshotListPage> {
                     separatorBuilder: (_, __) => const Divider(height: 1),
                     itemBuilder: (context, index) {
                       final table = _tables[index];
-                      return Dismissible(
-                        key: Key(table.id),
-                        direction: DismissDirection.endToStart,
-                        background: Container(
-                          alignment: Alignment.centerRight,
-                          padding: const EdgeInsets.only(right: 20),
-                          color: Colors.red,
-                          child: const Icon(Icons.delete, color: Colors.white),
+                      return ListTile(
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
                         ),
-                        confirmDismiss: (direction) async {
-                          _showDeleteConfirmDialog(table);
-                          return false; // 手動でダイアログを表示するため
-                        },
-                        child: ListTile(
-                          title: Text(table.name),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // ラベル
-                              if (table.labelIds.isNotEmpty)
-                                Container(
-                                  margin: const EdgeInsets.only(bottom: 4),
-                                  child: Wrap(
-                                    spacing: 4,
-                                    runSpacing: 2,
-                                    alignment: WrapAlignment.start,
-                                    children: table.labelIds.map((labelId) {
-                                      // 既にロード済みのラベルから検索
-                                      final label = _allLabels.firstWhere(
-                                        (label) => label.id == labelId,
-                                        orElse: () => OutshotLabel(
-                                          id: labelId,
-                                          name: labelId,
-                                          color: '#CCCCCC',
-                                          isPredefined: false,
-                                          createdAt: DateTime.now(),
-                                        ),
-                                      );
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              table.name,
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurface,
+                                  ),
+                            ),
 
-                                      return Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 8,
-                                          vertical: 2,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: Colors.blue.withValues(
-                                            alpha: 0.1,
-                                          ),
-                                          borderRadius: BorderRadius.circular(
-                                            12,
-                                          ),
-                                          border: Border.all(
-                                            color: Colors.blue.withValues(
-                                              alpha: 0.3,
-                                            ),
-                                            width: 1,
-                                          ),
-                                        ),
-                                        child: Text(
-                                          label.name,
-                                          style: TextStyle(
-                                            fontSize: 10,
-                                            color: Colors.blue.shade700,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
-                              Text(
-                                AppLocalizations.of(context)?.createdDate(
-                                      table.createdAt
-                                          .toLocal()
-                                          .toString()
-                                          .split(" ")[0],
-                                    ) ??
-                                    '',
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ],
-                          ),
-                          trailing: const Icon(Icons.chevron_right),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) =>
-                                    OutshotDetailPage(outshotSet: table),
-                              ),
-                            );
-                          },
-                          onLongPress: () {
-                            showModalBottomSheet(
-                              context: context,
-                              builder: (context) => Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  ListTile(
-                                    leading: const Icon(Icons.edit),
-                                    title: Text(
-                                      AppLocalizations.of(context)?.edit ?? '',
-                                    ),
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                      _showEditTableDialog(table);
-                                    },
-                                  ),
-                                  ListTile(
-                                    leading: const Icon(Icons.copy),
-                                    title: Text(
-                                      AppLocalizations.of(context)?.duplicate ??
-                                          '',
-                                    ),
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                      // TODO: 複製機能
-                                    },
-                                  ),
-                                  ListTile(
-                                    leading: const Icon(
-                                      Icons.delete,
-                                      color: Colors.red,
-                                    ),
-                                    title: Text(
-                                      AppLocalizations.of(context)?.delete ??
-                                          '',
-                                      style: const TextStyle(color: Colors.red),
-                                    ),
-                                    onTap: () {
-                                      Navigator.pop(context);
-                                      _showDeleteConfirmDialog(table);
-                                    },
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
+                            // const SizedBox(height: 4),
+                          ],
                         ),
+                        subtitle: table.labelIds.isNotEmpty
+                            ? Container(
+                                margin: const EdgeInsets.only(top: 8),
+                                child: Wrap(
+                                  spacing: 6,
+                                  runSpacing: 4,
+                                  alignment: WrapAlignment.start,
+                                  children: table.labelIds.map((labelId) {
+                                    // 既にロード済みのラベルから検索
+                                    final label = _allLabels.firstWhere(
+                                      (label) => label.id == labelId,
+                                      orElse: () => OutshotLabel(
+                                        id: labelId,
+                                        name: labelId,
+                                        color: '#CCCCCC',
+                                        isPredefined: false,
+                                        createdAt: DateTime.now(),
+                                      ),
+                                    );
+
+                                    return Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 4,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary
+                                            .withValues(alpha: 0.1),
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary
+                                              .withValues(alpha: 0.3),
+                                          width: 1,
+                                        ),
+                                      ),
+                                      child: Text(
+                                        label.name,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall
+                                            ?.copyWith(
+                                              color: Theme.of(
+                                                context,
+                                              ).colorScheme.primary,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              )
+                            : null,
+
+                        trailing: Icon(
+                          Icons.chevron_right,
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(alpha: 0.5),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  OutshotDetailPage(outshotSet: table),
+                            ),
+                          );
+                        },
+                        onLongPress: () {
+                          showModalBottomSheet(
+                            context: context,
+                            builder: (context) => Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                ListTile(
+                                  leading: const Icon(Icons.edit),
+                                  title: Text(
+                                    AppLocalizations.of(context)?.edit ?? '',
+                                  ),
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    _showEditTableDialog(table);
+                                  },
+                                ),
+                                ListTile(
+                                  leading: const Icon(Icons.copy),
+                                  title: Text(
+                                    AppLocalizations.of(context)?.duplicate ??
+                                        '',
+                                  ),
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    // TODO: 複製機能
+                                  },
+                                ),
+                                ListTile(
+                                  leading: const Icon(
+                                    Icons.delete,
+                                    color: Colors.red,
+                                  ),
+                                  title: Text(
+                                    AppLocalizations.of(context)?.delete ?? '',
+                                    style: const TextStyle(color: Colors.red),
+                                  ),
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    _showDeleteConfirmDialog(table);
+                                  },
+                                ),
+                              ],
+                            ),
+                          );
+                        },
                       );
                     },
                   ),

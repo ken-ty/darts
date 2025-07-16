@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:outshotx/l10n/app_localizations.dart';
 
@@ -8,6 +6,7 @@ import '../models/finish_combination.dart';
 import '../models/user_profile.dart';
 import '../services/darts_calculator.dart';
 import '../widgets/finish_card.dart';
+import '../widgets/under_development_overlay.dart';
 
 class PracticePage extends StatefulWidget {
   final UserProfile user;
@@ -745,81 +744,15 @@ class _PracticePageState extends State<PracticePage>
           ),
         ),
       ),
-      body: Stack(
-        children: [
-          // 背景のプラクティスコンテンツ（ぼかし効果付き）
-          Opacity(
-            opacity: 0.8,
-            child: ImageFiltered(
-              imageFilter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-              child: _buildPracticeContent(),
-            ),
-          ),
-          // 開発中メッセージ
-          Center(
-            child: Container(
-              margin: const EdgeInsets.all(32),
-              padding: const EdgeInsets.all(32),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withValues(alpha: 0.1),
-                    blurRadius: 20,
-                    offset: const Offset(0, 10),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.secondary.withValues(alpha: 0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.construction,
-                      size: 48,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  Text(
-                    AppLocalizations.of(context)?.underDevelopment ?? '',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    AppLocalizations.of(context)?.practiceUnderDevelopment ??
-                        '',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onSurface.withValues(alpha: 0.7),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 32),
-                  FilledButton.icon(
-                    onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.arrow_back),
-                    label: Text(AppLocalizations.of(context)?.back ?? ''),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
+      body: UnderDevelopmentOverlay(
+        backgroundContent: _buildPracticeContent(),
+        title: AppLocalizations.of(context)?.underDevelopment ?? '',
+        description:
+            AppLocalizations.of(context)?.practiceUnderDevelopment ?? '',
+        primaryColor: Theme.of(context).colorScheme.secondary,
+        secondaryColor: Theme.of(context).colorScheme.tertiary,
+        progressPercentage: 0.1,
+        progressText: '10% Complete',
       ),
     );
   }

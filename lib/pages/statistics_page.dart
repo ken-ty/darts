@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:outshotx/l10n/app_localizations.dart';
@@ -7,6 +5,7 @@ import 'package:outshotx/l10n/app_localizations.dart';
 import '../constants/feature_flags.dart';
 import '../models/user_profile.dart';
 import '../services/user_service.dart';
+import '../widgets/under_development_overlay.dart';
 
 class StatisticsPage extends StatefulWidget {
   const StatisticsPage({super.key});
@@ -228,81 +227,15 @@ class _StatisticsPageState extends State<StatisticsPage>
           ),
         ),
       ),
-      body: Stack(
-        children: [
-          // 背景の統計コンテンツ（ぼかし効果付き）
-          Opacity(
-            opacity: 0.8,
-            child: ImageFiltered(
-              imageFilter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-              child: _buildStatisticsContent(),
-            ),
-          ),
-          // 開発中メッセージ
-          Center(
-            child: Container(
-              margin: const EdgeInsets.all(32),
-              padding: const EdgeInsets.all(32),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withValues(alpha: 0.1),
-                    blurRadius: 20,
-                    offset: const Offset(0, 10),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.primary.withValues(alpha: 0.1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.construction,
-                      size: 48,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  Text(
-                    AppLocalizations.of(context)?.underDevelopment ?? '',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    AppLocalizations.of(context)?.statisticsUnderDevelopment ??
-                        '',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onSurface.withValues(alpha: 0.7),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 32),
-                  FilledButton.icon(
-                    onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.arrow_back),
-                    label: Text(AppLocalizations.of(context)?.back ?? '戻る'),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
+      body: UnderDevelopmentOverlay(
+        backgroundContent: _buildStatisticsContent(),
+        title: AppLocalizations.of(context)?.underDevelopment ?? '',
+        description:
+            AppLocalizations.of(context)?.statisticsUnderDevelopment ?? '',
+        primaryColor: Theme.of(context).colorScheme.primary,
+        secondaryColor: Theme.of(context).colorScheme.secondary,
+        progressPercentage: 0.1,
+        progressText: '10% Complete',
       ),
     );
   }

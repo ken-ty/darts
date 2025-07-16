@@ -350,7 +350,7 @@ class _DartsHomePageState extends State<DartsHomePage>
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: color.withValues(alpha: 0.5),
+                    color: _getAdjustedColor(color, 0.5),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Icon(
@@ -436,6 +436,14 @@ class _DartsHomePageState extends State<DartsHomePage>
     }
 
     return cardContent;
+  }
+
+  // 色味を調整するヘルパーメソッド（背景を透けないように）
+  Color _getAdjustedColor(Color color, double intensity) {
+    // 色の明度を調整して背景を透けないようにする
+    final hsl = HSLColor.fromColor(color);
+    final adjustedLightness = (hsl.lightness * intensity).clamp(0.0, 1.0);
+    return hsl.withLightness(adjustedLightness).toColor();
   }
 
   void _showUserSelectionDialog(BuildContext context) {

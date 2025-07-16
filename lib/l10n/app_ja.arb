@@ -263,5 +263,7 @@
   },
   "edit": "編集",
   "duplicate": "複製",
-  "doubleOutRoute": "ダブルアウトルート"
+  "doubleOutRoute": "ダブルアウトルート",
+  "searchScoreAndDarts": "スコアやダーツを検索...",
+  "enterUserName": "ユーザー名を入力"
 } 

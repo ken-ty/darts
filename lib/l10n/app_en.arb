@@ -263,5 +263,7 @@
   },
   "edit": "Edit",
   "duplicate": "Duplicate",
-  "doubleOutRoute": "Double Out Route"
+  "doubleOutRoute": "Double Out Route",
+  "searchScoreAndDarts": "Search by score or darts...",
+  "enterUserName": "Enter user name"
 } 

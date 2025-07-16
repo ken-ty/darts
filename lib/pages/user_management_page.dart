@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:outshotx/l10n/app_localizations.dart';
 
 import '../models/user_profile.dart';
 import '../services/user_service.dart';
@@ -383,7 +384,7 @@ class _UserManagementPageState extends State<UserManagementPage>
             TextField(
               controller: _nameController,
               decoration: InputDecoration(
-                hintText: 'ユーザー名を入力',
+                hintText: AppLocalizations.of(context)?.enterUserName ?? '',
                 hintStyle: TextStyle(
                   color: Theme.of(
                     context,
@@ -472,7 +473,7 @@ class _UserManagementPageState extends State<UserManagementPage>
             TextField(
               controller: _nameController,
               decoration: InputDecoration(
-                hintText: 'ユーザー名を入力',
+                hintText: AppLocalizations.of(context)?.enterUserName ?? '',
                 hintStyle: TextStyle(
                   color: Theme.of(
                     context,

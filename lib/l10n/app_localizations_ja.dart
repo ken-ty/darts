@@ -428,4 +428,10 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get doubleOutRoute => 'ダブルアウトルート';
+
+  @override
+  String get searchScoreAndDarts => 'スコアやダーツを検索...';
+
+  @override
+  String get enterUserName => 'ユーザー名を入力';
 }

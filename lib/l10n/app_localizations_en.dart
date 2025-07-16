@@ -428,4 +428,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get doubleOutRoute => 'Double Out Route';
+
+  @override
+  String get searchScoreAndDarts => 'Search by score or darts...';
+
+  @override
+  String get enterUserName => 'Enter user name';
 }

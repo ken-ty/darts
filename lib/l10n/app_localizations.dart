@@ -892,6 +892,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Double Out Route'**
   String get doubleOutRoute;
+
+  /// No description provided for @searchScoreAndDarts.
+  ///
+  /// In en, this message translates to:
+  /// **'Search by score or darts...'**
+  String get searchScoreAndDarts;
+
+  /// No description provided for @enterUserName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter user name'**
+  String get enterUserName;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

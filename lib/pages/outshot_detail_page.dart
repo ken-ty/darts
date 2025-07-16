@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:outshotx/constants/feature_flags.dart';
+import 'package:outshotx/l10n/app_localizations.dart';
 
 import '../models/outshot/outshot_entry.dart';
 import '../models/outshot/outshot_table.dart';
@@ -41,10 +42,11 @@ class _OutshotDetailPageState extends State<OutshotDetailPage> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: TextField(
-              decoration: const InputDecoration(
-                hintText: 'スコアやダーツを検索...',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                hintText:
+                    AppLocalizations.of(context)?.searchScoreAndDarts ?? '',
+                prefixIcon: const Icon(Icons.search),
+                border: const OutlineInputBorder(),
               ),
               onChanged: (value) {
                 setState(() {

@@ -434,4 +434,30 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get enterUserName => 'Enter user name';
+
+  @override
+  String get totalCount => 'Total Count';
+
+  @override
+  String get maxScore => 'Max Score';
+
+  @override
+  String get minScore => 'Min Score';
+
+  @override
+  String scoreDetail(int score) {
+    return '$score Point Detail';
+  }
+
+  @override
+  String get description => 'Description';
+
+  @override
+  String get dartsCount => 'Darts Count';
+
+  @override
+  String get route => 'Route';
+
+  @override
+  String get close => 'Close';
 }

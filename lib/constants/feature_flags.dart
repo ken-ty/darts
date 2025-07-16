@@ -20,6 +20,7 @@ class FeatureFlags {
   static const bool enableCharts = true; // チャート機能を有効化
   static const bool enableOutshotDetailSummary = false;
   static const bool enableOutshotTableSearch = false;
+  static const bool enableOutshotListTileTapAction = false;
 
   // 開発用フラグ
   static const bool enableDebugMode = false; // デバッグモードを無効化

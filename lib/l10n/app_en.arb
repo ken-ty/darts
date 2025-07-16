@@ -265,5 +265,21 @@
   "duplicate": "Duplicate",
   "doubleOutRoute": "Double Out Route",
   "searchScoreAndDarts": "Search by score or darts...",
-  "enterUserName": "Enter user name"
+  "enterUserName": "Enter user name",
+  "totalCount": "Total Count",
+  "maxScore": "Max Score",
+  "minScore": "Min Score",
+  "scoreDetail": "{score} Point Detail",
+  "@scoreDetail": {
+    "description": "Score detail dialog title",
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "description": "Description",
+  "dartsCount": "Darts Count",
+  "route": "Route",
+  "close": "Close"
 } 

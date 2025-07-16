@@ -66,7 +66,7 @@ class _OutshotDetailPageState extends State<OutshotDetailPage> {
                 children: [
                   Expanded(
                     child: _buildStatCard(
-                      '総数',
+                      AppLocalizations.of(context)?.totalCount ?? '',
                       _filteredCombinations.length.toString(),
                       Icons.list,
                     ),
@@ -74,7 +74,7 @@ class _OutshotDetailPageState extends State<OutshotDetailPage> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: _buildStatCard(
-                      '最大スコア',
+                      AppLocalizations.of(context)?.maxScore ?? '',
                       _filteredCombinations.isNotEmpty
                           ? _filteredCombinations
                                 .map((c) => c.score)
@@ -87,7 +87,7 @@ class _OutshotDetailPageState extends State<OutshotDetailPage> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: _buildStatCard(
-                      '最小スコア',
+                      AppLocalizations.of(context)?.minScore ?? '',
                       _filteredCombinations.isNotEmpty
                           ? _filteredCombinations
                                 .map((c) => c.score)
@@ -159,7 +159,11 @@ class _OutshotDetailPageState extends State<OutshotDetailPage> {
             ],
           ],
         ),
-        onTap: () => _showOutshotDetailDialog(combo),
+        onTap: () {
+          if (FeatureFlags.enableOutshotListTileTapAction) {
+            _showOutshotDetailDialog(combo);
+          }
+        },
       ),
     );
   }
@@ -168,22 +172,30 @@ class _OutshotDetailPageState extends State<OutshotDetailPage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('${combo.score}点の詳細'),
+        title: Text(
+          AppLocalizations.of(context)?.scoreDetail(combo.score) ?? '',
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('説明: ${combo.description}'),
+            Text(
+              '${AppLocalizations.of(context)?.description ?? ''}: ${combo.description}',
+            ),
             const SizedBox(height: 8),
-            Text('ダーツ数: ${combo.combination.length}本'),
+            Text(
+              '${AppLocalizations.of(context)?.dartsCount ?? ''}: ${combo.combination.length}本',
+            ),
             const SizedBox(height: 8),
-            Text('ルート: ${combo.combination.join(' → ')}'),
+            Text(
+              '${AppLocalizations.of(context)?.route ?? ''}: ${combo.combination.join(' → ')}',
+            ),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('閉じる'),
+            child: Text(AppLocalizations.of(context)?.close ?? ''),
           ),
         ],
       ),

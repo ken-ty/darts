@@ -904,6 +904,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter user name'**
   String get enterUserName;
+
+  /// No description provided for @totalCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Count'**
+  String get totalCount;
+
+  /// No description provided for @maxScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Max Score'**
+  String get maxScore;
+
+  /// No description provided for @minScore.
+  ///
+  /// In en, this message translates to:
+  /// **'Min Score'**
+  String get minScore;
+
+  /// Score detail dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'{score} Point Detail'**
+  String scoreDetail(int score);
+
+  /// No description provided for @description.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get description;
+
+  /// No description provided for @dartsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Darts Count'**
+  String get dartsCount;
+
+  /// No description provided for @route.
+  ///
+  /// In en, this message translates to:
+  /// **'Route'**
+  String get route;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

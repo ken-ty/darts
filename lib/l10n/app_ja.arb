@@ -265,5 +265,21 @@
   "duplicate": "複製",
   "doubleOutRoute": "ダブルアウトルート",
   "searchScoreAndDarts": "スコアやダーツを検索...",
-  "enterUserName": "ユーザー名を入力"
+  "enterUserName": "ユーザー名を入力",
+  "totalCount": "総数",
+  "maxScore": "最大スコア",
+  "minScore": "最小スコア",
+  "scoreDetail": "{score}点の詳細",
+  "@scoreDetail": {
+    "description": "スコア詳細ダイアログのタイトル",
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "description": "説明",
+  "dartsCount": "ダーツ数",
+  "route": "ルート",
+  "close": "閉じる"
 } 

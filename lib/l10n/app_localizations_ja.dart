@@ -434,4 +434,30 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get enterUserName => 'ユーザー名を入力';
+
+  @override
+  String get totalCount => '総数';
+
+  @override
+  String get maxScore => '最大スコア';
+
+  @override
+  String get minScore => '最小スコア';
+
+  @override
+  String scoreDetail(int score) {
+    return '$score点の詳細';
+  }
+
+  @override
+  String get description => '説明';
+
+  @override
+  String get dartsCount => 'ダーツ数';
+
+  @override
+  String get route => 'ルート';
+
+  @override
+  String get close => '閉じる';
 }

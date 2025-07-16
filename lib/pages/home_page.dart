@@ -3,6 +3,7 @@ import 'package:outshotx/services/user_service.dart';
 
 import '../constants/feature_flags.dart';
 import '../l10n/app_localizations.dart';
+import '../widgets/construction_tape_decoration.dart';
 import 'outshot_list_page.dart';
 import 'practice_page.dart';
 import 'settings_page.dart';
@@ -318,102 +319,123 @@ class _DartsHomePageState extends State<DartsHomePage>
     required VoidCallback onTap,
     bool isDev = false,
   }) {
-    return Stack(
-      children: [
-        Positioned.fill(
-          child: InkWell(
-            onTap: onTap,
-            borderRadius: BorderRadius.circular(16),
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
+    Widget cardContent = InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.grey,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Container(
+          decoration: isDev
+              ? ConstructionTapeDecoration(
+                  borderColor: color.withValues(alpha: 0.2),
+                  borderWidth: 1.0,
+                  cardColor: color.withValues(alpha: 0.2),
+                )
+              : BoxDecoration(
                   color: color.withValues(alpha: 0.2),
-                  width: 1,
-                ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: color.withValues(alpha: 0.5),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Icon(
-                      icon,
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      size: 24,
-                    ),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: color.withValues(alpha: 0.2),
+                    width: 1,
                   ),
-                  const SizedBox(height: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          title,
-                          style: Theme.of(context).textTheme.titleMedium
+                ),
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: color.withValues(alpha: 0.5),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(
+                    icon,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    size: 24,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(
+                              color: Theme.of(context).colorScheme.onSurface,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                      const SizedBox(height: 4),
+                      Expanded(
+                        child: Text(
+                          subtitle,
+                          style: Theme.of(context).textTheme.bodySmall
                               ?.copyWith(
-                                color: Theme.of(context).colorScheme.onSurface,
-                                fontWeight: FontWeight.bold,
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurface.withValues(alpha: 0.7),
                               ),
                         ),
-                        const SizedBox(height: 4),
-                        Expanded(
-                          child: Text(
-                            subtitle,
-                            style: Theme.of(context).textTheme.bodySmall
-                                ?.copyWith(
-                                  color: Theme.of(context).colorScheme.onSurface
-                                      .withValues(alpha: 0.7),
-                                ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Icon(
+                            Icons.chevron_right,
+                            color: color.withValues(alpha: 0.6),
+                            size: 16,
                           ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Icon(
-                              Icons.chevron_right,
-                              color: color.withValues(alpha: 0.6),
-                              size: 16,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
-        if (isDev)
+      ),
+    );
+
+    // 開発中の場合は開発中ラベルを追加
+    if (isDev) {
+      return Stack(
+        children: [
+          cardContent,
+          // 開発中ラベル（右上）
           Positioned(
-            top: 12,
-            right: 12,
+            top: 8,
+            right: 8,
             child: IgnorePointer(
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
                   color: Colors.orange,
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
-                  AppLocalizations.of(context)?.underDevelopment ?? '',
+                  AppLocalizations.of(context)?.underDevelopment ?? '開発中',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
+                    fontSize: 10,
                   ),
                 ),
               ),
             ),
           ),
-      ],
-    );
+        ],
+      );
+    }
+
+    return cardContent;
   }
 
   void _showUserSelectionDialog(BuildContext context) {

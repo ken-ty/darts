@@ -166,7 +166,7 @@ class UnderDevelopmentOverlay extends StatelessWidget {
                     ),
                   ),
                   icon: const Icon(Icons.arrow_back),
-                  label: Text(AppLocalizations.of(context)?.back ?? '戻る'),
+                  label: Text(AppLocalizations.of(context)?.back ?? ''),
                 ),
               ],
             ),

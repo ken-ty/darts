@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/outshot/outshot_table.dart';
@@ -135,5 +137,112 @@ class OutshotTableService {
   static Future<void> clearAllData() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_tablesKey);
+  }
+
+  /// テーブルをJSONファイルとしてエクスポート
+  Future<String?> exportTableToFile(OutshotTable table) async {
+    try {
+      // ファイル名を生成（テーブル名 + タイムスタンプ）
+      final timestamp = DateTime.now().millisecondsSinceEpoch;
+      final fileName =
+          '${table.name.replaceAll(RegExp(r'[^\w+-]'), '_')}_$timestamp.json';
+
+      // アプリのドキュメントディレクトリを取得
+      final directory = await getApplicationDocumentsDirectory();
+      final filePath = '${directory.path}/$fileName';
+
+      // JSONファイルを作成
+      final file = File(filePath);
+      final jsonString = jsonEncode(table.toJson());
+      await file.writeAsString(jsonString, flush: true);
+
+      return filePath;
+    } catch (e) {
+      throw Exception('Failed to export table: $e');
+    }
+  }
+
+  /// ドキュメントディレクトリ内のJSONファイル一覧を取得
+  Future<List<File>> getAvailableImportFiles() async {
+    try {
+      final directory = await getApplicationDocumentsDirectory();
+
+      final files = directory.listSync().where((entity) {
+        return entity is File && entity.path.endsWith('.json');
+      }).cast<File>();
+
+      // ファイルを更新日時順にソート（新しい順）
+      final sortedFiles = files.toList();
+      sortedFiles.sort(
+        (a, b) => b.lastModifiedSync().compareTo(a.lastModifiedSync()),
+      );
+
+      return sortedFiles;
+    } catch (e) {
+      throw Exception('Failed to get import files: $e');
+    }
+  }
+
+  /// 指定したファイルからテーブルをインポート
+  Future<OutshotTable> importTableFromFile(File file) async {
+    try {
+      final jsonString = await file.readAsString();
+      final jsonData = jsonDecode(jsonString) as Map<String, dynamic>;
+
+      // JSONからテーブルを作成
+      final importedTable = OutshotTable.fromJson(jsonData);
+
+      // 新しいIDを生成（重複を避けるため）
+      final newTable = OutshotTable(
+        id: generateTableId(),
+        name: importedTable.name,
+        labelIds: importedTable.labelIds,
+        combinations: importedTable.combinations,
+        createdAt: DateTime.now(),
+      );
+
+      return newTable;
+    } catch (e) {
+      throw Exception('Failed to import table: $e');
+    }
+  }
+
+  /// JSONファイルからテーブルをインポート（最新ファイルを自動選択）
+  Future<OutshotTable> importTableFromLatestFile() async {
+    try {
+      final files = await getAvailableImportFiles();
+
+      if (files.isEmpty) {
+        throw Exception('No JSON files found in documents directory');
+      }
+
+      // 最新のファイルを選択
+      final file = files.first;
+      return await importTableFromFile(file);
+    } catch (e) {
+      throw Exception('Failed to import table: $e');
+    }
+  }
+
+  /// テーブル名の重複チェック
+  Future<bool> isTableNameExists(String tableName) async {
+    final allTables = await getAllTables();
+    return allTables.any((table) => table.name == tableName);
+  }
+
+  /// 重複するテーブル名を解決
+  String resolveDuplicateTableName(String originalName) {
+    int counter = 1;
+    String newName = originalName;
+
+    while (true) {
+      final testName = '$originalName ($counter)';
+      // 実際のチェックは呼び出し側で行うため、ここでは名前の生成のみ
+      if (counter > 100) break; // 無限ループ防止
+      newName = testName;
+      counter++;
+    }
+
+    return newName;
   }
 }

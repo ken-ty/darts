@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:outshotx/l10n/app_localizations.dart';
+import 'package:outshotx/models/outshot/outshot_table.dart';
 import 'package:outshotx/services/language_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -7,6 +10,7 @@ import '../constants/app_constants.dart';
 import '../constants/feature_flags.dart';
 import '../models/user_profile.dart';
 import '../services/app_info_service.dart';
+import '../services/outshot_table_service.dart';
 import '../services/theme_service.dart';
 import '../services/user_service.dart';
 
@@ -173,20 +177,16 @@ class _SettingsPageState extends State<SettingsPage>
                   const SizedBox(height: 32),
                 ],
 
-                // Initialize App Section
-                _buildSectionHeader(
-                  AppLocalizations.of(context)?.initializeApp ?? '',
-                ),
-                const SizedBox(height: 16),
-                _buildInitializeAppSection(),
-                const SizedBox(height: 32),
-
                 // About Section（常時表示）
                 _buildSectionHeader(
                   AppLocalizations.of(context)?.aboutApp ?? '',
                 ),
                 const SizedBox(height: 16),
                 _buildAboutSection(),
+                const SizedBox(height: 32),
+
+                // Advanced Section（上級者向け詳細設定）
+                _buildAdvancedSection(),
                 const SizedBox(height: 32),
               ],
             ),
@@ -688,11 +688,12 @@ class _SettingsPageState extends State<SettingsPage>
           ),
           FilledButton(
             onPressed: () {
-              // TODO: データエクスポート機能を実装
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: const Text('データエクスポート機能は準備中です'),
+                  content: Text(
+                    AppLocalizations.of(context)?.dataExportInProgress ?? '',
+                  ),
                   backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
               );
@@ -848,7 +849,7 @@ class _SettingsPageState extends State<SettingsPage>
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text('アプリが初期化されました'),
+            content: Text(AppLocalizations.of(context)?.appInitialized ?? ''),
             backgroundColor: Theme.of(context).colorScheme.primary,
           ),
         );
@@ -861,7 +862,335 @@ class _SettingsPageState extends State<SettingsPage>
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('初期化中にエラーが発生しました: $e'),
+            content: Text(
+              AppLocalizations.of(context)?.initializationError(e.toString()) ??
+                  e.toString(),
+            ),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+      }
+    }
+  }
+
+  bool _isAdvancedOpen = false;
+
+  Widget _buildAdvancedSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              _isAdvancedOpen = !_isAdvancedOpen;
+            });
+          },
+          child: Row(
+            children: [
+              Icon(
+                _isAdvancedOpen ? Icons.expand_less : Icons.expand_more,
+                color: Theme.of(context).colorScheme.outline,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                '詳細設定（上級者向け）',
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  color: Theme.of(context).colorScheme.outline,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+        AnimatedCrossFade(
+          firstChild: const SizedBox.shrink(),
+          secondChild: Padding(
+            padding: const EdgeInsets.only(top: 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Card(
+                  elevation: 1,
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          AppLocalizations.of(context)?.exportOutshotTable ??
+                              '',
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          AppLocalizations.of(
+                                context,
+                              )?.exportTableDescription ??
+                              '',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        const SizedBox(height: 8),
+                        OutlinedButton.icon(
+                          icon: const Icon(Icons.file_upload),
+                          label: Text(
+                            AppLocalizations.of(context)?.exportTable ?? '',
+                          ),
+                          onPressed: _showExportOutshotTableDialog,
+                        ),
+                        const Divider(height: 32),
+                        Text(
+                          AppLocalizations.of(context)?.importOutshotTable ??
+                              '',
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          AppLocalizations.of(
+                                context,
+                              )?.importTableDescription ??
+                              '',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        const SizedBox(height: 8),
+                        OutlinedButton.icon(
+                          icon: const Icon(Icons.file_download),
+                          label: Text(
+                            AppLocalizations.of(context)?.importTable ?? '',
+                          ),
+                          onPressed: _importOutshotTable,
+                        ),
+                        const Divider(height: 32),
+                        Text(
+                          AppLocalizations.of(context)?.initializeApp ?? '',
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          AppLocalizations.of(
+                                context,
+                              )?.initializeAppDescription ??
+                              '',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        const SizedBox(height: 8),
+                        OutlinedButton.icon(
+                          icon: Icon(
+                            Icons.warning,
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                          label: Text(
+                            AppLocalizations.of(context)?.initialize ?? '',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.error,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(
+                              color: Theme.of(context).colorScheme.error,
+                            ),
+                          ),
+                          onPressed: _showInitializeAppDialog,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          crossFadeState: _isAdvancedOpen
+              ? CrossFadeState.showSecond
+              : CrossFadeState.showFirst,
+          duration: const Duration(milliseconds: 250),
+        ),
+      ],
+    );
+  }
+
+  void _showExportOutshotTableDialog() async {
+    final tableService = OutshotTableService();
+    final tables = await tableService.getAllTables();
+    OutshotTable? selectedTable;
+
+    showDialog(
+      context: context,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) => AlertDialog(
+          title: Text(AppLocalizations.of(context)?.selectTableToExport ?? ''),
+          content: DropdownButton<OutshotTable>(
+            isExpanded: true,
+            value: selectedTable,
+            hint: Text(AppLocalizations.of(context)?.selectTable ?? ''),
+            items: tables.map((table) {
+              return DropdownMenuItem<OutshotTable>(
+                value: table,
+                child: Text(table.name),
+              );
+            }).toList(),
+            onChanged: (value) {
+              setState(() {
+                selectedTable = value;
+              });
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(AppLocalizations.of(context)?.cancel ?? ''),
+            ),
+            FilledButton(
+              onPressed: selectedTable == null
+                  ? null
+                  : () async {
+                      try {
+                        final filePath = await tableService.exportTableToFile(
+                          selectedTable!,
+                        );
+                        Navigator.pop(context);
+                        if (mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                AppLocalizations.of(context)?.exportSuccess ??
+                                    '',
+                              ),
+                              duration: const Duration(seconds: 3),
+                            ),
+                          );
+                        }
+                      } catch (e) {
+                        Navigator.pop(context);
+                        if (mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                '${AppLocalizations.of(context)?.importError ?? ''}: $e',
+                              ),
+                              backgroundColor: Theme.of(
+                                context,
+                              ).colorScheme.error,
+                            ),
+                          );
+                        }
+                      }
+                    },
+              child: Text(AppLocalizations.of(context)?.exportTable ?? ''),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _importOutshotTable() async {
+    final tableService = OutshotTableService();
+    try {
+      // インポート可能なファイル一覧を取得
+      final files = await tableService.getAvailableImportFiles();
+
+      if (files.isEmpty) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                AppLocalizations.of(context)?.noImportFilesFound ?? '',
+              ),
+              backgroundColor: Theme.of(context).colorScheme.error,
+            ),
+          );
+        }
+        return;
+      }
+
+      // ファイル選択ダイアログを表示
+      final selectedFile = await showDialog<File>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(AppLocalizations.of(context)?.selectImportFile ?? ''),
+          content: SizedBox(
+            width: double.maxFinite,
+            height: 300,
+            child: ListView.builder(
+              itemCount: files.length,
+              itemBuilder: (context, index) {
+                final file = files[index];
+                final fileName = file.path.split('/').last;
+                final lastModified = file.lastModifiedSync();
+
+                return ListTile(
+                  title: Text(fileName),
+                  subtitle: Text(
+                    '${AppLocalizations.of(context)?.lastModifiedLabel ?? ''}: ${lastModified.toString().substring(0, 19)}',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  leading: const Icon(Icons.file_present),
+                  onTap: () => Navigator.pop(context, file),
+                );
+              },
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(AppLocalizations.of(context)?.cancel ?? ''),
+            ),
+          ],
+        ),
+      );
+
+      if (selectedFile == null) return;
+
+      // 選択したファイルからインポート
+      final importedTable = await tableService.importTableFromFile(
+        selectedFile,
+      );
+
+      // 同名テーブルが存在する場合は上書き確認
+      final exists = await tableService.isTableNameExists(importedTable.name);
+      if (exists) {
+        final overwrite = await showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text(AppLocalizations.of(context)?.overwriteTable ?? ''),
+            content: Text(
+              AppLocalizations.of(context)?.overwriteTableWarning ?? '',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: Text(AppLocalizations.of(context)?.cancel ?? ''),
+              ),
+              FilledButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: Text(AppLocalizations.of(context)?.overwrite ?? ''),
+              ),
+            ],
+          ),
+        );
+        if (overwrite != true) return;
+      }
+
+      await tableService.addTable(importedTable);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)?.importSuccess ?? ''),
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              '${AppLocalizations.of(context)?.importError ?? ''}: $e',
+            ),
             backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );

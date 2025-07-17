@@ -204,6 +204,21 @@
   "initializeAppConfirmation": "Initialize the app?",
   "initializeAppWarning": "This action will delete all data including registered users, outshot tables, settings, etc. This action cannot be undone.",
   "initialize": "Initialize",
+  "exportOutshotTable": "Export Outshot Table",
+  "importOutshotTable": "Import Outshot Table",
+  "exportTableDescription": "Export outshot table as JSON file",
+  "importTableDescription": "Import outshot table from JSON file",
+  "exportTable": "Export Table",
+  "importTable": "Import Table",
+  "selectTableToExport": "Select table to export",
+  "exportSuccess": "Export completed",
+  "importSuccess": "Import completed",
+  "importError": "Error occurred during import",
+  "invalidFileFormat": "Invalid file format",
+  "tableAlreadyExists": "Table with same name already exists",
+  "overwriteTable": "Overwrite table?",
+  "overwriteTableWarning": "Existing table will be overwritten. This action cannot be undone.",
+  "overwrite": "Overwrite",
   "enterScore": "Enter your score",
   "undoLastScore": "Undo Last Score",
   "finishCandidates": "Finish Candidates",
@@ -303,5 +318,49 @@
   "delete": "Delete",
   "edit": "Edit",
   "contact": "Contact",
-  "featureRequest": "Feature Request"
+  "featureRequest": "Feature Request",
+  "selectImportFile": "Select file to import",
+  "noImportFilesFound": "No importable files found",
+  "lastModified": "Last modified: {date}",
+  "@lastModified": {
+    "description": "Display file last modified date",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "importFileInfo": "File name: {fileName}",
+  "@importFileInfo": {
+    "description": "Display import file information",
+    "placeholders": {
+      "fileName": {
+        "type": "String"
+      }
+    }
+  },
+  "importFileCount": "Entry count: {count}",
+  "@importFileCount": {
+    "description": "Display import file entry count",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "saveImportedTable": "Save this table?",
+  "save": "Save",
+  "lastModifiedLabel": "Last Modified",
+  "dataExportInProgress": "Data export feature is in preparation",
+  "appInitialized": "App has been initialized",
+  "selectTable": "Select table",
+  "initializationError": "Error occurred during initialization: {error}",
+  "@initializationError": {
+    "description": "Initialization error message",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
 } 

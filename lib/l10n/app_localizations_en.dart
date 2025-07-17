@@ -312,6 +312,51 @@ class AppLocalizationsEn extends AppLocalizations {
   String get initialize => 'Initialize';
 
   @override
+  String get exportOutshotTable => 'Export Outshot Table';
+
+  @override
+  String get importOutshotTable => 'Import Outshot Table';
+
+  @override
+  String get exportTableDescription => 'Export outshot table as JSON file';
+
+  @override
+  String get importTableDescription => 'Import outshot table from JSON file';
+
+  @override
+  String get exportTable => 'Export Table';
+
+  @override
+  String get importTable => 'Import Table';
+
+  @override
+  String get selectTableToExport => 'Select table to export';
+
+  @override
+  String get exportSuccess => 'Export completed';
+
+  @override
+  String get importSuccess => 'Import completed';
+
+  @override
+  String get importError => 'Error occurred during import';
+
+  @override
+  String get invalidFileFormat => 'Invalid file format';
+
+  @override
+  String get tableAlreadyExists => 'Table with same name already exists';
+
+  @override
+  String get overwriteTable => 'Overwrite table?';
+
+  @override
+  String get overwriteTableWarning => 'Existing table will be overwritten. This action cannot be undone.';
+
+  @override
+  String get overwrite => 'Overwrite';
+
+  @override
   String get finishCandidates => 'Finish Candidates';
 
   @override
@@ -508,4 +553,42 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get featureRequest => 'Feature Request';
+
+  @override
+  String get selectImportFile => 'Select file to import';
+
+  @override
+  String get noImportFilesFound => 'No importable files found';
+
+  @override
+  String lastModified(String date) {
+    return 'Last modified: $date';
+  }
+
+  @override
+  String importFileInfo(String fileName) {
+    return 'File name: $fileName';
+  }
+
+  @override
+  String importFileCount(int count) {
+    return 'Entry count: $count';
+  }
+
+  @override
+  String get saveImportedTable => 'Save this table?';
+
+  @override
+  String get lastModifiedLabel => 'Last Modified';
+
+  @override
+  String get appInitialized => 'App has been initialized';
+
+  @override
+  String get selectTable => 'Select table';
+
+  @override
+  String initializationError(String error) {
+    return 'Error occurred during initialization: $error';
+  }
 }

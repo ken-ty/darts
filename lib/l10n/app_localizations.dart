@@ -665,6 +665,96 @@ abstract class AppLocalizations {
   /// **'Initialize'**
   String get initialize;
 
+  /// No description provided for @exportOutshotTable.
+  ///
+  /// In en, this message translates to:
+  /// **'Export Outshot Table'**
+  String get exportOutshotTable;
+
+  /// No description provided for @importOutshotTable.
+  ///
+  /// In en, this message translates to:
+  /// **'Import Outshot Table'**
+  String get importOutshotTable;
+
+  /// No description provided for @exportTableDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Export outshot table as JSON file'**
+  String get exportTableDescription;
+
+  /// No description provided for @importTableDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Import outshot table from JSON file'**
+  String get importTableDescription;
+
+  /// No description provided for @exportTable.
+  ///
+  /// In en, this message translates to:
+  /// **'Export Table'**
+  String get exportTable;
+
+  /// No description provided for @importTable.
+  ///
+  /// In en, this message translates to:
+  /// **'Import Table'**
+  String get importTable;
+
+  /// No description provided for @selectTableToExport.
+  ///
+  /// In en, this message translates to:
+  /// **'Select table to export'**
+  String get selectTableToExport;
+
+  /// No description provided for @exportSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Export completed'**
+  String get exportSuccess;
+
+  /// No description provided for @importSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Import completed'**
+  String get importSuccess;
+
+  /// No description provided for @importError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error occurred during import'**
+  String get importError;
+
+  /// No description provided for @invalidFileFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid file format'**
+  String get invalidFileFormat;
+
+  /// No description provided for @tableAlreadyExists.
+  ///
+  /// In en, this message translates to:
+  /// **'Table with same name already exists'**
+  String get tableAlreadyExists;
+
+  /// No description provided for @overwriteTable.
+  ///
+  /// In en, this message translates to:
+  /// **'Overwrite table?'**
+  String get overwriteTable;
+
+  /// No description provided for @overwriteTableWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Existing table will be overwritten. This action cannot be undone.'**
+  String get overwriteTableWarning;
+
+  /// No description provided for @overwrite.
+  ///
+  /// In en, this message translates to:
+  /// **'Overwrite'**
+  String get overwrite;
+
   /// No description provided for @finishCandidates.
   ///
   /// In en, this message translates to:
@@ -1048,6 +1138,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Feature Request'**
   String get featureRequest;
+
+  /// No description provided for @selectImportFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Select file to import'**
+  String get selectImportFile;
+
+  /// No description provided for @noImportFilesFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No importable files found'**
+  String get noImportFilesFound;
+
+  /// Display file last modified date
+  ///
+  /// In en, this message translates to:
+  /// **'Last modified: {date}'**
+  String lastModified(String date);
+
+  /// Display import file information
+  ///
+  /// In en, this message translates to:
+  /// **'File name: {fileName}'**
+  String importFileInfo(String fileName);
+
+  /// Display import file entry count
+  ///
+  /// In en, this message translates to:
+  /// **'Entry count: {count}'**
+  String importFileCount(int count);
+
+  /// No description provided for @saveImportedTable.
+  ///
+  /// In en, this message translates to:
+  /// **'Save this table?'**
+  String get saveImportedTable;
+
+  /// No description provided for @lastModifiedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Modified'**
+  String get lastModifiedLabel;
+
+  /// No description provided for @appInitialized.
+  ///
+  /// In en, this message translates to:
+  /// **'App has been initialized'**
+  String get appInitialized;
+
+  /// No description provided for @selectTable.
+  ///
+  /// In en, this message translates to:
+  /// **'Select table'**
+  String get selectTable;
+
+  /// Initialization error message
+  ///
+  /// In en, this message translates to:
+  /// **'Error occurred during initialization: {error}'**
+  String initializationError(String error);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

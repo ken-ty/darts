@@ -204,6 +204,21 @@
   "initializeAppConfirmation": "アプリを初期化しますか？",
   "initializeAppWarning": "この操作により、登録されているユーザー、アウトショットテーブル、設定など、すべてのデータが削除されます。この操作は取り消せません。",
   "initialize": "初期化",
+  "exportOutshotTable": "アウトショットテーブルをエクスポート",
+  "importOutshotTable": "アウトショットテーブルをインポート",
+  "exportTableDescription": "アウトショットテーブルをJSONファイルとしてエクスポートします",
+  "importTableDescription": "JSONファイルからアウトショットテーブルをインポートします",
+  "exportTable": "テーブルをエクスポート",
+  "importTable": "テーブルをインポート",
+  "selectTableToExport": "エクスポートするテーブルを選択",
+  "exportSuccess": "エクスポートが完了しました",
+  "importSuccess": "インポートが完了しました",
+  "importError": "インポート中にエラーが発生しました",
+  "invalidFileFormat": "無効なファイル形式です",
+  "tableAlreadyExists": "同じ名前のテーブルが既に存在します",
+  "overwriteTable": "上書きしますか？",
+  "overwriteTableWarning": "既存のテーブルが上書きされます。この操作は取り消せません。",
+  "overwrite": "上書き",
   "enterScore": "投げたスコアを入力",
   "undoLastScore": "前のスコアに戻す",
   "finishCandidates": "フィニッシュ候補",
@@ -301,5 +316,49 @@
   "delete": "削除",
   "edit": "編集",
   "contact": "お問い合わせ",
-  "featureRequest": "機能リクエスト"
+  "featureRequest": "機能リクエスト",
+  "selectImportFile": "インポートするファイルを選択",
+  "noImportFilesFound": "インポート可能なファイルが見つかりません",
+  "lastModified": "更新日時: {date}",
+  "@lastModified": {
+    "description": "ファイルの最終更新日時を表示",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "importFileInfo": "ファイル名: {fileName}",
+  "@importFileInfo": {
+    "description": "インポートファイルの情報を表示",
+    "placeholders": {
+      "fileName": {
+        "type": "String"
+      }
+    }
+  },
+  "importFileCount": "エントリー数: {count}件",
+  "@importFileCount": {
+    "description": "インポートファイルのエントリー数を表示",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "saveImportedTable": "このテーブルを保存しますか？",
+  "save": "保存",
+  "lastModifiedLabel": "更新日時",
+  "dataExportInProgress": "データエクスポート機能は準備中です",
+  "appInitialized": "アプリが初期化されました",
+  "selectTable": "テーブルを選択",
+  "initializationError": "初期化中にエラーが発生しました: {error}",
+  "@initializationError": {
+    "description": "初期化エラーメッセージ",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  }
 } 

@@ -1,6 +1,5 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
-
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -258,8 +257,7 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get statisticsUnderDevelopment =>
-      '統計機能は現在開発中です。\n詳細な統計情報やグラフを\nお楽しみにお待ちください！';
+  String get statisticsUnderDevelopment => '統計機能は現在開発中です。\n詳細な統計情報やグラフを\nお楽しみにお待ちください！';
 
   @override
   String get finishCountLabel => 'フィニッシュ数';
@@ -308,11 +306,55 @@ class AppLocalizationsJa extends AppLocalizations {
   String get initializeAppConfirmation => 'アプリを初期化しますか？';
 
   @override
-  String get initializeAppWarning =>
-      'この操作により、登録されているユーザー、アウトショットテーブル、設定など、すべてのデータが削除されます。この操作は取り消せません。';
+  String get initializeAppWarning => 'この操作により、登録されているユーザー、アウトショットテーブル、設定など、すべてのデータが削除されます。この操作は取り消せません。';
 
   @override
   String get initialize => '初期化';
+
+  @override
+  String get exportOutshotTable => 'アウトショットテーブルをエクスポート';
+
+  @override
+  String get importOutshotTable => 'アウトショットテーブルをインポート';
+
+  @override
+  String get exportTableDescription => 'アウトショットテーブルをJSONファイルとしてエクスポートします';
+
+  @override
+  String get importTableDescription => 'JSONファイルからアウトショットテーブルをインポートします';
+
+  @override
+  String get exportTable => 'テーブルをエクスポート';
+
+  @override
+  String get importTable => 'テーブルをインポート';
+
+  @override
+  String get selectTableToExport => 'エクスポートするテーブルを選択';
+
+  @override
+  String get exportSuccess => 'エクスポートが完了しました';
+
+  @override
+  String get importSuccess => 'インポートが完了しました';
+
+  @override
+  String get importError => 'インポート中にエラーが発生しました';
+
+  @override
+  String get invalidFileFormat => '無効なファイル形式です';
+
+  @override
+  String get tableAlreadyExists => '同じ名前のテーブルが既に存在します';
+
+  @override
+  String get overwriteTable => '上書きしますか？';
+
+  @override
+  String get overwriteTableWarning => '既存のテーブルが上書きされます。この操作は取り消せません。';
+
+  @override
+  String get overwrite => '上書き';
 
   @override
   String get finishCandidates => 'フィニッシュ候補';
@@ -381,8 +423,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get finishWithThis => 'このフィニッシュで上がる';
 
   @override
-  String get practiceUnderDevelopment =>
-      'プラクティス機能は現在開発中です。\nスコア計算と練習機能を\nお楽しみにお待ちください！';
+  String get practiceUnderDevelopment => 'プラクティス機能は現在開発中です。\nスコア計算と練習機能を\nお楽しみにお待ちください！';
 
   @override
   String get outshotList => 'アウトショット一覧';
@@ -512,4 +553,42 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get featureRequest => '機能リクエスト';
+
+  @override
+  String get selectImportFile => 'インポートするファイルを選択';
+
+  @override
+  String get noImportFilesFound => 'インポート可能なファイルが見つかりません';
+
+  @override
+  String lastModified(String date) {
+    return '更新日時: $date';
+  }
+
+  @override
+  String importFileInfo(String fileName) {
+    return 'ファイル名: $fileName';
+  }
+
+  @override
+  String importFileCount(int count) {
+    return 'エントリー数: $count件';
+  }
+
+  @override
+  String get saveImportedTable => 'このテーブルを保存しますか？';
+
+  @override
+  String get lastModifiedLabel => '更新日時';
+
+  @override
+  String get appInitialized => 'アプリが初期化されました';
+
+  @override
+  String get selectTable => 'テーブルを選択';
+
+  @override
+  String initializationError(String error) {
+    return '初期化中にエラーが発生しました: $error';
+  }
 }

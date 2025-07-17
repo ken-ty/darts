@@ -29,7 +29,108 @@ class _OutshotDetailPageState extends State<OutshotDetailPage> {
       }).toList();
     }
 
+    // スコア順（降順）でソート
+    combinations.sort((a, b) => b.score.compareTo(a.score));
+
     return combinations;
+  }
+
+  // Entry追加ダイアログ
+  Future<void> _showEntryDialog({OutshotEntry? entry, int? editIndex}) async {
+    final scoreController = TextEditingController(
+      text: entry?.score.toString() ?? '',
+    );
+    final combinationController = TextEditingController(
+      text: entry?.combination.join(',') ?? '',
+    );
+    final descriptionController = TextEditingController(
+      text: entry?.description ?? '',
+    );
+
+    final result = await showDialog<OutshotEntry>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(entry == null ? 'エントリー追加' : 'エントリー編集'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: scoreController,
+              decoration: const InputDecoration(labelText: 'スコア'),
+            ),
+            TextField(
+              controller: combinationController,
+              decoration: const InputDecoration(labelText: '組み合わせ（カンマ区切り）'),
+            ),
+            TextField(
+              controller: descriptionController,
+              decoration: const InputDecoration(labelText: '説明'),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('キャンセル'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              final entry = OutshotEntry(
+                score: int.tryParse(scoreController.text) ?? 0,
+                combination: combinationController.text
+                    .split(',')
+                    .map((e) => e.trim())
+                    .toList(),
+                description: descriptionController.text,
+              );
+              Navigator.pop(context, entry);
+            },
+            child: const Text('保存'),
+          ),
+        ],
+      ),
+    );
+
+    if (result != null) {
+      setState(() {
+        if (editIndex != null) {
+          widget.outshotSet.combinations[editIndex] = result;
+        } else {
+          widget.outshotSet.combinations.add(result);
+        }
+      });
+      // TODO: 保存処理
+      // await OutshotTableService().updateTable(widget.outshotSet);
+    }
+  }
+
+  // Entry削除ダイアログ
+  Future<void> _showDeleteDialog(int index) async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('削除確認'),
+        content: const Text('このエントリーを削除しますか？'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('キャンセル'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            child: const Text('削除'),
+          ),
+        ],
+      ),
+    );
+    if (result == true) {
+      setState(() {
+        widget.outshotSet.combinations.removeAt(index);
+      });
+      // TODO: 保存処理
+      // await OutshotTableService().updateTable(widget.outshotSet);
+    }
   }
 
   @override
@@ -108,11 +209,50 @@ class _OutshotDetailPageState extends State<OutshotDetailPage> {
               itemCount: _filteredCombinations.length,
               itemBuilder: (context, index) {
                 final combo = _filteredCombinations[index];
-                return _buildOutshotCard(combo);
+                return GestureDetector(
+                  onLongPress: () async {
+                    // 編集・削除メニュー
+                    final action = await showModalBottomSheet<String>(
+                      context: context,
+                      builder: (context) => Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ListTile(
+                            leading: const Icon(Icons.edit),
+                            title: const Text('編集'),
+                            onTap: () => Navigator.pop(context, 'edit'),
+                          ),
+                          ListTile(
+                            leading: const Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ),
+                            title: const Text(
+                              '削除',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                            onTap: () => Navigator.pop(context, 'delete'),
+                          ),
+                        ],
+                      ),
+                    );
+                    if (action == 'edit') {
+                      _showEntryDialog(entry: combo, editIndex: index);
+                    } else if (action == 'delete') {
+                      _showDeleteDialog(index);
+                    }
+                  },
+                  child: _buildOutshotCard(combo),
+                );
               },
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _showEntryDialog(),
+        tooltip: 'エントリー追加',
+        child: const Icon(Icons.add),
       ),
     );
   }

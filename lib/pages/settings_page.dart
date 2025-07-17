@@ -59,6 +59,24 @@ class _SettingsPageState extends State<SettingsPage>
     super.dispose();
   }
 
+  // 現在の言語に応じてPrivacyPolicyのURLを取得
+  String _getPrivacyPolicyUrl() {
+    final currentLocale = LanguageService.instance.currentLocale;
+    if (currentLocale?.languageCode == 'en') {
+      return AppConstants.privacyPolicyUrlEn;
+    }
+    return AppConstants.privacyPolicyUrlJp;
+  }
+
+  // 現在の言語に応じてTermsOfServiceのURLを取得
+  String _getTermsOfServiceUrl() {
+    final currentLocale = LanguageService.instance.currentLocale;
+    if (currentLocale?.languageCode == 'en') {
+      return AppConstants.termsOfServiceUrlEn;
+    }
+    return AppConstants.termsOfServiceUrlJp;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -356,13 +374,13 @@ class _SettingsPageState extends State<SettingsPage>
           _buildSettingTile(
             title: AppLocalizations.of(context)?.privacyPolicy ?? '',
             icon: Icons.privacy_tip,
-            onTap: () => _launchURL(AppConstants.privacyPolicyUrl),
+            onTap: () => _launchURL(_getPrivacyPolicyUrl()),
           ),
           _buildDivider(),
           _buildSettingTile(
             title: AppLocalizations.of(context)?.termsOfService ?? '',
             icon: Icons.description,
-            onTap: () => _launchURL(AppConstants.termsOfServiceUrl),
+            onTap: () => _launchURL(_getTermsOfServiceUrl()),
           ),
         ],
       ),

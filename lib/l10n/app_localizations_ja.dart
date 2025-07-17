@@ -594,4 +594,34 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get advancedSettings => '詳細設定（上級者向け）';
+
+  @override
+  String get exportCancelled => 'エクスポートがキャンセルされました';
+
+  @override
+  String get importCancelled => 'インポートがキャンセルされました';
+
+  @override
+  String get selectFileToImport => 'インポートするファイルを選択';
+
+  @override
+  String get selectSaveLocation => '保存場所を選択';
+
+  @override
+  String get saveJsonFile => 'JSONファイルを保存';
+
+  @override
+  String get selectJsonFileToImport => 'インポートするJSONファイルを選択';
+
+  @override
+  String get serializeTableError => 'テーブルのシリアライズに失敗しました';
+
+  @override
+  String get deserializeTableError => 'テーブルのデシリアライズに失敗しました';
+
+  @override
+  String get saveFileError => 'ファイルの保存に失敗しました';
+
+  @override
+  String get pickFileError => 'ファイルの選択に失敗しました';
 }

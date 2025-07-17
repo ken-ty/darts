@@ -1,7 +1,6 @@
 import 'dart:convert';
-import 'dart:io';
+import 'dart:typed_data';
 
-import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/outshot/outshot_table.dart';
@@ -139,54 +138,32 @@ class OutshotTableService {
     await prefs.remove(_tablesKey);
   }
 
-  /// テーブルをJSONファイルとしてエクスポート
-  Future<String?> exportTableToFile(OutshotTable table) async {
+  /// テーブルをJSONバイトデータにシリアライズ（純粋なビジネスロジック）
+  Future<Uint8List> serializeTable(
+    OutshotTable table, {
+    String errorMessage = 'Failed to serialize table',
+  }) async {
     try {
-      // ファイル名を生成（テーブル名 + タイムスタンプ）
-      final timestamp = DateTime.now().millisecondsSinceEpoch;
-      final fileName =
-          '${table.name.replaceAll(RegExp(r'[^\w+-]'), '_')}_$timestamp.json';
-
-      // アプリのドキュメントディレクトリを取得
-      final directory = await getApplicationDocumentsDirectory();
-      final filePath = '${directory.path}/$fileName';
-
-      // JSONファイルを作成
-      final file = File(filePath);
       final jsonString = jsonEncode(table.toJson());
-      await file.writeAsString(jsonString, flush: true);
-
-      return filePath;
+      return Uint8List.fromList(utf8.encode(jsonString));
     } catch (e) {
-      throw Exception('Failed to export table: $e');
+      throw Exception('$errorMessage: $e');
     }
   }
 
-  /// ドキュメントディレクトリ内のJSONファイル一覧を取得
-  Future<List<File>> getAvailableImportFiles() async {
-    try {
-      final directory = await getApplicationDocumentsDirectory();
-
-      final files = directory.listSync().where((entity) {
-        return entity is File && entity.path.endsWith('.json');
-      }).cast<File>();
-
-      // ファイルを更新日時順にソート（新しい順）
-      final sortedFiles = files.toList();
-      sortedFiles.sort(
-        (a, b) => b.lastModifiedSync().compareTo(a.lastModifiedSync()),
-      );
-
-      return sortedFiles;
-    } catch (e) {
-      throw Exception('Failed to get import files: $e');
-    }
+  /// テーブル用のファイル名を生成（純粋なビジネスロジック）
+  String generateTableFileName(OutshotTable table) {
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    return '${table.name.replaceAll(RegExp(r'[^\w+-]'), '_')}_$timestamp.json';
   }
 
-  /// 指定したファイルからテーブルをインポート
-  Future<OutshotTable> importTableFromFile(File file) async {
+  /// バイトデータからテーブルをデシリアライズ（純粋なビジネスロジック）
+  Future<OutshotTable> deserializeTable(
+    Uint8List bytes, {
+    String errorMessage = 'Failed to deserialize table',
+  }) async {
     try {
-      final jsonString = await file.readAsString();
+      final jsonString = utf8.decode(bytes);
       final jsonData = jsonDecode(jsonString) as Map<String, dynamic>;
 
       // JSONからテーブルを作成
@@ -203,24 +180,7 @@ class OutshotTableService {
 
       return newTable;
     } catch (e) {
-      throw Exception('Failed to import table: $e');
-    }
-  }
-
-  /// JSONファイルからテーブルをインポート（最新ファイルを自動選択）
-  Future<OutshotTable> importTableFromLatestFile() async {
-    try {
-      final files = await getAvailableImportFiles();
-
-      if (files.isEmpty) {
-        throw Exception('No JSON files found in documents directory');
-      }
-
-      // 最新のファイルを選択
-      final file = files.first;
-      return await importTableFromFile(file);
-    } catch (e) {
-      throw Exception('Failed to import table: $e');
+      throw Exception('$errorMessage: $e');
     }
   }
 

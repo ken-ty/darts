@@ -1204,6 +1204,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Advanced Settings (For Experts)'**
   String get advancedSettings;
+
+  /// No description provided for @exportCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Export cancelled'**
+  String get exportCancelled;
+
+  /// No description provided for @importCancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Import cancelled'**
+  String get importCancelled;
+
+  /// No description provided for @selectFileToImport.
+  ///
+  /// In en, this message translates to:
+  /// **'Select file to import'**
+  String get selectFileToImport;
+
+  /// No description provided for @selectSaveLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Select save location'**
+  String get selectSaveLocation;
+
+  /// No description provided for @saveJsonFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Save JSON file'**
+  String get saveJsonFile;
+
+  /// No description provided for @selectJsonFileToImport.
+  ///
+  /// In en, this message translates to:
+  /// **'Select JSON file to import'**
+  String get selectJsonFileToImport;
+
+  /// No description provided for @serializeTableError.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to serialize table'**
+  String get serializeTableError;
+
+  /// No description provided for @deserializeTableError.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to deserialize table'**
+  String get deserializeTableError;
+
+  /// No description provided for @saveFileError.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to save file'**
+  String get saveFileError;
+
+  /// No description provided for @pickFileError.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to pick file'**
+  String get pickFileError;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

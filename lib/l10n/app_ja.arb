@@ -361,5 +361,15 @@
       }
     }
   },
-  "advancedSettings": "詳細設定（上級者向け）"
+  "advancedSettings": "詳細設定（上級者向け）",
+  "exportCancelled": "エクスポートがキャンセルされました",
+  "importCancelled": "インポートがキャンセルされました",
+  "selectFileToImport": "インポートするファイルを選択",
+  "selectSaveLocation": "保存場所を選択",
+  "saveJsonFile": "JSONファイルを保存",
+  "selectJsonFileToImport": "インポートするJSONファイルを選択",
+  "serializeTableError": "テーブルのシリアライズに失敗しました",
+  "deserializeTableError": "テーブルのデシリアライズに失敗しました",
+  "saveFileError": "ファイルの保存に失敗しました",
+  "pickFileError": "ファイルの選択に失敗しました"
 } 

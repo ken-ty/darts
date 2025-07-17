@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:outshotx/l10n/app_localizations.dart';
 import 'package:outshotx/models/outshot/outshot_table.dart';
+import 'package:outshotx/services/file_export_service.dart';
 import 'package:outshotx/services/language_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -1014,6 +1013,7 @@ class _SettingsPageState extends State<SettingsPage>
 
   void _showExportOutshotTableDialog() async {
     final tableService = OutshotTableService();
+    final fileService = FileExportService();
     final tables = await tableService.getAllTables();
     OutshotTable? selectedTable;
 
@@ -1048,10 +1048,48 @@ class _SettingsPageState extends State<SettingsPage>
                   ? null
                   : () async {
                       try {
-                        final filePath = await tableService.exportTableToFile(
+                        // ビジネスロジック: テーブルをバイトデータにシリアライズ
+                        final bytes = await tableService.serializeTable(
+                          selectedTable!,
+                          errorMessage:
+                              AppLocalizations.of(
+                                context,
+                              )?.serializeTableError ??
+                              '',
+                        );
+                        final fileName = tableService.generateTableFileName(
                           selectedTable!,
                         );
+
+                        // UI操作: ファイルを保存
+                        final filePath = await fileService.saveFile(
+                          fileName: fileName,
+                          bytes: bytes,
+                          dialogTitle:
+                              AppLocalizations.of(context)?.saveJsonFile ?? '',
+                          errorMessage:
+                              AppLocalizations.of(context)?.saveFileError ?? '',
+                        );
                         Navigator.pop(context);
+
+                        if (filePath == null) {
+                          // ユーザーがキャンセルした場合
+                          if (mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  AppLocalizations.of(
+                                        context,
+                                      )?.exportCancelled ??
+                                      '',
+                                ),
+                                duration: const Duration(seconds: 2),
+                              ),
+                            );
+                          }
+                          return;
+                        }
+
                         if (mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
@@ -1089,65 +1127,33 @@ class _SettingsPageState extends State<SettingsPage>
 
   void _importOutshotTable() async {
     final tableService = OutshotTableService();
+    final fileService = FileExportService();
     try {
-      // インポート可能なファイル一覧を取得
-      final files = await tableService.getAvailableImportFiles();
+      // UI操作: ファイルを選択して読み込み
+      final bytes = await fileService.pickFile(
+        dialogTitle: AppLocalizations.of(context)?.selectJsonFileToImport ?? '',
+        errorMessage: AppLocalizations.of(context)?.pickFileError ?? '',
+      );
 
-      if (files.isEmpty) {
+      if (bytes == null) {
+        // ユーザーがキャンセルした場合
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                AppLocalizations.of(context)?.noImportFilesFound ?? '',
+                AppLocalizations.of(context)?.importCancelled ?? '',
               ),
-              backgroundColor: Theme.of(context).colorScheme.error,
+              duration: const Duration(seconds: 2),
             ),
           );
         }
         return;
       }
 
-      // ファイル選択ダイアログを表示
-      final selectedFile = await showDialog<File>(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text(AppLocalizations.of(context)?.selectImportFile ?? ''),
-          content: SizedBox(
-            width: double.maxFinite,
-            height: 300,
-            child: ListView.builder(
-              itemCount: files.length,
-              itemBuilder: (context, index) {
-                final file = files[index];
-                final fileName = file.path.split('/').last;
-                final lastModified = file.lastModifiedSync();
-
-                return ListTile(
-                  title: Text(fileName),
-                  subtitle: Text(
-                    '${AppLocalizations.of(context)?.lastModifiedLabel ?? ''}: ${lastModified.toString().substring(0, 19)}',
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                  leading: const Icon(Icons.file_present),
-                  onTap: () => Navigator.pop(context, file),
-                );
-              },
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(AppLocalizations.of(context)?.cancel ?? ''),
-            ),
-          ],
-        ),
-      );
-
-      if (selectedFile == null) return;
-
-      // 選択したファイルからインポート
-      final importedTable = await tableService.importTableFromFile(
-        selectedFile,
+      // ビジネスロジック: バイトデータからテーブルをデシリアライズ
+      final importedTable = await tableService.deserializeTable(
+        bytes,
+        errorMessage: AppLocalizations.of(context)?.deserializeTableError ?? '',
       );
 
       // 同名テーブルが存在する場合は上書き確認

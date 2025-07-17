@@ -363,5 +363,15 @@
       }
     }
   },
-  "advancedSettings": "Advanced Settings (For Experts)"
+  "advancedSettings": "Advanced Settings (For Experts)",
+  "exportCancelled": "Export cancelled",
+  "importCancelled": "Import cancelled",
+  "selectFileToImport": "Select file to import",
+  "selectSaveLocation": "Select save location",
+  "saveJsonFile": "Save JSON file",
+  "selectJsonFileToImport": "Select JSON file to import",
+  "serializeTableError": "Failed to serialize table",
+  "deserializeTableError": "Failed to deserialize table",
+  "saveFileError": "Failed to save file",
+  "pickFileError": "Failed to pick file"
 } 

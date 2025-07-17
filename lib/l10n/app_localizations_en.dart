@@ -594,4 +594,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get advancedSettings => 'Advanced Settings (For Experts)';
+
+  @override
+  String get exportCancelled => 'Export cancelled';
+
+  @override
+  String get importCancelled => 'Import cancelled';
+
+  @override
+  String get selectFileToImport => 'Select file to import';
+
+  @override
+  String get selectSaveLocation => 'Select save location';
+
+  @override
+  String get saveJsonFile => 'Save JSON file';
+
+  @override
+  String get selectJsonFileToImport => 'Select JSON file to import';
+
+  @override
+  String get serializeTableError => 'Failed to serialize table';
+
+  @override
+  String get deserializeTableError => 'Failed to deserialize table';
+
+  @override
+  String get saveFileError => 'Failed to save file';
+
+  @override
+  String get pickFileError => 'Failed to pick file';
 }

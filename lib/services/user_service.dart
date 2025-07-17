@@ -1,8 +1,7 @@
-import 'dart:ui' as ui;
-
 import '../models/finish_combination.dart';
 import '../models/user_profile.dart';
 import 'darts_calculator.dart';
+import 'outshot_table_service.dart';
 import 'storage_service.dart';
 
 class UserService {
@@ -19,12 +18,10 @@ class UserService {
     }
   }
 
-  static Future<UserProfile> createDefaultUser() async {
-    // システム言語に基づいてデフォルトユーザー名を設定
-    final locale = ui.window.locale;
-    final defaultUserName = locale.languageCode == 'ja'
-        ? 'デフォルトユーザー'
-        : 'Default User';
+  static Future<UserProfile> createDefaultUser({
+    defaultUserName = 'Guest',
+  }) async {
+    // 現在の言語設定に基づいてデフォルトユーザー名を設定
 
     final defaultUser = UserProfile(
       id: 'default_user',
@@ -302,8 +299,14 @@ class UserService {
   }
 
   static Future<void> clearAllData() async {
-    await StorageService.clearAll();
+    // ストレージの全データを削除
+    await StorageService.clearAllAppData();
+
+    // メモリ上のデータをクリア
     _users.clear();
     _currentUser = null;
+
+    // アウトショットテーブルサービスもクリア
+    await OutshotTableService.clearAllData();
   }
 }

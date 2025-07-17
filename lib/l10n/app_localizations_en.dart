@@ -294,6 +294,24 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get defaultUserName => 'Default User';
+
+  @override
+  String get initializeApp => 'Initialize App';
+
+  @override
+  String get initializeAppDescription => 'Delete all data and reset the app to its initial state';
+
+  @override
+  String get initializeAppConfirmation => 'Initialize the app?';
+
+  @override
+  String get initializeAppWarning => 'This action will delete all data including registered users, outshot tables, settings, etc. This action cannot be undone.';
+
+  @override
+  String get initialize => 'Initialize';
+
+  @override
   String get finishCandidates => 'Finish Candidates';
 
   @override

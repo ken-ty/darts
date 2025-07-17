@@ -629,6 +629,42 @@ abstract class AppLocalizations {
   /// **'Score: {score} • {darts} darts'**
   String scoreAndDarts(int score, int darts);
 
+  /// No description provided for @defaultUserName.
+  ///
+  /// In en, this message translates to:
+  /// **'Default User'**
+  String get defaultUserName;
+
+  /// No description provided for @initializeApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Initialize App'**
+  String get initializeApp;
+
+  /// No description provided for @initializeAppDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete all data and reset the app to its initial state'**
+  String get initializeAppDescription;
+
+  /// No description provided for @initializeAppConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Initialize the app?'**
+  String get initializeAppConfirmation;
+
+  /// No description provided for @initializeAppWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'This action will delete all data including registered users, outshot tables, settings, etc. This action cannot be undone.'**
+  String get initializeAppWarning;
+
+  /// No description provided for @initialize.
+  ///
+  /// In en, this message translates to:
+  /// **'Initialize'**
+  String get initialize;
+
   /// No description provided for @finishCandidates.
   ///
   /// In en, this message translates to:

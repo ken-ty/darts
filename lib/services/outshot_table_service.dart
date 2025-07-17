@@ -130,4 +130,10 @@ class OutshotTableService {
 
     return duplicatedTable;
   }
+
+  /// 全データを削除（アプリ初期化用）
+  static Future<void> clearAllData() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_tablesKey);
+  }
 }

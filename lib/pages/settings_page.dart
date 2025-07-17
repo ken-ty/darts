@@ -173,6 +173,14 @@ class _SettingsPageState extends State<SettingsPage>
                   const SizedBox(height: 32),
                 ],
 
+                // Initialize App Section
+                _buildSectionHeader(
+                  AppLocalizations.of(context)?.initializeApp ?? '',
+                ),
+                const SizedBox(height: 16),
+                _buildInitializeAppSection(),
+                const SizedBox(height: 32),
+
                 // About Section（常時表示）
                 _buildSectionHeader(
                   AppLocalizations.of(context)?.aboutApp ?? '',
@@ -702,5 +710,162 @@ class _SettingsPageState extends State<SettingsPage>
   Future<void> _launchURL(String url) async {
     final Uri uri = Uri.parse(url);
     await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
+  Widget _buildInitializeAppSection() {
+    return Card(
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.refresh,
+                  color: Theme.of(context).colorScheme.error,
+                  size: 24,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)?.initializeApp ?? '',
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(
+                              color: Theme.of(context).colorScheme.error,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        AppLocalizations.of(
+                              context,
+                            )?.initializeAppDescription ??
+                            '',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: _showInitializeAppDialog,
+                icon: Icon(
+                  Icons.warning,
+                  color: Theme.of(context).colorScheme.error,
+                ),
+                label: Text(
+                  AppLocalizations.of(context)?.initialize ?? '',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.error,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide(color: Theme.of(context).colorScheme.error),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showInitializeAppDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          AppLocalizations.of(context)?.initializeAppConfirmation ?? '',
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            color: Theme.of(context).colorScheme.error,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(
+              Icons.warning,
+              color: Theme.of(context).colorScheme.error,
+              size: 48,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              AppLocalizations.of(context)?.initializeAppWarning ?? '',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(
+              AppLocalizations.of(context)?.cancel ?? '',
+              style: TextStyle(color: Theme.of(context).colorScheme.outline),
+            ),
+          ),
+          FilledButton(
+            onPressed: () async {
+              Navigator.pop(context);
+              await _initializeApp();
+            },
+            style: FilledButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.error,
+            ),
+            child: Text(
+              AppLocalizations.of(context)?.initialize ?? '',
+              style: TextStyle(color: Theme.of(context).colorScheme.onError),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _initializeApp() async {
+    try {
+      // アプリの全データを削除
+      await UserService.clearAllData();
+
+      // 成功メッセージを表示
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('アプリが初期化されました'),
+            backgroundColor: Theme.of(context).colorScheme.primary,
+          ),
+        );
+
+        // ホーム画面に戻る
+        Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+      }
+    } catch (e) {
+      // エラーメッセージを表示
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('初期化中にエラーが発生しました: $e'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+      }
+    }
   }
 }

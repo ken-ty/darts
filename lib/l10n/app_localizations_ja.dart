@@ -1,5 +1,6 @@
 // ignore: unused_import
 import 'package:intl/intl.dart' as intl;
+
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -257,7 +258,8 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get statisticsUnderDevelopment => '統計機能は現在開発中です。\n詳細な統計情報やグラフを\nお楽しみにお待ちください！';
+  String get statisticsUnderDevelopment =>
+      '統計機能は現在開発中です。\n詳細な統計情報やグラフを\nお楽しみにお待ちください！';
 
   @override
   String get finishCountLabel => 'フィニッシュ数';
@@ -292,6 +294,25 @@ class AppLocalizationsJa extends AppLocalizations {
   String scoreAndDarts(int score, int darts) {
     return 'スコア: $score • $darts ダーツ';
   }
+
+  @override
+  String get defaultUserName => 'デフォルトユーザー';
+
+  @override
+  String get initializeApp => 'アプリの初期化';
+
+  @override
+  String get initializeAppDescription => 'すべてのデータを削除してアプリを初期状態に戻します';
+
+  @override
+  String get initializeAppConfirmation => 'アプリを初期化しますか？';
+
+  @override
+  String get initializeAppWarning =>
+      'この操作により、登録されているユーザー、アウトショットテーブル、設定など、すべてのデータが削除されます。この操作は取り消せません。';
+
+  @override
+  String get initialize => '初期化';
 
   @override
   String get finishCandidates => 'フィニッシュ候補';
@@ -360,7 +381,8 @@ class AppLocalizationsJa extends AppLocalizations {
   String get finishWithThis => 'このフィニッシュで上がる';
 
   @override
-  String get practiceUnderDevelopment => 'プラクティス機能は現在開発中です。\nスコア計算と練習機能を\nお楽しみにお待ちください！';
+  String get practiceUnderDevelopment =>
+      'プラクティス機能は現在開発中です。\nスコア計算と練習機能を\nお楽しみにお待ちください！';
 
   @override
   String get outshotList => 'アウトショット一覧';

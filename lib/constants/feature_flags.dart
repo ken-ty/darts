@@ -26,7 +26,7 @@ class FeatureFlags {
   static const bool enableDebugMode = false; // デバッグモードを無効化
   static const bool enableAnalytics = false; // アナリティクスを無効化
   // ユーザーID表示制御
-  static const bool enableUserIdDisplay = false; // ユーザーID表示を有効化
+  static const bool enableUserIdDisplay = true; // ユーザーID表示を有効化
   // ユーザー管理機能の表示制御
-  static const bool enableUserManagement = false; // ユーザー管理機能を有効化
+  static const bool enableUserManagement = true; // ユーザー管理機能を有効化
 }

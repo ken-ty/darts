@@ -360,5 +360,6 @@
         "type": "String"
       }
     }
-  }
+  },
+  "advancedSettings": "詳細設定（上級者向け）"
 } 

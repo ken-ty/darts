@@ -591,4 +591,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String initializationError(String error) {
     return 'Error occurred during initialization: $error';
   }
+
+  @override
+  String get advancedSettings => 'Advanced Settings (For Experts)';
 }

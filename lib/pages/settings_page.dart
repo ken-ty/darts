@@ -864,7 +864,7 @@ class _SettingsPageState extends State<SettingsPage>
           SnackBar(
             content: Text(
               AppLocalizations.of(context)?.initializationError(e.toString()) ??
-                  e.toString(),
+                  '初期化中にエラーが発生しました: ${e.toString()}',
             ),
             backgroundColor: Theme.of(context).colorScheme.error,
           ),
@@ -893,7 +893,7 @@ class _SettingsPageState extends State<SettingsPage>
               ),
               const SizedBox(width: 8),
               Text(
-                '詳細設定（上級者向け）',
+                AppLocalizations.of(context)?.advancedSettings ?? '',
                 style: Theme.of(context).textTheme.titleSmall?.copyWith(
                   color: Theme.of(context).colorScheme.outline,
                   fontWeight: FontWeight.bold,

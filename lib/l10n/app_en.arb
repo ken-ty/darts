@@ -362,5 +362,6 @@
         "type": "String"
       }
     }
-  }
+  },
+  "advancedSettings": "Advanced Settings (For Experts)"
 } 

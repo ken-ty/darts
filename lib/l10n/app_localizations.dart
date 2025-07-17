@@ -1198,6 +1198,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error occurred during initialization: {error}'**
   String initializationError(String error);
+
+  /// No description provided for @advancedSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced Settings (For Experts)'**
+  String get advancedSettings;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

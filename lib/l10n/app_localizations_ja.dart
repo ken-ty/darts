@@ -591,4 +591,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String initializationError(String error) {
     return '初期化中にエラーが発生しました: $error';
   }
+
+  @override
+  String get advancedSettings => '詳細設定（上級者向け）';
 }

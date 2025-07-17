@@ -13,6 +13,12 @@ class AppConstants {
   static const String termsOfServiceUrlEn =
       'https://resonant-metal-83e.notion.site/Terms-of-Service-231c89f5c11380ff9f99f3511df8d74f';
 
+  // Google Form URL
+  static const String contactFormUrl =
+      'https://docs.google.com/forms/d/e/1FAIpQLScDttlA6OSYkCx5mGmPtIlcpkkT9DUE0DqOAQKLseUyeZQqPA/viewform';
+  static const String featureRequestFormUrl =
+      'https://docs.google.com/forms/d/e/1FAIpQLSfwjozPkYggeUduWb3kggmeWTe6NvI1q_87xnUxjaonF-V9QQ/viewform';
+
   // アプリ情報
   static const String appName = 'outshotX';
   static const String appDescription = 'ダーツアウトショットアプリ';

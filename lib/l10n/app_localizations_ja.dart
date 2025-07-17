@@ -463,4 +463,25 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get outshotTableDuplicatedSuffix => ' (コピー)';
+
+  @override
+  String get duplicateEntry => '複製';
+
+  @override
+  String get addEntry => 'エントリー追加';
+
+  @override
+  String get editEntry => 'エントリー編集';
+
+  @override
+  String get combination => '組み合わせ';
+
+  @override
+  String get combinationHint => '1st, 2nd, 3rd（カンマ区切り）';
+
+  @override
+  String get deleteEntry => '削除確認';
+
+  @override
+  String get deleteEntryConfirm => 'このエントリーを削除しますか？';
 }

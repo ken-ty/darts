@@ -463,4 +463,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get outshotTableDuplicatedSuffix => ' (Copy)';
+
+  @override
+  String get duplicateEntry => 'Duplicate';
+
+  @override
+  String get addEntry => 'Add Entry';
+
+  @override
+  String get editEntry => 'Edit Entry';
+
+  @override
+  String get combination => 'Combination';
+
+  @override
+  String get combinationHint => '1st, 2nd, 3rd (comma separated)';
+
+  @override
+  String get deleteEntry => 'Delete Confirmation';
+
+  @override
+  String get deleteEntryConfirm => 'Delete this entry?';
 }

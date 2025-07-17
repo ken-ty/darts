@@ -282,5 +282,18 @@
   "dartsCount": "Darts Count",
   "route": "Route",
   "close": "Close",
-  "outshotTableDuplicatedSuffix": " (Copy)"
+  "outshotTableDuplicatedSuffix": " (Copy)",
+  "duplicateEntry": "Duplicate",
+  "addEntry": "Add Entry",
+  "editEntry": "Edit Entry",
+  "score": "Score",
+  "combination": "Combination",
+  "combinationHint": "1st, 2nd, 3rd (comma separated)",
+  "description": "Description",
+  "save": "Save",
+  "cancel": "Cancel",
+  "deleteEntry": "Delete Confirmation",
+  "deleteEntryConfirm": "Delete this entry?",
+  "delete": "Delete",
+  "edit": "Edit"
 } 

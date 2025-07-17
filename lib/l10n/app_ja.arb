@@ -282,5 +282,16 @@
   "dartsCount": "ダーツ数",
   "route": "ルート",
   "close": "閉じる",
-  "outshotTableDuplicatedSuffix": " (コピー)"
+  "outshotTableDuplicatedSuffix": " (コピー)",
+  "duplicateEntry": "複製",
+  "addEntry": "エントリー追加",
+  "editEntry": "エントリー編集",
+  "combination": "組み合わせ",
+  "combinationHint": "1st, 2nd, 3rd（カンマ区切り）",
+  "save": "保存",
+  "cancel": "キャンセル",
+  "deleteEntry": "削除確認",
+  "deleteEntryConfirm": "このエントリーを削除しますか？",
+  "delete": "削除",
+  "edit": "編集"
 } 

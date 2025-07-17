@@ -958,6 +958,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **' (Copy)'**
   String get outshotTableDuplicatedSuffix;
+
+  /// No description provided for @duplicateEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'Duplicate'**
+  String get duplicateEntry;
+
+  /// No description provided for @addEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Entry'**
+  String get addEntry;
+
+  /// No description provided for @editEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Entry'**
+  String get editEntry;
+
+  /// No description provided for @combination.
+  ///
+  /// In en, this message translates to:
+  /// **'Combination'**
+  String get combination;
+
+  /// No description provided for @combinationHint.
+  ///
+  /// In en, this message translates to:
+  /// **'1st, 2nd, 3rd (comma separated)'**
+  String get combinationHint;
+
+  /// No description provided for @deleteEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Confirmation'**
+  String get deleteEntry;
+
+  /// No description provided for @deleteEntryConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this entry?'**
+  String get deleteEntryConfirm;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

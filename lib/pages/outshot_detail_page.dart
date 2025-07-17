@@ -50,28 +50,39 @@ class _OutshotDetailPageState extends State<OutshotDetailPage> {
     final result = await showDialog<OutshotEntry>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(entry == null ? 'エントリー追加' : 'エントリー編集'),
+        title: Text(
+          entry == null
+              ? AppLocalizations.of(context)?.addEntry ?? ''
+              : AppLocalizations.of(context)?.editEntry ?? '',
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               controller: scoreController,
-              decoration: const InputDecoration(labelText: 'スコア'),
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)?.score ?? '',
+              ),
             ),
             TextField(
               controller: combinationController,
-              decoration: const InputDecoration(labelText: '組み合わせ（カンマ区切り）'),
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)?.combination ?? '',
+                hintText: AppLocalizations.of(context)?.combinationHint ?? '',
+              ),
             ),
             TextField(
               controller: descriptionController,
-              decoration: const InputDecoration(labelText: '説明'),
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)?.description ?? '',
+              ),
             ),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('キャンセル'),
+            child: Text(AppLocalizations.of(context)?.cancel ?? ''),
           ),
           ElevatedButton(
             onPressed: () {
@@ -85,7 +96,7 @@ class _OutshotDetailPageState extends State<OutshotDetailPage> {
               );
               Navigator.pop(context, entry);
             },
-            child: const Text('保存'),
+            child: Text(AppLocalizations.of(context)?.save ?? ''),
           ),
         ],
       ),
@@ -109,8 +120,8 @@ class _OutshotDetailPageState extends State<OutshotDetailPage> {
     final result = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('削除確認'),
-        content: const Text('このエントリーを削除しますか？'),
+        title: Text(AppLocalizations.of(context)?.deleteEntry ?? ''),
+        content: Text(AppLocalizations.of(context)?.deleteEntryConfirm ?? ''),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -211,7 +222,7 @@ class _OutshotDetailPageState extends State<OutshotDetailPage> {
                 final combo = _filteredCombinations[index];
                 return GestureDetector(
                   onLongPress: () async {
-                    // 編集・削除メニュー
+                    // 編集・削除・複製メニュー
                     final action = await showModalBottomSheet<String>(
                       context: context,
                       builder: (context) => Column(
@@ -219,17 +230,26 @@ class _OutshotDetailPageState extends State<OutshotDetailPage> {
                         children: [
                           ListTile(
                             leading: const Icon(Icons.edit),
-                            title: const Text('編集'),
+                            title: Text(
+                              AppLocalizations.of(context)?.edit ?? '',
+                            ),
                             onTap: () => Navigator.pop(context, 'edit'),
+                          ),
+                          ListTile(
+                            leading: const Icon(Icons.copy),
+                            title: Text(
+                              AppLocalizations.of(context)?.duplicate ?? '',
+                            ),
+                            onTap: () => Navigator.pop(context, 'duplicate'),
                           ),
                           ListTile(
                             leading: const Icon(
                               Icons.delete,
                               color: Colors.red,
                             ),
-                            title: const Text(
-                              '削除',
-                              style: TextStyle(color: Colors.red),
+                            title: Text(
+                              AppLocalizations.of(context)?.delete ?? '',
+                              style: const TextStyle(color: Colors.red),
                             ),
                             onTap: () => Navigator.pop(context, 'delete'),
                           ),
@@ -238,6 +258,18 @@ class _OutshotDetailPageState extends State<OutshotDetailPage> {
                     );
                     if (action == 'edit') {
                       _showEntryDialog(entry: combo, editIndex: index);
+                    } else if (action == 'duplicate') {
+                      setState(() {
+                        widget.outshotSet.combinations.add(
+                          OutshotEntry(
+                            score: combo.score,
+                            combination: List<String>.from(combo.combination),
+                            description: combo.description,
+                          ),
+                        );
+                      });
+                      // TODO: 保存処理
+                      // await OutshotTableService().updateTable(widget.outshotSet);
                     } else if (action == 'delete') {
                       _showDeleteDialog(index);
                     }
@@ -251,7 +283,7 @@ class _OutshotDetailPageState extends State<OutshotDetailPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showEntryDialog(),
-        tooltip: 'エントリー追加',
+        tooltip: AppLocalizations.of(context)?.addEntry ?? '',
         child: const Icon(Icons.add),
       ),
     );

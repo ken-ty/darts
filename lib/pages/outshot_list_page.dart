@@ -145,7 +145,29 @@ class _OutshotListPageState extends State<OutshotListPage> {
                         id: _tableService.generateTableId(),
                         name: nameController.text.trim(),
                         labelIds: selectedLabels.toList(),
-                        combinations: generateDoubleOutCombinations(),
+                        combinations: [
+                          // デフォルトのサンプルEntry
+                          const OutshotEntry(
+                            score: 170,
+                            combination: ['T20', 'T20', 'D-Bull'],
+                            description: 'サンプルエントリー1',
+                          ),
+                          const OutshotEntry(
+                            score: 65,
+                            combination: ['Bull', 'D20'],
+                            description: 'サンプルエントリー2',
+                          ),
+                          const OutshotEntry(
+                            score: 60,
+                            combination: ['S20', 'D20'],
+                            description: 'サンプルエントリー3',
+                          ),
+                          const OutshotEntry(
+                            score: 32,
+                            combination: ['D16'],
+                            description: 'サンプルエントリー4',
+                          ),
+                        ],
                         createdAt: DateTime.now(),
                       );
 

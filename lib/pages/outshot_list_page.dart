@@ -300,6 +300,24 @@ class _OutshotListPageState extends State<OutshotListPage> {
     );
   }
 
+  // 追加ボタンを構築
+  Widget _buildAddButton() {
+    return Container(
+      margin: const EdgeInsets.all(16),
+      child: ElevatedButton.icon(
+        onPressed: _showCreateTableDialog,
+        icon: const Icon(Icons.add),
+        label: Text(AppLocalizations.of(context)?.createNew ?? ''),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          foregroundColor: Theme.of(context).colorScheme.onPrimary,
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
@@ -371,9 +389,14 @@ class _OutshotListPageState extends State<OutshotListPage> {
                     ),
                   )
                 : ListView.separated(
-                    itemCount: _tables.length,
+                    itemCount: _tables.length + 1, // +1 for add button
                     separatorBuilder: (_, __) => const Divider(height: 1),
                     itemBuilder: (context, index) {
+                      // 最後のアイテムは追加ボタン
+                      if (index == _tables.length) {
+                        return _buildAddButton();
+                      }
+
                       final table = _tables[index];
                       return ListTile(
                         contentPadding: const EdgeInsets.symmetric(

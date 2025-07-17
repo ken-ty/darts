@@ -295,5 +295,7 @@
   "deleteEntry": "Delete Confirmation",
   "deleteEntryConfirm": "Delete this entry?",
   "delete": "Delete",
-  "edit": "Edit"
+  "edit": "Edit",
+  "contact": "Contact",
+  "featureRequest": "Feature Request"
 } 

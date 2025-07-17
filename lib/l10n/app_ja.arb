@@ -293,5 +293,7 @@
   "deleteEntry": "削除確認",
   "deleteEntryConfirm": "このエントリーを削除しますか？",
   "delete": "削除",
-  "edit": "編集"
+  "edit": "編集",
+  "contact": "お問い合わせ",
+  "featureRequest": "機能リクエスト"
 } 

@@ -484,4 +484,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get deleteEntryConfirm => 'Delete this entry?';
+
+  @override
+  String get contact => 'Contact';
+
+  @override
+  String get featureRequest => 'Feature Request';
 }

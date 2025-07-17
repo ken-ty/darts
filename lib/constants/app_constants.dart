@@ -5,13 +5,13 @@ class AppConstants {
 
   // Notion URL
   static const String privacyPolicyUrlJp =
-      'https://resonant-metal-83e.notion.site/230c89f5c11380b9932ac76e974d8479';
+      'https://www.notion.so/230c89f5c11380b9932ac76e974d8479';
   static const String termsOfServiceUrlJp =
-      'https://resonant-metal-83e.notion.site/230c89f5c11380b593e6e4757c7fefd9';
+      'https://www.notion.so/230c89f5c11380b593e6e4757c7fefd9';
   static const String privacyPolicyUrlEn =
       'https://resonant-metal-83e.notion.site/Privacy-Policy-231c89f5c11380a69922f7e1774a54fb';
   static const String termsOfServiceUrlEn =
-      'https://resonant-metal-83e.notion.site/Terms-of-Service-231c89f5c11380ff9f99f3511df8d74f';
+      'https://resonant-metal-83e.notion.site/Terms-of-Service-231c89f5c11380ff9f99f3511df8d74f?source=copy_link';
 
   // Google Form URL
   static const String contactFormUrl =

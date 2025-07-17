@@ -382,6 +382,18 @@ class _SettingsPageState extends State<SettingsPage>
             icon: Icons.description,
             onTap: () => _launchURL(_getTermsOfServiceUrl()),
           ),
+          _buildDivider(),
+          _buildSettingTile(
+            title: AppLocalizations.of(context)?.contact ?? '',
+            icon: Icons.mail,
+            onTap: () => _launchURL(AppConstants.contactFormUrl),
+          ),
+          _buildDivider(),
+          _buildSettingTile(
+            title: AppLocalizations.of(context)?.featureRequest ?? '',
+            icon: Icons.lightbulb_outline,
+            onTap: () => _launchURL(AppConstants.featureRequestFormUrl),
+          ),
         ],
       ),
     );

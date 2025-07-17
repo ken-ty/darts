@@ -484,4 +484,10 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get deleteEntryConfirm => 'このエントリーを削除しますか？';
+
+  @override
+  String get contact => 'お問い合わせ';
+
+  @override
+  String get featureRequest => '機能リクエスト';
 }

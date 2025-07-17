@@ -1000,6 +1000,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete this entry?'**
   String get deleteEntryConfirm;
+
+  /// No description provided for @contact.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact'**
+  String get contact;
+
+  /// No description provided for @featureRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Feature Request'**
+  String get featureRequest;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

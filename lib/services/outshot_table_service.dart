@@ -98,4 +98,36 @@ class OutshotTableService {
   String generateTableId() {
     return 'table_${DateTime.now().millisecondsSinceEpoch}';
   }
+
+  /// テーブルを複製
+  /// [tableId] 複製元のテーブルID
+  /// [suffix] 複製後のテーブル名の末尾に付与する文字列
+  /// [separator] 複製後のテーブル名と末尾の文字列をつなぐ文字列
+  Future<OutshotTable> duplicateTable(
+    String tableId,
+    String suffix, {
+    String separator = ' ',
+  }) async {
+    final originalTable = await getTableById(tableId);
+    if (originalTable == null) {
+      throw Exception('Table not found');
+    }
+
+    // 新しいIDを生成
+    final newId = generateTableId();
+
+    // 複製元のデータをコピーして新しいテーブルを作成
+    final duplicatedTable = OutshotTable(
+      id: newId,
+      name: '${originalTable.name}$separator$suffix',
+      labelIds: List<String>.from(originalTable.labelIds),
+      combinations: originalTable.combinations.map((entry) => entry).toList(),
+      createdAt: DateTime.now(),
+    );
+
+    // 新しいテーブルを保存
+    await addTable(duplicatedTable);
+
+    return duplicatedTable;
+  }
 }

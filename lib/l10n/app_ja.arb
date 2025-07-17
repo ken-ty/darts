@@ -281,5 +281,6 @@
   "description": "説明",
   "dartsCount": "ダーツ数",
   "route": "ルート",
-  "close": "閉じる"
+  "close": "閉じる",
+  "outshotTableDuplicatedSuffix": " (コピー)"
 } 

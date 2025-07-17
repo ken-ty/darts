@@ -60,6 +60,32 @@ class _OutshotListPageState extends State<OutshotListPage> {
         .toList();
   }
 
+  // テーブルを複製
+  Future<void> _duplicateTable(OutshotTable table) async {
+    try {
+      await _tableService.duplicateTable(
+        table.id,
+        AppLocalizations.of(context)?.outshotTableDuplicatedSuffix ?? '',
+      );
+      await _loadData(); // データを再読み込み
+
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('テーブルを複製しました')));
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('テーブルの複製に失敗しました'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
   // 新規テーブル作成ダイアログを表示
   void _showCreateTableDialog() {
     final nameController = TextEditingController();
@@ -465,9 +491,9 @@ class _OutshotListPageState extends State<OutshotListPage> {
                                     AppLocalizations.of(context)?.duplicate ??
                                         '',
                                   ),
-                                  onTap: () {
+                                  onTap: () async {
                                     Navigator.pop(context);
-                                    // TODO: 複製機能
+                                    await _duplicateTable(table);
                                   },
                                 ),
                                 ListTile(

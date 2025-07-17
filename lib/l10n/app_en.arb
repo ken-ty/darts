@@ -281,5 +281,6 @@
   "description": "Description",
   "dartsCount": "Darts Count",
   "route": "Route",
-  "close": "Close"
+  "close": "Close",
+  "outshotTableDuplicatedSuffix": " (Copy)"
 } 

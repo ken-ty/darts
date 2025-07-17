@@ -198,6 +198,7 @@
   "practice": "プラクティス",
   "remainingScore": "残りスコア",
   "scoreInput": "スコア入力",
+  "defaultUserName": "デフォルトユーザー",
   "enterScore": "投げたスコアを入力",
   "undoLastScore": "前のスコアに戻す",
   "finishCandidates": "フィニッシュ候補",

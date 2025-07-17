@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+
 import '../models/finish_combination.dart';
 import '../models/user_profile.dart';
 import 'darts_calculator.dart';
@@ -18,9 +20,15 @@ class UserService {
   }
 
   static Future<UserProfile> createDefaultUser() async {
+    // システム言語に基づいてデフォルトユーザー名を設定
+    final locale = ui.window.locale;
+    final defaultUserName = locale.languageCode == 'ja'
+        ? 'デフォルトユーザー'
+        : 'Default User';
+
     final defaultUser = UserProfile(
       id: 'default_user',
-      name: 'デフォルトユーザー',
+      name: defaultUserName,
       finishBoard: DartsCalculator.getDefaultFinishes(),
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),

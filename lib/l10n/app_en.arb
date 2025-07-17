@@ -198,6 +198,7 @@
   "practice": "Practice",
   "remainingScore": "Remaining Score",
   "scoreInput": "Score Input",
+  "defaultUserName": "Default User",
   "enterScore": "Enter your score",
   "undoLastScore": "Undo Last Score",
   "finishCandidates": "Finish Candidates",
